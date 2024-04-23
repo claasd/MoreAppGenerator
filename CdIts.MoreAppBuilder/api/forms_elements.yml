@@ -1,0 +1,49 @@
+openapi: 3.0.1
+info:
+  title: MoreAppBuilder
+  version: 1.0.0
+
+paths:
+  /dummy:
+    get:
+      responses:
+        '200':
+          description: 'Dummy response'
+
+components:
+  schemas:
+    LookupOption:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    SearchDataSource:
+      type: object
+      properties:
+        id:
+          type: string
+        mapping:
+          additionalProperties:
+            type: boolean
+    SubForm:
+      type: object
+      properties:
+        uid:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: './forms.yml#/components/schemas/Field'
+        rules:
+          type: array
+          items:
+            $ref: './forms.yml#/components/schemas/Rule'
+        triggers:
+          type: array
+          items:
+            $ref: './forms.yml#/components/schemas/Trigger'
+        settings:
+          $ref: './forms.yml#/components/schemas/Settings'
+        

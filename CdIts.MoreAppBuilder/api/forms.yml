@@ -1,0 +1,1324 @@
+openapi: 3.0.1
+info:
+  title: Forms
+  description: All public API endpoints related to Forms
+  contact: {}
+  version: v1
+externalDocs:
+  description: MoreApp Docs
+  url: https://docs.moreapp.com
+servers:
+  - url: https://api.moreapp.com/api/v1.0/forms
+security:
+  - api-key: []
+tags:
+  - name: Folders
+  - name: Forms
+  - name: Form Versions
+  - name: Templates
+  - name: Form Version Templates
+paths:
+  /customer/{customerId}/templates/{formId}:
+    get:
+      tags:
+        - Templates
+      summary: Get template
+      operationId: getFormByCustomerId
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+    put:
+      tags:
+        - Templates
+      summary: Restore template to active
+      description: This will restore the template to the platform
+      operationId: restoreForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+    delete:
+      tags:
+        - Templates
+      summary: Mark template as trash
+      description: This will hide the template
+      operationId: trashForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+    patch:
+      tags:
+        - Templates
+      summary: Patch specific property of a template
+      operationId: patchForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+  /customer/{customerId}/templates/{formId}/versions/{formVersionId}:
+    get:
+      tags:
+        - Form Version Templates
+      summary: Get a specific version of a template
+      operationId: getFormVersionForForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+    put:
+      tags:
+        - Form Version Templates
+      summary: Update form version
+      operationId: updateFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+    delete:
+      tags:
+        - Form Version Templates
+      summary: Delete form version
+      description: Only form versions with status 'DRAFT' can be deleted.
+      operationId: deleteFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+      responses:
+        '200':
+          description: OK
+  /customer/{customerId}/forms/{formId}:
+    get:
+      tags:
+        - Forms
+      summary: Get form
+      operationId: getFormByCustomerId_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+    put:
+      tags:
+        - Forms
+      summary: Restore form to active
+      description: This will restore the form to both the app and the platform
+      operationId: restoreForm_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+    delete:
+      tags:
+        - Forms
+      summary: Mark form as trash
+      description: This will hide the form in both the app and the platform
+      operationId: trashForm_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+    patch:
+      tags:
+        - Forms
+      summary: Patch specific property of form
+      operationId: patchForm_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+  /customer/{customerId}/forms/{formId}/versions/{formVersionId}:
+    get:
+      tags:
+        - Form Versions
+      summary: Get a specific version of a form
+      operationId: getFormVersionForForm_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+    put:
+      tags:
+        - Form Versions
+      summary: Update form version
+      description: Updating is only allowed for form versions with a non-FINAL status
+      operationId: updateFormVersion_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+    delete:
+      tags:
+        - Form Versions
+      summary: Delete form version
+      description: Only form versions with status 'DRAFT' can be deleted.
+      operationId: deleteFormVersion_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+      responses:
+        '200':
+          description: OK
+  /customer/{customerId}/folders/{folderId}/forms/{formId}:
+    put:
+      tags:
+        - Folders
+      summary: Move form to folder
+      operationId: moveForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+    post:
+      tags:
+        - Folders
+      summary: Add form to folder
+      operationId: addForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+    delete:
+      tags:
+        - Folders
+      summary: Remove form from folder
+      description: >-
+        This doesn't delete the underlying form, just the reference from this
+        folder
+      operationId: removeForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+        - $ref: '#/components/parameters/formId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+  /customer/{customerId}/folders/{folderId}/forms/{formId}/move/{position}:
+    put:
+      tags:
+        - Folders
+      summary: Move form to specific position in folder
+      operationId: movePositionForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+        - $ref: '#/components/parameters/formId'
+        - name: position
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+  /customer/{customerId}/templates:
+    get:
+      tags:
+        - Templates
+      summary: Find templates
+      operationId: find
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: scope
+          in: query
+          required: false
+          schema:
+            type: string
+            default: CUSTOMER
+            enum:
+              - GLOBAL
+              - CUSTOMER
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            default: []
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormDto'
+    post:
+      tags:
+        - Templates
+      summary: Create template
+      operationId: createForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+  /customer/{customerId}/templates/{formId}/versions:
+    get:
+      tags:
+        - Form Version Templates
+      summary: Get versions of a template
+      operationId: getFormVersionsForForm
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormVersionDto'
+    post:
+      tags:
+        - Form Version Templates
+      summary: Create form version
+      operationId: createFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionDto'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+  /customer/{customerId}/templates/{formId}/versions/{formVersionId}/finalize:
+    post:
+      tags:
+        - Form Version Templates
+      summary: Finalize (for publish) form version
+      operationId: finalizeFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+  /customer/{customerId}/templates/{formId}/versions/validate:
+    post:
+      tags:
+        - Form Version Templates
+      summary: Validate form version
+      operationId: validateFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /customer/{customerId}/forms:
+    get:
+      tags:
+        - Forms
+      summary: Find forms
+      operationId: find_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormDto'
+    post:
+      tags:
+        - Forms
+      summary: Create form
+      operationId: createForm_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormDto'
+  /customer/{customerId}/forms/{formId}/versions:
+    get:
+      tags:
+        - Form Versions
+      summary: Get versions of a form
+      operationId: getFormVersionsForForm_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormVersionDto'
+    post:
+      tags:
+        - Form Versions
+      summary: Create form version
+      operationId: createFormVersion_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionDto'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+  /customer/{customerId}/forms/{formId}/versions/{formVersionId}/finalize:
+    post:
+      tags:
+        - Form Versions
+      summary: Finalize (for publish) form version
+      operationId: finalizeFormVersion_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+  /customer/{customerId}/forms/{formId}/versions/{formVersionId}/copy:
+    post:
+      tags:
+        - Form Versions
+      summary: Copy form version to specified folder
+      operationId: copyFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionCopyDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionCopyResponseDto'
+  /customer/{customerId}/forms/{formId}/versions/validate:
+    post:
+      tags:
+        - Form Versions
+      summary: Validate form version
+      operationId: validateFormVersion_1
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormVersionDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /customer/{customerId}/folders:
+    get:
+      tags:
+        - Folders
+      summary: Get available folders for customer
+      operationId: getFoldersByCustomerId
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            default: []
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FolderDto'
+    post:
+      tags:
+        - Folders
+      summary: Create folder
+      operationId: createFolder
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+  /customer/{customerId}/folders/{folderId}:
+    get:
+      tags:
+        - Folders
+      summary: Get folder
+      operationId: getFolder
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+    delete:
+      tags:
+        - Folders
+      summary: Delete folder
+      description: Deletion is only permitted when all forms are removed from this folder
+      operationId: deleteFolder
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags:
+        - Folders
+      summary: Update property of folder
+      operationId: updateFolder
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/folderId'
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/JsonPatch'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FolderDto'
+  /customer/{customerId}/forms/templates/{formVersionId}:
+    get:
+      tags:
+        - Form Versions
+      summary: Get a form template
+      operationId: getTemplateFormVersion
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/formVersionId'
+        - name: brandingId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FormVersionDto'
+components:
+  schemas:
+    objectId:
+      maxLength: 24
+      minLength: 24
+      type: string
+      format: hexadecimal
+      readOnly: true
+    FormDto:
+      required:
+        - publishedVersion
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/objectId'
+        publishedVersion:
+          $ref: '#/components/schemas/FormPublishedVersionDto'
+        meta:
+          $ref: '#/components/schemas/FormMetadataDto'
+        status:
+          type: string
+          readOnly: true
+          enum:
+            - ACTIVE
+            - HIDDEN
+            - TRASH
+            - UNKNOWN
+        scope:
+          type: string
+          readOnly: true
+          enum:
+            - GLOBAL
+            - CUSTOMER
+      example:
+        meta:
+          name: Example form
+          description: Description of example form
+    FormMetadataDto:
+      type: object
+      properties:
+        name:
+          type: string
+        icon:
+          type: string
+        iconColor:
+          type: string
+          enum:
+            - Default
+            - Dark
+            - Gold
+            - Green
+            - Mauve
+            - Purple
+            - Red
+            - White
+        description:
+          type: string
+        language:
+          type: string
+        viewId:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        templateId:
+          type: string
+        archivedOn:
+          type: string
+          format: date-time
+        archivedBy:
+          type: string
+    FormPublishedVersionDto:
+      type: object
+      properties:
+        formVersion:
+          type: string
+        publishedDate:
+          type: string
+          format: date-time
+          readOnly: true
+        publishedBy:
+          type: string
+          readOnly: true
+        remarks:
+          type: string
+    Action:
+      type: object
+      properties:
+        fieldUid:
+          type: string
+        key:
+          type: string
+        value:
+          type: object
+    Condition:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - FIELD
+            - USER
+            - FIELD_DATA_SOURCE
+        fieldUid:
+          type: string
+        fieldObjectKey:
+          type: string
+        key:
+          type: string
+        value:
+          type: object
+    Dependency:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - DATASOURCE
+            - RESOURCE
+            - URL
+            - SERVICE_ACCOUNT
+        value:
+          type: string
+    Field:
+      required:
+        - uid
+        - widget
+      type: object
+      properties:
+        uid:
+          type: string
+        widget:
+          type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+    FormVersionDto:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/objectId'
+        formId:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Field'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trigger'
+        integrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntegrationConfiguration'
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dependency'
+        fieldProperties:
+          type: object
+          additionalProperties:
+            type: object
+        meta:
+          $ref: '#/components/schemas/FormVersionMetadata'
+        settings:
+          $ref: '#/components/schemas/Settings'
+        theme:
+          $ref: '#/components/schemas/ThemeDto'
+      example:
+        id: version-id
+        formId: form-id
+        fields:
+          - uid: a9b1bc74241030c66274d9dfe95c0e3b
+            widget: com.moreapps:text:1
+            properties:
+              label_text: Text
+              text_placeholder: ''
+              text_default_value: ''
+              max_length: 100
+              min_length: 0
+              data_name: text
+              required: false
+              remember_input: false
+        rules: []
+        triggers: []
+        integrations: []
+        settings:
+          interaction: IMMEDIATE_UPLOAD
+          saveMode: SAVE_AND_CLOSE_ONLY
+          icon: ios-paper-outline
+        theme:
+          id: theme-id
+    FormVersionMetadata:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        lastUpdated:
+          type: string
+          format: date-time
+        lastUpdatedBy:
+          type: string
+        status:
+          type: string
+          enum:
+            - DRAFT
+            - FINAL
+    IntegrationConfiguration:
+      type: object
+      properties:
+        uid:
+          type: string
+        key:
+          type: string
+        namespace:
+          type: string
+        name:
+          type: string
+        version:
+          type: integer
+          format: int32
+        configuration:
+          type: object
+          additionalProperties:
+            type: object
+    Rule:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - AND
+            - OR
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Condition'
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+    SearchSettings:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        onlyForCurrentUser:
+          type: boolean
+        fields:
+          type: object
+          additionalProperties:
+            type: boolean
+        filteringEnabled:
+          type: boolean
+        filteredFields:
+          type: array
+          items:
+            type: string
+    Settings:
+      type: object
+      properties:
+        interaction:
+          type: string
+          enum:
+            - IMMEDIATE_UPLOAD
+            - MANUAL_UPLOAD
+        saveMode:
+          type: string
+          enum:
+            - ALL
+            - SAVE_AND_CLOSE_ONLY
+            - NO_SAVE
+        searchSettings:
+          $ref: '#/components/schemas/SearchSettings'
+        icon:
+          type: string
+        itemHtml:
+          type: string
+    ThemeColors:
+      type: object
+      properties:
+        background:
+          type: string
+        button:
+          type: string
+        saveButton:
+          type: string
+        widget:
+          type: string
+        bar:
+          type: string
+      readOnly: true
+    ThemeDto:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/objectId'
+        system:
+          type: boolean
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        colors:
+          $ref: '#/components/schemas/ThemeColors'
+        defaultTheme:
+          type: boolean
+          readOnly: true
+    Trigger:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        staticRecipients:
+          type: array
+          items:
+            type: string
+        dynamicRecipients:
+          type: array
+          items:
+            type: string
+        carbonCopyRecipients:
+          type: array
+          items:
+            type: string
+        blindCarbonCopyRecipients:
+          type: array
+          items:
+            type: string
+        subject:
+          type: string
+        content:
+          type: string
+        pdfContent:
+          type: string
+        pdfFilename:
+          type: string
+        fromName:
+          type: string
+        replyTo:
+          type: string
+        pdfHeaderLogoResourceId:
+          type: string
+        configuration:
+          $ref: '#/components/schemas/TriggerConfiguration'
+    TriggerConfiguration:
+      type: object
+      properties:
+        attachments:
+          type: array
+          items:
+            type: string
+        attachImages:
+          type: boolean
+        embedImages:
+          type: boolean
+        attachPdf:
+          type: boolean
+        simpleMode:
+          type: boolean
+        useHeaderAndFooter:
+          type: boolean
+        hideNoValues:
+          type: boolean
+        horizontalOrientation:
+          type: boolean
+        distributedGeneration:
+          type: boolean
+        legacyGeneration:
+          type: boolean
+    FolderDto:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/objectId'
+        forms:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormDto'
+        meta:
+          $ref: '#/components/schemas/FolderMetadataDto'
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - HIDDEN
+            - UNKNOWN
+      example:
+        meta:
+          name: Example Folder
+          description: Folder with examples
+          icon: ios-folder-outline
+    FolderMetadataDto:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        image:
+          type: string
+        applicationId:
+          type: string
+    FormVersionCopyDto:
+      required:
+        - customerId
+        - folderId
+        - formName
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int64
+        folderId:
+          type: string
+        formName:
+          type: string
+      example:
+        customerId: 1
+        folderId: folder-id
+        formName: Copied form example
+    FormVersionCopyResponseDto:
+      type: object
+      properties:
+        folder:
+          $ref: '#/components/schemas/FolderDto'
+        form:
+          $ref: '#/components/schemas/FormDto'
+        formVersion:
+          $ref: '#/components/schemas/FormVersionDto'
+    JsonPatch:
+      type: object
+  parameters:
+    customerId:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: number
+        description: >-
+          Every customer has an unique numerical identifier, you can find it in
+          the top left corner of the [platform](http://platform.moreapp.com/).
+    formId:
+      name: formId
+      in: path
+      required: true
+      schema:
+        maxLength: 24
+        minLength: 24
+        type: string
+        format: hexadecimal
+        readOnly: true
+    formVersionId:
+      name: formVersionId
+      in: path
+      required: true
+      schema:
+        maxLength: 24
+        minLength: 24
+        type: string
+        format: hexadecimal
+        readOnly: true
+    folderId:
+      name: folderId
+      in: path
+      required: true
+      schema:
+        maxLength: 24
+        minLength: 24
+        type: string
+        format: hexadecimal
+        readOnly: true
+  securitySchemes:
+    api-key:
+      type: apiKey
+      description: >-
+        Check the [authentication
+        documentation](https://moreapp.stoplight.io/docs/developer-docs/docs/Authentication.md)
+        for more information.
+      name: X-Api-Key
+      in: header

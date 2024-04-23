@@ -1,0 +1,375 @@
+openapi: 3.0.1
+info:
+  title: Webhooks
+  description: >-
+    All public API endpoints related to Webhooks. Check the [Webhooks
+    documentation](https://moreapp.stoplight.io/docs/developer-docs/docs/Webhooks.md)
+    for more information.
+  contact: {}
+  version: v1
+externalDocs:
+  description: MoreApp Docs
+  url: https://docs.moreapp.com
+servers:
+  - url: https://api.moreapp.com/api/v1.0/webhooks
+security:
+  - api-key: []
+tags:
+  - name: Events
+  - name: Subscribers
+  - name: Invocations
+paths:
+  /customer/{customerId}/subscribers/{subscriberId}:
+    get:
+      tags:
+        - Subscribers
+      summary: Retrieve a subscriber
+      description: Retrieves the details of a subscriber.
+      operationId: getWebhookSubscriber
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/subscriberId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Subscriber'
+    put:
+      tags:
+        - Subscribers
+      summary: Update a subscriber
+      description: >-
+        Updates the subscriber by setting the values of the fields passed. All
+        fields are required.
+      operationId: updateWebhookSubscriber
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/subscriberId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscriber'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Subscriber'
+    delete:
+      tags:
+        - Subscribers
+      summary: Delete a subscriber
+      description: Irrevocably deletes the subscriber.
+      operationId: deleteWebhookSubscriber
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/subscriberId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Subscriber'
+  /customer/{customerId}/subscribers:
+    get:
+      tags:
+        - Subscribers
+      summary: List all subscribers
+      description: Returns a list of subscribers for the given customer.
+      operationId: getWebhookSubscribers
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscriber'
+    post:
+      tags:
+        - Subscribers
+      summary: Create a subscriber
+      description: >-
+        Creates and activates a new subscriber. There is a maximum number of
+        subscribers you can have, so the request may fail.
+      operationId: createWebhookSubscriber
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscriber'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Subscriber'
+  /customer/{customerId}/subscribers/{subscriberId}/invocations:
+    get:
+      tags:
+        - Invocations
+      summary: List all invocations
+      operationId: getInvocationsForSubscriber
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/subscriberId'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvocationResult'
+  /customer/{customerId}/events:
+    get:
+      tags:
+        - Events
+      summary: List all events
+      description: >-
+        Returns a list of events for the given customer. Optionally filtered by
+        event type.
+      operationId: getEvents
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - name: type
+          in: query
+          description: >-
+            See the [events
+            list](https://moreapp.stoplight.io/docs/developer-docs/docs/Webhooks.md#events)
+            for all possible values.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            default: []
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: >-
+            Sorting criteria in the format: property,(asc|desc). Default sort
+            order is ascending. Multiple sort criteria are supported.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /customer/{customerId}/events/{eventId}:
+    get:
+      tags:
+        - Events
+      summary: Retrieve an event
+      description: >-
+        Retrieves the details of an event. Supply the unique identifier of the
+        event, which you might have received in a webhook.
+      operationId: getEvent
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Event'
+components:
+  schemas:
+    Subscriber:
+      title: Subscriber
+      required:
+        - name
+        - status
+        - type
+        - url
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        name:
+          type: string
+        type:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - DISABLED
+        secret:
+          type: string
+      description: >-
+        As a developer/power user you can subscribe to events. This means
+        whenever an user triggers an event, the system will invoke a message to
+        your webhook containing a payload describing the event.
+      example:
+        id: 60b8b724022e103a9a9aa6d3
+        url: https://zapier.com/hooks/...
+        name: Zapier
+        type:
+          - submission.created
+        status: ACTIVE
+    InvocationResult:
+      title: Invocation Result
+      type: object
+      properties:
+        id:
+          type: string
+        subscriberId:
+          type: string
+        eventId:
+          type: string
+        type:
+          type: string
+        customerId:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - SUCCESS
+            - FAILED
+        message:
+          type: string
+        invokedOn:
+          type: string
+        retryOn:
+          type: string
+        attempt:
+          type: integer
+          format: int32
+      description: >-
+        An invocation is an attempt to send an event to a subscriber. If the
+        invocation succeeds, it's marked as successful. Otherwise multiple
+        delayed attempts will be made to ensure the event arrives to the webhook
+        URL of the subscriber.
+      example: |-
+        {
+          "id": "60c8612196655a02363cd8ad",
+          "subscriberId": "60b88b1f96655a023637ed08",
+          "eventId": "60c8612182b172195c1228aa",
+          "type": "submission.created",
+          "customerId": 1,
+          "status": "SUCCESS",
+          "message": "{"status": "ok"}",
+          "invokedOn": "2021-06-15T08:13:21.557Z",
+          "attempt": 0
+        }
+    Event:
+      title: Event
+      type: object
+      properties:
+        id:
+          type: string
+        timestamp:
+          type: string
+        customerId:
+          type: integer
+          format: int64
+        type:
+          type: string
+        idempotencyKey:
+          type: string
+        data:
+          type: object
+          additionalProperties:
+            type: object
+      description: >-
+        When an user performs certain actions, like sending submissions or
+        creating tasks, an event will be created. These events contain relevant
+        information, like the entire submission or task that has been created.
+      example:
+        id: 60b8b36c6f8701a4219e1f97
+        timestamp: '2021-01-04T15:00:20.863+00:00'
+        customerId: 1
+        type: submission.created
+        data:
+          ...: ...
+  parameters:
+    customerId:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: number
+        description: >-
+          Every customer has an unique numerical identifier, you can find it in
+          the top left corner of the [platform](https://platform.moreapp.com/).
+    eventId:
+      name: eventId
+      in: path
+      description: Unique identifier for an event.
+      required: true
+      schema:
+        maxLength: 24
+        minLength: 24
+        type: string
+        format: hexadecimal
+    subscriberId:
+      name: subscriberId
+      in: path
+      description: Unique identifier for a subscriber.
+      required: true
+      schema:
+        maxLength: 24
+        minLength: 24
+        type: string
+        format: hexadecimal
+  securitySchemes:
+    api-key:
+      type: apiKey
+      description: >-
+        Check the [authentication
+        documentation](https://moreapp.stoplight.io/docs/developer-docs/docs/Authentication.md)
+        for more information.
+      name: X-Api-Key
+      in: header
