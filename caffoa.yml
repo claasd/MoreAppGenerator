@@ -6,46 +6,53 @@ config:
     - '*/*'
     - 'application/json-patch+json'
 services:
-  - apiPath: MoreAppBuilder/api/core.yml
+  - apiPath: CdIts.MoreAppBuilder/api/core.yml
     model:
-      targetFolder: MoreAppBuilder/Implementation/Model/Core
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Model/Core
+      namespace: MoreAppBuilder.Implementation.Model.Core
       excludes:
         - JsonErrorDetails
         - RestCustomerMeta
     client:
       name: MoreApp{Tag}Client
-      targetFolder: MoreAppBuilder/Implementation/Client
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Client
+      namespace: MoreAppBuilder.Implementation.Client
       constructorVisibility: private
       fieldVisibility: internal
       includeTags:
         - Datasources
 
-  - apiPath: MoreAppBuilder/api/forms.yml
+  - apiPath: CdIts.MoreAppBuilder/api/forms.yml
     model:
-      targetFolder: MoreAppBuilder/Implementation/Model/Forms
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Model/Forms
+      namespace: MoreAppBuilder.Implementation.Model.Forms
       excludes:
         - JsonPatch
     client:
       name: MoreApp{Tag}Client
-      targetFolder: MoreAppBuilder/Implementation/Client
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Client
+      namespace: MoreAppBuilder.Implementation.Client
       constructorVisibility: private
       fieldVisibility: internal
       includeTags:
         - Forms
         - Form Versions
         - Folders
-  - apiPath: MoreAppBuilder/api/forms_elements.yml
+  - apiPath: CdIts.MoreAppBuilder/api/forms_elements.yml
     model:
-      targetFolder: MoreAppBuilder/Implementation/Model/Forms
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Model/Forms
+      namespace: MoreAppBuilder.Implementation.Model.Forms
       
-  - apiPath: MoreAppBuilder/api/webhooks.yml
+  - apiPath: CdIts.MoreAppBuilder/api/webhooks.yml
     model:
-      targetFolder: MoreAppBuilder/Implementation/Model/Webhooks
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Model/Webhooks
+      namespace: MoreAppBuilder.Implementation.Model.Webhooks
 #      excludes:
 #        - JsonPatch
     client:
       name: MoreApp{Tag}Client
-      targetFolder: MoreAppBuilder/Implementation/Client
+      targetFolder: CdIts.MoreAppBuilder/Implementation/Client
+      namespace: MoreAppBuilder.Implementation.Client
       constructorVisibility: private
       fieldVisibility: internal
       includeTags:
