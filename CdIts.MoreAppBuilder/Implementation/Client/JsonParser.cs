@@ -10,7 +10,7 @@ public class JsonParser : DefaultCaffoaJsonParser
     {
         Converters = new List<JsonConverter>()
         {
-            new UnixMilliesDateTimeConverter()
+            new MoreAppDateTimeConverter()
         }
     })
     {
