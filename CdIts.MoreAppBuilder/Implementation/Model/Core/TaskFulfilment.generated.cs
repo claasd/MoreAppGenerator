@@ -34,7 +34,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = UserId == other.UserId
-                && (Date?.Equals(other.Date) ?? other.Date is null)
+                && Date == other.Date
                 && FormId == other.FormId
                 && RegistrationId == other.RegistrationId;
             if(result) _PartialEquals(other, ref result);

@@ -34,7 +34,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = FormVersion == other.FormVersion
-                && (PublishedDate?.Equals(other.PublishedDate) ?? other.PublishedDate is null)
+                && PublishedDate == other.PublishedDate
                 && PublishedBy == other.PublishedBy
                 && Remarks == other.Remarks;
             if(result) _PartialEquals(other, ref result);

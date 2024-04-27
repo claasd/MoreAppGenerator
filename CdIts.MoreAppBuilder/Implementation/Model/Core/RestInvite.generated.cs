@@ -59,7 +59,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && (Groups?.SequenceEqual(other.Groups) ?? other.Groups is null)
                 && (Settings?.Equals(other.Settings) ?? other.Settings is null)
                 && Status == other.Status
-                && (ExpiresAt?.Equals(other.ExpiresAt) ?? other.ExpiresAt is null);
+                && ExpiresAt == other.ExpiresAt;
             if(result) _PartialEquals(other, ref result);
             return result;
         }

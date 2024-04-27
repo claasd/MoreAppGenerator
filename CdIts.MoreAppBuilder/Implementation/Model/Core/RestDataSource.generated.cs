@@ -82,14 +82,14 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && (UrlConfiguration?.Equals(other.UrlConfiguration) ?? other.UrlConfiguration is null)
                 && (GoogleConfiguration?.Equals(other.GoogleConfiguration) ?? other.GoogleConfiguration is null)
                 && UpdateStatus == other.UpdateStatus
-                && (LastUpdated?.Equals(other.LastUpdated) ?? other.LastUpdated is null)
-                && (LastSuccessfulUpdate?.Equals(other.LastSuccessfulUpdate) ?? other.LastSuccessfulUpdate is null)
+                && LastUpdated == other.LastUpdated
+                && LastSuccessfulUpdate == other.LastSuccessfulUpdate
                 && LastUpdateType == other.LastUpdateType
                 && (LastUpdateWarningMessages?.SequenceEqual(other.LastUpdateWarningMessages) ?? other.LastUpdateWarningMessages is null)
                 && (ColumnMapping?.SequenceEqual(other.ColumnMapping) ?? other.ColumnMapping is null)
                 && Enabled == other.Enabled
                 && FailedExecutionCount == other.FailedExecutionCount
-                && (Version?.Equals(other.Version) ?? other.Version is null);
+                && Version == other.Version;
             if(result) _PartialEquals(other, ref result);
             return result;
         }

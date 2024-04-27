@@ -76,7 +76,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool Equals(RestRegistrationInfo other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (Date?.Equals(other.Date) ?? other.Date is null)
+            var result = Date == other.Date
                 && UserId == other.UserId
                 && PartnerId == other.PartnerId
                 && CustomerId == other.CustomerId

@@ -33,7 +33,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool Equals(RestMailTransition other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (Date?.Equals(other.Date) ?? other.Date is null)
+            var result = Date == other.Date
                 && Status == other.Status
                 && RejectReason == other.RejectReason
                 && BounceDescription == other.BounceDescription;

@@ -1,14 +1,12 @@
-﻿using MoreAppBuilder.Implementation;
+﻿namespace MoreAppBuilder.Implementation;
 
-namespace MoreAppBuilder;
-
-public class MoreAppBuilder
+internal class MoreAppBuilder : IMoreAppBuilder
 {
     private readonly RestClient _client;
 
-    public MoreAppBuilder(int customerId, string secret)
+    internal MoreAppBuilder(RestClient client)
     {
-        _client = new RestClient(customerId, secret);
+        _client = client;
     }
 
     public IFolderBuilder Folder(string id, string name)
@@ -20,12 +18,6 @@ public class MoreAppBuilder
     {
         return new FormBuilder(_client, id, name, folder);
     }
-
-    public async Task<IFormInfo?> ExistingFormById(string id) =>
-        await FormBuilder.ExistingFormById(_client, id);
-
-    public async Task<IFormInfo?> ExistingFormByName(string name) =>
-        await FormBuilder.ExistingFormByName(_client, name);
 
     public IUrlDataSourceBuilder UrlDataSource(string name, string url)
     {

@@ -46,7 +46,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             var result = (Recipients?.SequenceEqual(other.Recipients) ?? other.Recipients is null)
                 && Message == other.Message
                 && (Data?.SequenceEqual(other.Data) ?? other.Data is null)
-                && (InformationDate?.Equals(other.InformationDate) ?? other.InformationDate is null)
+                && InformationDate == other.InformationDate
                 && (PublishDate?.Equals(other.PublishDate) ?? other.PublishDate is null)
                 && (PublishInfo?.Equals(other.PublishInfo) ?? other.PublishInfo is null);
             if(result) _PartialEquals(other, ref result);

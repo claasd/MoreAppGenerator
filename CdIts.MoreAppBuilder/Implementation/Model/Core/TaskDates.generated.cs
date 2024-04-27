@@ -29,9 +29,9 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool Equals(TaskDates other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (CreationDate?.Equals(other.CreationDate) ?? other.CreationDate is null)
-                && (PublishDate?.Equals(other.PublishDate) ?? other.PublishDate is null)
-                && (InformationDate?.Equals(other.InformationDate) ?? other.InformationDate is null);
+            var result = CreationDate == other.CreationDate
+                && PublishDate == other.PublishDate
+                && InformationDate == other.InformationDate;
             if(result) _PartialEquals(other, ref result);
             return result;
         }

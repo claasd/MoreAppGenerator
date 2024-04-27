@@ -39,9 +39,9 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public bool Equals(FormVersionMetadata other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (Created?.Equals(other.Created) ?? other.Created is null)
+            var result = Created == other.Created
                 && CreatedBy == other.CreatedBy
-                && (LastUpdated?.Equals(other.LastUpdated) ?? other.LastUpdated is null)
+                && LastUpdated == other.LastUpdated
                 && LastUpdatedBy == other.LastUpdatedBy
                 && Status == other.Status;
             if(result) _PartialEquals(other, ref result);

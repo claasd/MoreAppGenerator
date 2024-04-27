@@ -21,6 +21,7 @@ services:
       fieldVisibility: internal
       includeTags:
         - Datasources
+        - Submissions
 
   - apiPath: CdIts.MoreAppBuilder/api/forms.yml
     model:
@@ -47,8 +48,6 @@ services:
     model:
       targetFolder: CdIts.MoreAppBuilder/Implementation/Model/Webhooks
       namespace: MoreAppBuilder.Implementation.Model.Webhooks
-#      excludes:
-#        - JsonPatch
     client:
       name: MoreApp{Tag}Client
       targetFolder: CdIts.MoreAppBuilder/Implementation/Client
