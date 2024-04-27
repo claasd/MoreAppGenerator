@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace MoreAppBuilder.Implementation.Client;
+namespace MoreAppBuilder;
 
-public class UnixMilliesDateTimeConverter : Newtonsoft.Json.JsonConverter
+public class MoreAppDateTimeConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
