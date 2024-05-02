@@ -404,7 +404,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static void UpdateWithUserAccountInformation(this UserAccountInformation item, UserAccountInformation other, bool deepClone = true) {
             item.FirstName = other.FirstName;
             item.LastName = other.LastName;
-            item.Language = (UserAccountInformation.LanguageValue)other.Language;
+            item.Language = other.Language == null ? null : (UserAccountInformation.LanguageValue)other.Language;
             item.Country = other.Country;
             item.ReceiveNewsLetter = other.ReceiveNewsLetter;
             item.TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone;
@@ -417,7 +417,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static UserAccountInformation ToUserAccountInformation(this UserAccountInformation other, bool deepClone = true) => new UserAccountInformation() { 
             FirstName = other.FirstName,
             LastName = other.LastName,
-            Language = (UserAccountInformation.LanguageValue)other.Language,
+            Language = other.Language == null ? null : (UserAccountInformation.LanguageValue)other.Language,
             Country = other.Country,
             ReceiveNewsLetter = other.ReceiveNewsLetter,
             TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone
@@ -429,7 +429,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static IQueryable<UserAccountInformation> SelectAsUserAccountInformation(this IQueryable<UserAccountInformation> query) => query.Select(other => new UserAccountInformation() { 
             FirstName = other.FirstName,
             LastName = other.LastName,
-            Language = (UserAccountInformation.LanguageValue)other.Language,
+            Language = other.Language == null ? null : (UserAccountInformation.LanguageValue)other.Language,
             Country = other.Country,
             ReceiveNewsLetter = other.ReceiveNewsLetter,
             TimeZone = other.TimeZone

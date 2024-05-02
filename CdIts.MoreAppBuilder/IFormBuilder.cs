@@ -33,6 +33,7 @@ public interface IFormBuilder : IFormContainer
     IFormBuilder Tag(string tag);
     Task<IFormInfo> BuildAsync();
     IFormBuilder Description(string desc);
+    IFormBuilder AddToGroup(IGroup group);
 }
 
 public interface IFormInfo

@@ -2250,12 +2250,6 @@ components:
             rawOffset:
               type: integer
               format: int32
-      required:
-        - firstName
-        - lastName
-        - language
-        - receiveNewsLetter
-        - timeZone
     RestInviteUser:
       type: object
       properties:

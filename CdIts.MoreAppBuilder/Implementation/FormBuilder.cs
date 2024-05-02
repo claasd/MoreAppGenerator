@@ -4,6 +4,7 @@ using System.Text;
 using Caffoa;
 using Microsoft.AspNetCore.Http;
 using MoreAppBuilder.Implementation.Client;
+using MoreAppBuilder.Implementation.Model.Core;
 using MoreAppBuilder.Implementation.Model.Forms;
 using Newtonsoft.Json;
 
@@ -11,12 +12,14 @@ namespace MoreAppBuilder.Implementation;
 
 internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
 {
+    private static string? FormUserRoleId = null;
     private readonly RestClient _client;
     private readonly string _name;
     private readonly string _label;
     private readonly IFolder? _folder;
     private string? _desc;
     private readonly List<string> _tags = new();
+    private HashSet<string> _groupIds = new();
 
     public FormBuilder(RestClient client, string name, string label, IFolder? folder = null)
     {
@@ -63,7 +66,6 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     public async Task<IFormInfo> BuildAsync()
     {
         var formClient = new MoreAppFormsClient(_client.HttpClient);
-        var versionClient = new MoreAppFormVersionsClient(_client.HttpClient);
         var allForms = await formClient.Find1Async(_client.CustomerId, null);
         var form = allForms.FirstOrDefault(form => form.Meta.Tags.Contains(GeneratorTag));
         if (form is null)
@@ -83,13 +85,52 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         
         var hash = Hash(hashBaseElements.ToArray());
         var currentHash = form.Meta?.Tags?.FirstOrDefault(tag => tag.StartsWith(GeneratorHashPrefix))?.Split(":")[1];
-        if(hash == currentHash)
-            return new FormInfo(form.Id, _name, _label, form.Meta?.Tags);
-        var versions = await versionClient.GetFormVersionsForForm1Async(_client.CustomerId, form.Id, null, 10);
+        if (hash != currentHash)
+        {
+            var newVersion = await UpdateForm(form.Id);
+            form = await formClient.PatchForm1Async(_client.CustomerId, form.Id, FormUpdate(hash, newVersion));
+        }
+
+        await AddFormToGroups(form.Id);
+        return new FormInfo(form.Id, _name, _label, form.Meta?.Tags);
+    }
+
+    private async ValueTask AddFormToGroups(string formId)
+    {
+        if(_groupIds.Count == 0)
+            return;
+        if (FormUserRoleId is null)
+        {
+            var rolesClient = new MoreAppRolesClient(_client.HttpClient);
+            var roles = await rolesClient.GetRolesAsync(_client.CustomerId);
+            FormUserRoleId = roles.First(r => r.TranslatableKey == "ROLE_FORM_USER").Id;
+        }
+        var groupClient = new MoreAppGroupsClient(_client.HttpClient);
+        var groups = await groupClient.GetGroupsAsync(_client.CustomerId);
+        foreach (var groupId in _groupIds)
+        {
+            var existing = groups.FirstOrDefault(g => g.Id == groupId)?.Grants.FirstOrDefault(g=>g.ResourceId == formId && g.RoleId == FormUserRoleId);
+            if(existing != null)
+                continue;
+            await groupClient.PatchGrant2Async(_client.CustomerId, groupId, new RestGrantChange()
+            {
+                Operation = RestGrantChange.OperationValue.ADD,
+                ResourceId = formId,
+                ResourceType = RestGrantChange.ResourceTypeValue.FORM,
+                RoleId = FormUserRoleId
+            });
+        }
+        
+    }
+
+    private async Task<FormVersionDto> UpdateForm(string formId)
+    {
+        var versionClient = new MoreAppFormVersionsClient(_client.HttpClient);
+        var versions = await versionClient.GetFormVersionsForForm1Async(_client.CustomerId, formId, null, 10);
         var version = versions.FirstOrDefault(v=>v.Meta.Status != FormVersionMetadata.StatusValue.FINAL);
         var data = new FormVersionDto()
         {
-            FormId = form.Id,
+            FormId = formId,
             Fields = Elements.Select(e => e.Field).ToList(),
             Rules = Elements.Where(e=>e.Rule != null).Select((e, index)=>e.Rule!.ToRule(e.Field.Uid, $"#{index}")).ToList(),
             Dependencies = ArraySegment<Dependency>.Empty,
@@ -108,16 +149,20 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         };
         
         var formVersion = version is null
-                ? await versionClient.CreateFormVersion1Async(_client.CustomerId, form.Id, data)
-                : await versionClient.UpdateFormVersion1Async(_client.CustomerId, form.Id, version.Id, data);
-        formVersion = await versionClient.FinalizeFormVersion1Async(_client.CustomerId, form.Id, formVersion.Id);
-        await formClient.PatchForm1Async(_client.CustomerId, form.Id, FormUpdate(hash, formVersion));
-        return new FormInfo(form.Id, _name, _label, form.Meta?.Tags);
+            ? await versionClient.CreateFormVersion1Async(_client.CustomerId, formId, data)
+            : await versionClient.UpdateFormVersion1Async(_client.CustomerId, formId, version.Id, data);
+        return await versionClient.FinalizeFormVersion1Async(_client.CustomerId, formId, formVersion.Id);
     }
-
+    
     public IFormBuilder Description(string desc)
     {
         _desc = desc;
+        return this;
+    }
+
+    public IFormBuilder AddToGroup(IGroup group)
+    {
+        _groupIds.Add(group.Id);
         return this;
     }
 

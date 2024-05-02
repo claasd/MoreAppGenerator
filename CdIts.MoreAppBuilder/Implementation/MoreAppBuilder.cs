@@ -14,6 +14,16 @@ internal class MoreAppBuilder : IMoreAppBuilder
         return new FolderBuilder(_client, id, name);
     }
 
+    public IGroupBuilder Group(string name, string? groupIdHint = null)
+    {
+        return new GroupBuilder(_client, name, groupIdHint);
+    }
+
+    public IUserBuilder User(string email)
+    {
+        return new UserBuilder(_client, email);
+    }
+
     public IFormBuilder Form(string id, string name, IFolder? folder = null)
     {
         return new FormBuilder(_client, id, name, folder);

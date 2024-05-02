@@ -12,29 +12,29 @@ namespace MoreAppBuilder.Implementation.Model.Core {
 /// AUTOGENERED BY caffoa ///
     public sealed  partial class UserAccountInformation : IEquatable<UserAccountInformation> {
         public const string UserAccountInformationObjectName = "UserAccountInformation";
-        [JsonProperty("firstName", Required = Required.Always)]
+        [JsonProperty("firstName")]
         public string FirstName { get; set; }
 
-        [JsonProperty("lastName", Required = Required.Always)]
+        [JsonProperty("lastName")]
         public string LastName { get; set; }
 
-        [JsonProperty("language", Required = Required.Always)]
-        public LanguageValue Language { get; set; }
+        [JsonProperty("language")]
+        public LanguageValue? Language { get; set; }
 
         [JsonProperty("country")]
         public string Country { get; set; }
 
-        [JsonProperty("receiveNewsLetter", Required = Required.Always)]
-        public bool ReceiveNewsLetter { get; set; }
+        [JsonProperty("receiveNewsLetter")]
+        public bool? ReceiveNewsLetter { get; set; }
 
-        [JsonProperty("timeZone", Required = Required.Always)]
-        public JToken TimeZone { get; set; }
+        [JsonProperty("timeZone")]
+        public JToken? TimeZone { get; set; }
 
         public UserAccountInformation(){}
         public UserAccountInformation(UserAccountInformation other) {
             FirstName = other.FirstName;
             LastName = other.LastName;
-            Language = (UserAccountInformation.LanguageValue)other.Language;
+            Language = other.Language == null ? null : (UserAccountInformation.LanguageValue)other.Language;
             Country = other.Country;
             ReceiveNewsLetter = other.ReceiveNewsLetter;
             TimeZone = other.TimeZone?.DeepClone();
