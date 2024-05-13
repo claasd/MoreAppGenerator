@@ -7,6 +7,7 @@ internal class LookupElement : InputElement<ILookupElement>, ILookupElement
     private readonly List<LookupOption> _options = [];
     private readonly List<string> _defaults = [];
     private bool _isMultiple;
+
     internal override void Consolidate()
     {
         Field.Properties["is_multiple"] = _isMultiple;
@@ -35,7 +36,7 @@ internal class LookupElement : InputElement<ILookupElement>, ILookupElement
             Name = desc
         });
 
-        if(isDefault)
+        if (isDefault)
             _defaults.Add(id);
         return this;
     }
@@ -52,6 +53,14 @@ internal class LookupElement : InputElement<ILookupElement>, ILookupElement
         {
             AddOption(id, value);
         }
+
+        return this;
+    }
+
+    public ILookupElement AddRange(int first, int last)
+    {
+        for (var i = first; i <= last; i++)
+            AddOption(i.ToString(), i.ToString());
         return this;
     }
 }

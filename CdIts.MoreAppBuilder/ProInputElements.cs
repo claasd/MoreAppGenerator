@@ -10,6 +10,6 @@ public interface ISearchElement : IInputField<ISearchElement>
     ICondition FieldHasNoValue(string field);
 }
 
-public interface IDrawingElement : IInputField<IDrawingElement>
+public interface IDrawingElement : IValueField<IDrawingElement>
 {
 }

@@ -17,6 +17,7 @@ public interface ILookupElement : IRememberableValueField<ILookupElement>
     ILookupElement AddOption(string id, string desc, bool isDefault = false);
     ILookupElement MultiSelection();
     ILookupElement AddOptions(IEnumerable<KeyValuePair<string, string>> options);
+    ILookupElement AddRange(int first, int last);
 }
 
 public interface IRadioElement : IRememberableValueField<IRadioElement>
