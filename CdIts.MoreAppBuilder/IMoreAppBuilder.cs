@@ -3,6 +3,7 @@
 public interface IMoreAppBuilder
 {
     IFolderBuilder Folder(string id, string name);
+    
     IGroupBuilder Group(string name, string? groupIdHint = null);
     IUserBuilder User(string email);
     IFormBuilder Form(string id, string name, IFolder? folder = null);

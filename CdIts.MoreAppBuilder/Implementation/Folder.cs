@@ -16,6 +16,11 @@ internal class Folder : IFolder
         return new FormBuilder(_client, id, name, this);
     }
 
+    public IMultiLangFormBuilder MultiLangForm(MoreAppLanguageInstance data, string id, string? languageId = null)
+    {
+        return new MultiLangFormBuilder(_client, data, id, languageId ?? id, this);
+    }
+
     public string Id { get; }
     public string Uid { get; }
     public string Name { get; }

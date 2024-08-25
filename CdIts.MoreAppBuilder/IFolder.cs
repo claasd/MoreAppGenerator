@@ -13,4 +13,5 @@ public interface IFolder
     string Uid { get; }
     string Name { get; }
     IFormBuilder Form(string id, string name);
+    IMultiLangFormBuilder MultiLangForm(MoreAppLanguageInstance data, string folderId, string? languageId = null);
 }

@@ -1,169 +1,73 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿namespace MoreAppBuilder.Implementation;
 
-namespace MoreAppBuilder.Implementation;
+interface IGenericFormContainer : IFormContainer
+{
+    TElem AddElement<TElem>(TElem element) where TElem : Element;
+}
 
-internal class FormContainer<T> : Element<T>, IFormContainer where T : class
+internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : class
 {
     protected readonly List<Element> Elements = new();
-
-    
 
     protected FormContainer() : base("com.moreapps:detail:1")
     {
     }
 
-    public IHtmlElement AddHtml(string data)
+    public TElem AddElement<TElem>(TElem element) where TElem : Element
     {
-        var element = new HtmlElement(data);
         Elements.Add(element);
         return element;
     }
 
-    public ILabelElement AddLabel(string data)
+    public IHtmlElement AddHtml(string data) => AddElement(new HtmlElement(data));
+    public IHtmlElement AddHtmlSection(string title, string singleLine, HeaderElementSize size = HeaderElementSize.H3) =>
+        AddHtmlSection(title, size, singleLine);
+    public IHtmlElement AddHtmlSection(string title, params string[] lines) => AddHtmlSection(title, HeaderElementSize.H3, lines);
+    public IHtmlElement AddHtmlSection(string title, HeaderElementSize size, params string[] lines)
     {
-        var element = new LabelElement(data);
-        Elements.Add(element);
-        return element;
+        var data = string.Join("\n", lines.Select(line => $"<p>{line}</p>"));
+        return AddHtml($"<hr/><{size} style=\"text-align:center\">{title}</h3>{data}");
     }
 
-    public IHeaderElement AddHeader(string data, HeaderElementSize size = HeaderElementSize.H2)
-    {
-        var element = new HeaderElement(data, size);
-        Elements.Add(element);
-        return element;
-    }
+    public ILabelElement AddLabel(string data) => AddElement(new LabelElement(data));
 
-    public IImageElement AddImage(string resourceId)
-    {
-        var element = new ImageElement(resourceId);
-        Elements.Add(element);
-        return element;
-    }
+    public IHeaderElement AddHeader(string data, HeaderElementSize size = HeaderElementSize.H2) => AddElement(new HeaderElement(data, size));
 
-    public ILookupElement AddLookup(string id, string label)
-    {
-        var element = new LookupElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IImageElement AddImage(string resourceId) => AddElement(new ImageElement(resourceId));
 
-    public IRadioElement AddRadio(string id, string label)
-    {
-        var element = new RadioElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ILookupElement AddLookup(string id, string label) => AddElement(new LookupElement(id, label));
 
-    public ISignatureElement AddSignature(string id, string label)
-    {
-        var element = new SignatureElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IRadioElement AddRadio(string id, string label) => AddElement(new RadioElement(id, label));
 
-    public ISliderElement AddSlider(string id, string label)
-    {
-        var element = new SliderElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ISignatureElement AddSignature(string id, string label) => AddElement(new SignatureElement(id, label));
 
-    public ISearchElement AddSearch(string id, string label, IDataSource dataSoruce)
-    {
-        var element = new SearchElement(id, label, dataSoruce as DataSource);
-        Elements.Add(element);
-        return element;
-    }
+    public ISliderElement AddSlider(string id, string label) => AddElement(new SliderElement(id, label));
 
-    public IPhotoElement AddPhoto(string id, string label)
-    {
-        var element = new PhotoElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ISearchElement AddSearch(string id, string label, IDataSource dataSoruce) => AddElement(new SearchElement(id, label, dataSoruce as DataSource));
 
-    public IBarcodeScannerElement AddBarcodeScanner(string id, string label)
-    {
-        var element = new BarcodeScannerElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IPhotoElement AddPhoto(string id, string label) => AddElement(new PhotoElement(id, label));
 
-    public ICheckboxItem AddCheckbox(string id, string label)
-    {
-        var element = new CheckboxItem(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IBarcodeScannerElement AddBarcodeScanner(string id, string label) => AddElement(new BarcodeScannerElement(id, label));
 
-    public ITextAreaElement AddTextArea(string id, string label)
-    {
-        var element = new TextAreaElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ICheckboxItem AddCheckbox(string id, string label) => AddElement(new CheckboxItem(id, label));
 
-    public ISubFormElement AddSubForm(string id, string label)
-    {
-        var element = new SubFormElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ITextAreaElement AddTextArea(string id, string label) => AddElement(new TextAreaElement(id, label));
 
-    public IDrawingElement AddDrawing(string id, string label)
-    {
-        var element = new DrawingElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ISubFormElement AddSubForm(string id, string label) => AddElement(new SubFormElement(id, label));
 
-    public IDateElement AddDate(string id, string label)
-    {
-        var element = new DateElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IDrawingElement AddDrawing(string id, string label) => AddElement(new DrawingElement(id, label));
 
-    public ITimeElement AddTime(string id, string label)
-    {
-        var element = new TimeElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IDateElement AddDate(string id, string label) => AddElement(new DateElement(id, label));
 
-    public IDateTimeElement AddDateTime(string id, string label)
-    {
-        var element = new DateTimeElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public ITimeElement AddTime(string id, string label) => AddElement(new TimeElement(id, label));
 
-    public IEmailElement AddEmail(string id, string label)
-    {
-        var element = new EmailElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IDateTimeElement AddDateTime(string id, string label) => AddElement(new DateTimeElement(id, label));
 
-    public INumberElement AddNumber(string id, string label)
-    {
-        var element = new NumberElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IEmailElement AddEmail(string id, string label) => AddElement(new EmailElement(id, label));
 
-    public IPhoneElement AddPhone(string id, string label)
-    {
-        var element = new PhoneElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public INumberElement AddNumber(string id, string label) => AddElement(new NumberElement(id, label));
 
-    public ITextElement AddText(string id, string label)
-    {
-        var element = new TextElement(id, label);
-        Elements.Add(element);
-        return element;
-    }
+    public IPhoneElement AddPhone(string id, string label) => AddElement(new PhoneElement(id, label));
+
+    public ITextElement AddText(string id, string label) => AddElement(new TextElement(id, label));
 }

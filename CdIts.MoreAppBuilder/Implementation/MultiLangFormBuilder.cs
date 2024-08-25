@@ -1,32 +1,12 @@
-﻿using MoreAppBuilder.Implementation.Model.Forms;
-using Newtonsoft.Json;
+﻿namespace MoreAppBuilder.Implementation;
 
-namespace MoreAppBuilder.Implementation;
-
-internal class SubFormElement : SubFormContainer<ISubFormElement>, ISubFormElement
-{
-    public SubFormElement(string id, string label) : base(id, label)
-    {
-    }
-}
-
-internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormElement>, IMultiLangSubFormElement
+internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
 {
     private readonly MoreAppMultiLangData _languageData;
 
-    public MultiLangSubFormElement(string id, MoreAppLanguageInstance languageFile, string parentForm) : base(id, languageFile.Get(parentForm, id))
+    internal MultiLangFormBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) : base(client, id, languageData.FormName(langId), folder)
     {
-        _languageData = new MoreAppMultiLangData(this, languageFile, parentForm, id);
-        try
-        {
-            AddButtonText(languageFile.Get(parentForm, id, ".button"));
-        }
-        catch (KeyNotFoundException) { /* okay */}
-        try
-        {
-            ItemDescription(languageFile.Get(parentForm, id, ".desc"));
-        }
-        catch (KeyNotFoundException) { /* okay */}
+        _languageData = new MoreAppMultiLangData(this, languageData, langId);
     }
 
     public IHtmlElement AddHtmlById(string id) => _languageData.AddHtmlById(id);
@@ -51,4 +31,15 @@ internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormEleme
     public ITextAreaElement AddTextArea(string id)  => _languageData.AddTextArea(id);
     public IMultiLangSubFormElement AddSubForm(string id) => _languageData.AddSubForm(id);
     public IDrawingElement AddDrawing(string id) => _languageData.AddDrawing(id);
+    public new IMultiLangFormBuilder Tag(string tag)
+    {
+        base.Tag(tag);
+        return this;
+    }
+
+    public new IMultiLangFormBuilder AddToGroup(IGroup group)
+    {
+        base.AddToGroup(group);
+        return this;
+    }
 }
