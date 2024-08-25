@@ -17,7 +17,9 @@ public class MoreAppLanguageInstance
     internal string GetDesc(string section, string field, bool allowGlobal = true) => File.Get(section, field, Language, "desc", allowGlobal: allowGlobal);
     internal string GetOption(string section, string field, string option, bool allowGlobal = true, string? globalConfigSection = null) => File.Get(section, field, Language, $"option.{option}", allowGlobal, globalConfigSection);
     public string FormName(string name) => GetTitle(name, "__title", false);
+    public string FormDesc(string name) => GetDesc(name, "__title", false);
     public string FolderName(string name) => GetTitle("__folders", name, false);
+    public string FolderDesc(string name) => GetDesc("__folders", name, false);
 
     
 }

@@ -7,6 +7,10 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     internal MultiLangFormBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) : base(client, id, languageData.FormName(langId), folder)
     {
         _languageData = new MoreAppMultiLangData(this, languageData, langId);
+        try
+        {
+            Description(languageData.FormDesc(langId));
+        } catch(KeyNotFoundException) { /*okay */ }
     }
 
     public IHtmlElement AddHtmlById(string id) => _languageData.AddHtmlById(id);

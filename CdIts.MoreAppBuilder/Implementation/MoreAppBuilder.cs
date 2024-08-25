@@ -14,6 +14,12 @@ internal class MoreAppBuilder : IMoreAppBuilder
         return new FolderBuilder(_client, id, name);
     }
 
+    public IMultiLangFolderBuilder Folder(MoreAppLanguageInstance languageData, string id, string? langSectionId = null)
+    {
+        return new MultiLangFolderBuilder(_client, languageData, id, langSectionId ?? id);
+    }
+
+
     public IGroupBuilder Group(string name, string? groupIdHint = null)
     {
         return new GroupBuilder(_client, name, groupIdHint);
