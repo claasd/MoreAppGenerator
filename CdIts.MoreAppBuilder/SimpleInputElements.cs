@@ -20,6 +20,12 @@ public interface ILookupElement : IRememberableValueField<ILookupElement>
     ILookupElement AddRange(int first, int last);
 }
 
+public interface IMultiLangLookupElement : ILookupElement
+{
+    IMultiLangLookupElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null);
+    IMultiLangLookupElement AddRange(int first, int last, string? globalConfigSection = null);
+}
+
 public interface IRadioElement : IRememberableValueField<IRadioElement>
 {
     IRadioElement AddOption(string id, string desc, bool isDefault = false);

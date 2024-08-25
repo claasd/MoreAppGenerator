@@ -19,14 +19,13 @@ public class MoreAppLanguageFile
     public MoreAppLanguageInstance Language(string lang) => new MoreAppLanguageInstance(this, lang);
     
 
-    public string Get(string section, string field, string language, string type, bool allowGlobal)
+    public string Get(string section, string field, string language, string type, bool allowGlobal,string? globalConfigSection = null)
     {
         if (_data.TryGetValue(Key(section, field, language, type), out var value))
             return value;
-        if (allowGlobal && _data.TryGetValue(Key("__global", field, language, type), out value))
+        if (allowGlobal && _data.TryGetValue(Key("__global", globalConfigSection ?? field, language, type), out value))
             return value;
         throw new KeyNotFoundException($"Language file does not contain an entry for form {section}, field {field}, language {language}, type {type}");
-        
     }
     
     public static MoreAppLanguageFile LoadYmlData(string data)
@@ -70,5 +69,10 @@ public class MoreAppLanguageFile
 
         }
         return new MoreAppLanguageFile(contentDict);
+    }
+
+    public MoreAppLanguageFile Merge(MoreAppLanguageFile other)
+    {
+        return new MoreAppLanguageFile(_data.Concat(other._data).DistinctBy(d=>d.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
     }
 }

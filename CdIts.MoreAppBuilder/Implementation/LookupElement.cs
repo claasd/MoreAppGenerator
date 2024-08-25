@@ -64,3 +64,26 @@ internal class LookupElement : InputElement<ILookupElement>, ILookupElement
         return this;
     }
 }
+
+internal class MultiLineLookupElement : LookupElement, IMultiLangLookupElement
+{
+    private readonly FieldLangLookup _lookup;
+
+    public MultiLineLookupElement(string id, string title, FieldLangLookup lookup) : base(id, title)
+    {
+        _lookup = lookup;
+    }
+
+    public IMultiLangLookupElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null)
+    {
+        AddOption(id, _lookup.GetOption(id, globalConfigSection: globalConfigSection), isDefault);
+        return this;
+    }
+
+    public IMultiLangLookupElement AddRange(int first, int last, string? globalConfigSection = null)
+    {
+        for (var i = first; i <= last; i++)
+            AddOption(i.ToString(), globalConfigSection: globalConfigSection);
+        return this;
+    }
+}

@@ -13,7 +13,7 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     public IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3) => _languageData.AddHtmlSectionById(id, size);
     public ILabelElement AddLabelById(string id) => _languageData.AddLabelById(id);
     public IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2) => _languageData.AddHeaderById(id, size);
-    public ILookupElement AddLookup(string id) => _languageData.AddLookup(id);
+    public IMultiLangLookupElement AddLookup(string id) => _languageData.AddLookup(id);
     public IRadioElement AddRadio(string id) => _languageData.AddRadio(id);
     public ISignatureElement AddSignature(string id) => _languageData.AddSignature(id);
     public ISliderElement AddSlider(string id) => _languageData.AddSlider(id);

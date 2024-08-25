@@ -37,7 +37,7 @@ public interface IMultiLangFormContainer
     IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3);
     ILabelElement AddLabelById(string id);
     IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2);
-    ILookupElement AddLookup(string id);
+    IMultiLangLookupElement AddLookup(string id);
     IRadioElement AddRadio(string id);
     ISignatureElement AddSignature(string id);
     ISliderElement AddSlider(string id);
