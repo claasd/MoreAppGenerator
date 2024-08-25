@@ -1,4 +1,6 @@
-﻿namespace MoreAppBuilder;
+﻿using System.Net;
+
+namespace MoreAppBuilder;
 
 public class MoreAppLanguageInstance
 {
@@ -10,8 +12,9 @@ public class MoreAppLanguageInstance
         File = file;
         Language = language;
     }
-    internal string Get(string section, string field, bool allowGlobal = true) => File.Get(section, field, Language, allowGlobal);
-    internal string Get(string section, string field, string suffix, bool allowGlobal = true) => File.Get(section, field, Language+suffix, allowGlobal);
-    public string FormName(string name) => File.Get(name, "__title", Language, false);
-    public string FolderName(string name) => File.Get("__folders", name, Language, false);
+    internal string GetTitle(string section, string field, bool allowGlobal = true) => File.Get(section, field, Language, "title", allowGlobal: allowGlobal);
+    internal string GetButton(string section, string field, bool allowGlobal = true) => File.Get(section, field, Language, "button", allowGlobal: allowGlobal);
+    internal string GetDesc(string section, string field, bool allowGlobal = true) => File.Get(section, field, Language, "desc", allowGlobal: allowGlobal);
+    public string FormName(string name) => GetTitle(name, "__title", false);
+    public string FolderName(string name) => GetTitle("__folders", name, false);
 }

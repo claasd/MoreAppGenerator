@@ -18,8 +18,8 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     }
 
     private string WithPrefix(string name) => _fieldPrefix is null ? name : $"{_fieldPrefix}.{name}";
-    private string Data(string name, bool allowGlobal = true) => _languageFile.Get(_formId, WithPrefix(name), allowGlobal);
-    private string Desc(string name, bool allowGlobal = true) => _languageFile.Get(_formId, WithPrefix(name), ".desc", allowGlobal);
+    private string Data(string name, bool allowGlobal = true) => _languageFile.GetTitle(_formId, WithPrefix(name), allowGlobal);
+    private string Desc(string name, bool allowGlobal = true) => _languageFile.GetDesc(_formId, WithPrefix(name), allowGlobal);
 
     public IHtmlElement AddHtmlById(string id) => _builder.AddHtml(Data(id));
     public IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3)
