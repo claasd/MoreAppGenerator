@@ -19,12 +19,14 @@ public class MoreAppLanguageFile
     public MoreAppLanguageInstance Language(string lang) => new MoreAppLanguageInstance(this, lang);
     
 
-    public string Get(string section, string field, string language, string type, bool allowGlobal,string? globalConfigSection = null)
+    public string Get(string section, string field, string language, string type, bool allowGlobal,string? globalConfigSection = null, string? defaultValue = null)
     {
         if (_data.TryGetValue(Key(section, field, language, type), out var value))
             return value;
         if (allowGlobal && _data.TryGetValue(Key("__global", globalConfigSection ?? field, language, type), out value))
             return value;
+        if(defaultValue != null)
+            return defaultValue;
         throw new KeyNotFoundException($"Language file does not contain an entry for form {section}, field {field}, language {language}, type {type}");
     }
     

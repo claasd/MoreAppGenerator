@@ -2,7 +2,7 @@
 
 namespace MoreAppBuilder.Implementation;
 
-internal class LookupElement : InputElement<ILookupElement>, ILookupElement
+internal class LookupElement<T> : InputElement<T> where T : class
 {
     private readonly List<LookupOption> _options = [];
     private readonly List<string> _defaults = [];
@@ -28,7 +28,7 @@ internal class LookupElement : InputElement<ILookupElement>, ILookupElement
         Field.Properties["expand"] = false;
     }
 
-    public ILookupElement AddOption(string id, string desc, bool isDefault = false)
+    public T AddOption(string id, string desc, bool isDefault = false)
     {
         _options.Add(new LookupOption()
         {
@@ -38,34 +38,39 @@ internal class LookupElement : InputElement<ILookupElement>, ILookupElement
 
         if (isDefault)
             _defaults.Add(id);
-        return this;
+        return this as T;
     }
 
-    public ILookupElement MultiSelection()
+    public T MultiSelection()
     {
         _isMultiple = true;
-        return this;
+        return this as T;
     }
 
-    public ILookupElement AddOptions(IEnumerable<KeyValuePair<string, string>> options)
+    public T AddOptions(IEnumerable<KeyValuePair<string, string>> options)
     {
         foreach (var (id, value) in options)
         {
             AddOption(id, value);
         }
-
-        return this;
+        return this as T;
     }
 
-    public ILookupElement AddRange(int first, int last)
+    public T AddRange(int first, int last)
     {
         for (var i = first; i <= last; i++)
             AddOption(i.ToString(), i.ToString());
-        return this;
+        return this as T;
+    }
+}
+internal class LookupElement : LookupElement<ILookupElement>, ILookupElement
+{
+    public LookupElement(string id, string label) : base(id, label)
+    {
     }
 }
 
-internal class MultiLineLookupElement : LookupElement, IMultiLangLookupElement
+internal class MultiLineLookupElement : LookupElement<IMultiLangLookupElement>, IMultiLangLookupElement
 {
     private readonly FieldLangLookup _lookup;
 
@@ -76,7 +81,7 @@ internal class MultiLineLookupElement : LookupElement, IMultiLangLookupElement
 
     public IMultiLangLookupElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null)
     {
-        AddOption(id, _lookup.GetOption(id, globalConfigSection: globalConfigSection), isDefault);
+        AddOption(id, _lookup.GetOption(id, globalConfigSection: globalConfigSection, defaultValue: id), isDefault);
         return this;
     }
 

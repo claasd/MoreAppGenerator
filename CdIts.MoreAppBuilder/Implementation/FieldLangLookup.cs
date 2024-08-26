@@ -13,5 +13,5 @@ internal class FieldLangLookup
         _field = field;
     }
 
-    internal string GetOption(string optionName, bool allowGlobal = true, string? globalConfigSection = null) => _data.GetOption(_formId, _field, optionName, allowGlobal, globalConfigSection);
+    internal string GetOption(string optionName, bool allowGlobal = true, string? globalConfigSection = null, string? defaultValue = null) => _data.GetOption(_formId, _field, optionName, allowGlobal, globalConfigSection, defaultValue);
 }
