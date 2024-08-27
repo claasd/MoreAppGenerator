@@ -14,17 +14,17 @@ internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormEleme
 {
     private readonly MoreAppMultiLangData _languageData;
 
-    public MultiLangSubFormElement(string id, MoreAppLanguageInstance languageFile, string parentForm) : base(id, languageFile.GetTitle(parentForm, id))
+    public MultiLangSubFormElement(string id, MoreAppLanguageInstance languageFile, string parentForm, string idWithPrefix) : base(id, languageFile.GetTitle(parentForm, idWithPrefix))
     {
-        _languageData = new MoreAppMultiLangData(this, languageFile, parentForm, id);
+        _languageData = new MoreAppMultiLangData(this, languageFile, parentForm, idWithPrefix);
         try
         {
-            AddButtonText(languageFile.GetButton(parentForm, id));
+            AddButtonText(languageFile.GetButton(parentForm, idWithPrefix));
         }
         catch (KeyNotFoundException) { /* okay */}
         try
         {
-            ItemDescription(languageFile.GetDesc(parentForm, id));
+            ItemDescription(languageFile.GetDesc(parentForm, idWithPrefix));
         }
         catch (KeyNotFoundException) { /* okay */}
     }

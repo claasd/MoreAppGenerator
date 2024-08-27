@@ -47,7 +47,7 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public IPhoneElement AddPhone(string id) => _builder.AddPhone(id, Title(id));
     public ITextElement AddText(string id) => _builder.AddText(id, Title(id));
     public ITextAreaElement AddTextArea(string id) => _builder.AddTextArea(id, Title(id));
-    public IMultiLangSubFormElement AddSubForm(string id) => _builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId));
+    public IMultiLangSubFormElement AddSubForm(string id) => _builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id)));
 
     public IDrawingElement AddDrawing(string id) => _builder.AddDrawing(id, Title(id));
     public string FormName() => Title("__title", false);
