@@ -6,36 +6,46 @@ using YamlDotNet.Serialization;
 
 namespace MoreAppBuilder;
 
+public record LanguageKey(string Section, string Field, string Language, string Key);
 
 public class MoreAppLanguageFile
 {
     private readonly IReadOnlyDictionary<string, string> _data;
-
+    private bool _collectMissingKeys = false;
+    public List<LanguageKey> MissingKeys { get; private set; } = []; 
     internal MoreAppLanguageFile(IReadOnlyDictionary<string, string> data)
     {
         _data = data;
     }
 
     public MoreAppLanguageInstance Language(string lang) => new MoreAppLanguageInstance(this, lang);
-    
 
-    public string Get(string section, string field, string language, string type, bool allowGlobal,string? globalConfigSection = null, string? defaultValue = null)
+
+    public string Get(string section, string field, string language, string type, bool allowGlobal, string? globalConfigSection = null,
+        string? defaultValue = null)
     {
         if (_data.TryGetValue(Key(section, field, language, type), out var value))
             return value;
         if (allowGlobal && _data.TryGetValue(Key("__global", globalConfigSection ?? field, language, type), out value))
             return value;
-        if(defaultValue != null)
+        if (defaultValue != null)
             return defaultValue;
-        throw new KeyNotFoundException($"Language file does not contain an entry for form {section}, field {field}, language {language}, type {type}");
+        if (_collectMissingKeys)
+        {
+            MissingKeys.Add(new LanguageKey(section, field, language, type));
+            return "<text missing>";
+        }
+        throw new KeyNotFoundException(
+            $"Language file does not contain an entry for form {section}, field {field}, language {language}, type {type}");
     }
-    
+
     public static MoreAppLanguageFile LoadYmlData(string data)
     {
         var deserializer = new Deserializer();
         var yamlObject = deserializer.Deserialize(data);
         return LoadJsonData(JsonConvert.SerializeObject(yamlObject));
     }
+
     public static string Key(string section, string field, string language, string key) => $"{section}/{field}/{language}/{key}";
 
     public static MoreAppLanguageFile LoadJsonData(string data)
@@ -57,24 +67,40 @@ public class MoreAppLanguageFile
                         };
                     }
                     else
-                        labels = value.ToObject<Dictionary<string, string>>()!;
+                    {
+                        try
+                        {
+                            labels = value.ToObject<Dictionary<string, string>>()!;
+                        }
+                        catch (Exception e)
+                        {
+                            ;
+                            throw;
+                        }
+                    }
+                        
 
                     foreach (var label in labels)
                     {
                         contentDict[Key(section, field, key, label.Key)] = label.Value;
                     }
+
                     {
-                        
                     }
                 }
             }
-
         }
+
         return new MoreAppLanguageFile(contentDict);
     }
 
     public MoreAppLanguageFile Merge(MoreAppLanguageFile other)
     {
-        return new MoreAppLanguageFile(_data.Concat(other._data).DistinctBy(d=>d.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        return new MoreAppLanguageFile(_data.Concat(other._data).DistinctBy(d => d.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+    }
+
+    public void CollectMissingKeys(bool collect = true)
+    {
+        _collectMissingKeys = collect;
     }
 }

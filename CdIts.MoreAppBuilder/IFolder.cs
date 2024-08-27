@@ -6,6 +6,7 @@ public interface IFolderBuilder
     IFolderBuilder Description(string description);
     IFolderBuilder HideInApp();
     Task<IFolder> BuildAsync();
+    public string Name { get; set; }
 }
 
 public interface IMultiLangFolderBuilder : IFolderBuilder

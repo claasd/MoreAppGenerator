@@ -12,6 +12,12 @@ internal class FolderBuilder : IFolderBuilder
     private FolderDto.StatusValue _status = FolderDto.StatusValue.ACTIVE;
     private readonly string _id;
 
+    public string Name
+    {
+        get => _metadata.Name;
+        set => _metadata.Name = value;
+    }
+
     internal FolderBuilder(RestClient client, string id, string name)
     {
         _id = id;

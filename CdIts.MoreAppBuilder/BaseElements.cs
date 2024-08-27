@@ -3,7 +3,6 @@
 public interface IElement<out T>
 {
     T EnabledWhen(params ICondition[] conditions);
-    T EnabledWhenAny(params ICondition[] conditions);
     T DisableWhen(params ICondition[] conditions);
     T DisableWhenAny(params ICondition[] conditions);
 }
