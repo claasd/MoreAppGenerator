@@ -20,7 +20,8 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     private string? _desc;
     private readonly List<string> _tags = new();
     private HashSet<string> _groupIds = new();
-
+    private string _icon = "ios-paper-outline";
+    
     public FormBuilder(RestClient client, string name, string label, IFolder? folder = null)
     {
         _client = client;
@@ -46,7 +47,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             {
                 Name = _label,
                 Tags = new[] { GeneratorTag, $"{GeneratorHashPrefix}{hash}" }.Concat(_tags).ToArray(),
-                Icon = "ios-paper-outline",
+                Icon = _icon,
                 IconColor = FormMetadataDto.IconColorValue.Default,
                 Description = _desc
             }
@@ -60,6 +61,12 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     public IFormBuilder Tag(string tag)
     {
         _tags.Add(tag);
+        return this;
+    }
+    
+    public IFormBuilder Icon(string icon)
+    {
+        _icon = icon;
         return this;
     }
 
@@ -82,7 +89,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             hashBaseElements.Add(_desc);
         if(_tags.Any())
             hashBaseElements.Add(string.Join("|",_tags));
-        
+        hashBaseElements.Add(_icon);
         var hash = Hash(hashBaseElements.ToArray());
         var currentHash = form.Meta?.Tags?.FirstOrDefault(tag => tag.StartsWith(GeneratorHashPrefix))?.Split(":")[1];
         if (hash != currentHash)

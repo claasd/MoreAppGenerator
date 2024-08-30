@@ -40,6 +40,12 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         base.Tag(tag);
         return this;
     }
+    
+    public new IMultiLangFormBuilder Icon(string icon)
+    {
+        base.Icon(icon);
+        return this;
+    }
 
     public new IMultiLangFormBuilder AddToGroup(IGroup group)
     {

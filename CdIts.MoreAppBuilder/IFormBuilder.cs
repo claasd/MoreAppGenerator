@@ -60,6 +60,7 @@ public interface IMultiLangFormContainer
 public interface IFormBuilder : IFormContainer
 {
     IFormBuilder Tag(string tag);
+    IFormBuilder Icon(string icon);
     Task<IFormInfo> BuildAsync();
     IFormBuilder Description(string desc);
     IFormBuilder AddToGroup(IGroup group);
@@ -68,6 +69,7 @@ public interface IFormBuilder : IFormContainer
 public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
 {
     IMultiLangFormBuilder Tag(string tag);
+    IMultiLangFormBuilder Icon(string icon);
     Task<IFormInfo> BuildAsync();
     IMultiLangFormBuilder AddToGroup(IGroup group);
 }
