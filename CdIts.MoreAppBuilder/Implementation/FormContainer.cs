@@ -1,4 +1,6 @@
-﻿namespace MoreAppBuilder.Implementation;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
+
+namespace MoreAppBuilder.Implementation;
 
 interface IGenericFormContainer : IFormContainer
 {
@@ -56,6 +58,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     public ISubFormElement AddSubForm(string id, string label) => AddElement(new SubFormElement(id, label));
 
     public IDrawingElement AddDrawing(string id, string label) => AddElement(new DrawingElement(id, label));
+    public ILocation AddLocation(string id, string label) => AddElement(new LocationElement(id, label));
 
     public IDateElement AddDate(string id, string label) => AddElement(new DateElement(id, label));
 

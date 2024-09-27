@@ -13,3 +13,8 @@ public interface ISearchElement : IInputField<ISearchElement>
 public interface IDrawingElement : IValueField<IDrawingElement>
 {
 }
+
+public interface ILocation : IValueField<ILocation>, IRememberable<ILocation>
+{
+    ILocation InitialCurrentLocation();
+}

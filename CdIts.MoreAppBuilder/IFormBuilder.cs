@@ -29,6 +29,7 @@ public interface IFormContainer
     ITextAreaElement AddTextArea(string id, string label);
     ISubFormElement AddSubForm(string id, string label);
     IDrawingElement AddDrawing(string id, string label);
+    ILocation AddLocation(string id, string label);
 }
 
 public interface IMultiLangFormContainer
@@ -55,6 +56,7 @@ public interface IMultiLangFormContainer
     ITextAreaElement AddTextArea(string id);
     IMultiLangSubFormElement AddSubForm(string id);
     IDrawingElement AddDrawing(string id);
+    ILocation AddLocation(string id);
 }
 
 public interface IFormBuilder : IFormContainer

@@ -50,6 +50,8 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public IMultiLangSubFormElement AddSubForm(string id) => _builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id)));
 
     public IDrawingElement AddDrawing(string id) => _builder.AddDrawing(id, Title(id));
+    public ILocation AddLocation(string id) => _builder.AddLocation(id, Title(id));
+
     public string FormName() => Title("__title", false);
     
 }

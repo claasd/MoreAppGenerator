@@ -51,4 +51,5 @@ internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormEleme
     public ITextAreaElement AddTextArea(string id)  => _languageData.AddTextArea(id);
     public IMultiLangSubFormElement AddSubForm(string id) => _languageData.AddSubForm(id);
     public IDrawingElement AddDrawing(string id) => _languageData.AddDrawing(id);
+    public ILocation AddLocation(string id) => _languageData.AddLocation(id);
 }
