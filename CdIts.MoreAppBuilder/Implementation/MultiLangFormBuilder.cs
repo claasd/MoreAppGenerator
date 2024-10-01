@@ -36,6 +36,7 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     public IMultiLangSubFormElement AddSubForm(string id) => _languageData.AddSubForm(id);
     public IDrawingElement AddDrawing(string id) => _languageData.AddDrawing(id);
     public ILocation AddLocation(string id) => _languageData.AddLocation(id);
+    public IReadOnlyText AddReadOnlyText(string id) => _languageData.AddReadOnlyText(id);
 
     public new IMultiLangFormBuilder Tag(string tag)
     {

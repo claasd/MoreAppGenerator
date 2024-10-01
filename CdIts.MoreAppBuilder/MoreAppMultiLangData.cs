@@ -51,6 +51,7 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
 
     public IDrawingElement AddDrawing(string id) => _builder.AddDrawing(id, Title(id));
     public ILocation AddLocation(string id) => _builder.AddLocation(id, Title(id));
+    public IReadOnlyText AddReadOnlyText(string id) => _builder.AddReadOnlyText(id, Title(id));
 
     public string FormName() => Title("__title", false);
     

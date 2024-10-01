@@ -5,7 +5,7 @@ using Action = System.Action;
 
 namespace MoreAppBuilder.Implementation;
 
-internal class VisibilityRule
+internal class VisibilityRule : RuleBase
 {
     public ICondition[] Conditions { get;  }
     public bool IsVisible { get; }
@@ -18,7 +18,7 @@ internal class VisibilityRule
         IsAny = isAny;
     }
 
-    internal Rule ToRule(string fieldUid, string fieldName)
+    internal override Rule ToRule(string fieldUid, string fieldName)
     {
         return new Rule()
         {
@@ -35,24 +35,5 @@ internal class VisibilityRule
                 }
             }
         };
-    }
-
-    private Condition ToCondition(ICondition arg)
-    {
-        var info = arg as ConditionInfo;
-        return new Condition()
-        {
-            FieldUid = info.FieldUid,
-            Key = info.Key,
-            Type = info.Type,
-            Value = info.Value,
-            FieldObjectKey = info.FieldObjectKey
-        };
-    }
-
-    public string HashValue()
-    {
-        var hash = JsonConvert.SerializeObject(this);
-        return hash;
     }
 }

@@ -30,6 +30,7 @@ public interface IFormContainer
     ISubFormElement AddSubForm(string id, string label);
     IDrawingElement AddDrawing(string id, string label);
     ILocation AddLocation(string id, string label);
+    IReadOnlyText AddReadOnlyText(string id, string label);
 }
 
 public interface IMultiLangFormContainer
@@ -57,6 +58,7 @@ public interface IMultiLangFormContainer
     IMultiLangSubFormElement AddSubForm(string id);
     IDrawingElement AddDrawing(string id);
     ILocation AddLocation(string id);
+    IReadOnlyText AddReadOnlyText(string id);
 }
 
 public interface IFormBuilder : IFormContainer

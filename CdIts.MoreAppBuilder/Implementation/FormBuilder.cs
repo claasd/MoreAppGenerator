@@ -139,7 +139,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         {
             FormId = formId,
             Fields = Elements.Select(e => e.Field).ToList(),
-            Rules = Elements.Where(e=>e.Rule != null).Select((e, index)=>e.Rule!.ToRule(e.Field.Uid, $"#{index}")).ToList(),
+            Rules = Elements.SelectMany(e => e.Rules.Select(rule=>(rule,e.Field.Uid))).Select((item, index) => item.rule.ToRule(item.Uid, $"#{index}")).ToList(),
             Dependencies = ArraySegment<Dependency>.Empty,
             Integrations = ArraySegment<IntegrationConfiguration>.Empty,
             Triggers = ArraySegment<Trigger>.Empty,

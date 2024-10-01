@@ -62,6 +62,17 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
             FieldObjectKey = field
         };
     }
+    public ICondition FieldHasExactValue(string field, string value)
+    {
+        return new ConditionInfo()
+        {
+            Type = Condition.TypeValue.FIELD_DATA_SOURCE,
+            Key = "is",
+            Value = value,
+            FieldUid = Field.Uid,
+            FieldObjectKey = field
+        };
+    }
     public ICondition FieldHasNoValue(string field)
     {
         return new ConditionInfo()

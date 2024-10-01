@@ -27,7 +27,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     public IHtmlElement AddHtmlSection(string title, params string[] lines) => AddHtmlSection(title, HeaderElementSize.H3, lines);
     public IHtmlElement AddHtmlSection(string title, HeaderElementSize size, params string[] lines)
     {
-        var data = string.Join("\n", lines.Select(line => $"<p>{line}</p>"));
+        var data = string.Join("\n", lines.Select(line => $"<p style=\"margin: 0\">{line}</p>"));
         return AddHtml($"<hr/><{size} style=\"text-align:center\">{title}</h3>{data}");
     }
 
@@ -59,6 +59,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
 
     public IDrawingElement AddDrawing(string id, string label) => AddElement(new DrawingElement(id, label));
     public ILocation AddLocation(string id, string label) => AddElement(new LocationElement(id, label));
+    public IReadOnlyText AddReadOnlyText(string id, string label) => AddElement(new ReadOnlyTextElement(id, label));
 
     public IDateElement AddDate(string id, string label) => AddElement(new DateElement(id, label));
 

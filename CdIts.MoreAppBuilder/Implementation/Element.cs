@@ -14,8 +14,9 @@ internal class Element
     internal virtual void Consolidate()
     {
     }
-
-    internal VisibilityRule? Rule { get; set; } = null;
+    internal virtual List<RuleBase> Rules => Rule is null ? [] : [Rule];
+    protected VisibilityRule? Rule { get; set; } = null;
+    
     internal Field Field { get; }
 
     protected Element(string widgetType)
@@ -27,8 +28,8 @@ internal class Element
             Properties = new Dictionary<string, object>()
         };
     }
-
-    internal virtual string HashValue() => Hash(Field.Widget, JsonConvert.SerializeObject(Field.Properties), Rule?.HashValue());
+    
+    internal virtual string HashValue() => Hash(Field.Widget, JsonConvert.SerializeObject(Field.Properties), JsonConvert.SerializeObject(Rules));
 }
 
 internal class Element<T> : Element, IElement<T> where T : class

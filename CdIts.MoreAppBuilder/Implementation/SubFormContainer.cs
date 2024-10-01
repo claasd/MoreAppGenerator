@@ -56,7 +56,7 @@ internal class SubFormContainer<T> : FormContainer<T>,  ISubformContainer<T>  wh
         {
             Uid = Guid.NewGuid().ToString("N")[..24],
             Fields = Elements.Select(e => e.Field).ToList(),
-            Rules = Elements.Where(e => e.Rule != null).Select((e, index) => e.Rule!.ToRule(e.Field.Uid, $"#{index}")).ToList(),
+            Rules = Elements.SelectMany(e => e.Rules.Select(rule=>(rule,e.Field.Uid))).Select((item, index) => item.rule.ToRule(item.Uid, $"#{index}")).ToList(),
             Settings = new Settings
             {
                 Interaction = Settings.InteractionValue.MANUAL_UPLOAD,
