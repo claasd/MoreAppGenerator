@@ -21,7 +21,8 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     private readonly List<string> _tags = new();
     private HashSet<string> _groupIds = new();
     private string _icon = "ios-paper-outline";
-    
+    private string? _inAppDesc = null;
+
     public FormBuilder(RestClient client, string name, string label, IFolder? folder = null)
     {
         _client = client;
@@ -70,6 +71,12 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         return this;
     }
 
+    public IFormBuilder InAppDescription(string inAppDesc)
+    {
+        _inAppDesc = inAppDesc;
+        return this;
+    }
+
     public async Task<IFormInfo> BuildAsync()
     {
         var formClient = new MoreAppFormsClient(_client.HttpClient);
@@ -90,6 +97,8 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         if(_tags.Any())
             hashBaseElements.Add(string.Join("|",_tags));
         hashBaseElements.Add(_icon);
+        if(_inAppDesc != null)
+            hashBaseElements.Add(_inAppDesc);
         var hash = Hash(hashBaseElements.ToArray());
         var currentHash = form.Meta?.Tags?.FirstOrDefault(tag => tag.StartsWith(GeneratorHashPrefix))?.Split(":")[1];
         if (hash != currentHash)
@@ -147,6 +156,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             {
                 Interaction = Settings.InteractionValue.IMMEDIATE_UPLOAD,
                 SaveMode = Settings.SaveModeValue.SAVE_AND_CLOSE_ONLY,
+                ItemHtml = _inAppDesc,
                 SearchSettings = new SearchSettings()
                 {
                     Enabled = false,
