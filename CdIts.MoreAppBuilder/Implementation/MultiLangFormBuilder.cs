@@ -50,6 +50,12 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         return this;
     }
 
+    public IMultiLangFormBuilder InAppDescription(string inAppDesc)
+    {
+        base.InAppDescription(inAppDesc);
+        return this;
+    }
+
     public new IMultiLangFormBuilder AddToGroup(IGroup group)
     {
         base.AddToGroup(group);

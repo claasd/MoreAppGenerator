@@ -72,9 +72,15 @@ public interface IFormBuilder : IFormContainer
     
 }
 
-public interface IMultiLangFormBuilder : IFormBuilder, IMultiLangFormContainer
+public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
 {
+    IMultiLangFormBuilder Tag(string tag);
+    IMultiLangFormBuilder Icon(string icon);
+    IMultiLangFormBuilder InAppDescription(string inAppDesc);
+    Task<IFormInfo> BuildAsync();
+    IMultiLangFormBuilder AddToGroup(IGroup group);
 }
+
 
 
 public interface IFormInfo
