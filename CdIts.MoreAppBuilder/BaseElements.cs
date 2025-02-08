@@ -29,13 +29,12 @@ public interface IValueField<out T> : IInputField<T>
     ICondition HasNoValue();    
 }
 
-
-public interface IRememberableValueField<out T> : IValueField<T>, IRememberable<T>
+public interface IStringValueField<out T> : IValueField<T>, IRememberable<T>
 {
     ICondition ValueIs(string value);
 }
 
-public interface IValueFieldWithPlaceholder<out T> : IRememberableValueField<T>
+public interface IValueFieldWithPlaceholder<out T> : IStringValueField<T>
 {
     T SetPlaceholder(string placeholder);
 }

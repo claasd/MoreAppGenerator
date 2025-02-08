@@ -1,18 +1,18 @@
 ﻿namespace MoreAppBuilder;
 
-public interface IBarcodeScannerElement : IRememberableValueField<IBarcodeScannerElement>;
+public interface IBarcodeScannerElement : IStringValueField<IBarcodeScannerElement>;
 public interface IEmailElement : IValueFieldWithPlaceholder<IEmailElement>, IWithDefault<IEmailElement>;
 public interface IPhoneElement : IValueFieldWithPlaceholder<IPhoneElement>, IWithDefault<IPhoneElement>;
-public interface IDateElement : IRememberableValueField<IDateElement>, IWithNowAsDefault<IDateElement>;
-public interface ITimeElement : IRememberableValueField<ITimeElement>, IWithNowAsDefault<ITimeElement>;
-public interface IDateTimeElement : IRememberableValueField<IDateTimeElement>, IWithNowAsDefault<IDateTimeElement>;
+public interface IDateElement : IStringValueField<IDateElement>, IWithNowAsDefault<IDateElement>;
+public interface ITimeElement : IStringValueField<ITimeElement>, IWithNowAsDefault<ITimeElement>;
+public interface IDateTimeElement : IStringValueField<IDateTimeElement>, IWithNowAsDefault<IDateTimeElement>;
 
 public interface INumberElement : IValueFieldWithPlaceholder<INumberElement>
 {
     INumberElement Minimum(int min);
     INumberElement Maximum(int max);
 }
-public interface ILookupElement : IRememberableValueField<ILookupElement>
+public interface ILookupElement : IStringValueField<ILookupElement>
 {
     ILookupElement AddOption(string id, string desc, bool isDefault = false);
     ILookupElement MultiSelection();
@@ -20,7 +20,7 @@ public interface ILookupElement : IRememberableValueField<ILookupElement>
     ILookupElement AddRange(int first, int last);
 }
 
-public interface IMultiLangLookupElement : IRememberableValueField<IMultiLangLookupElement>
+public interface IMultiLangLookupElement : IStringValueField<IMultiLangLookupElement>
 {
     IMultiLangLookupElement AddOption(string id, string desc, bool isDefault = false);
     IMultiLangLookupElement AddOptions(IEnumerable<KeyValuePair<string, string>> options);
@@ -29,7 +29,7 @@ public interface IMultiLangLookupElement : IRememberableValueField<IMultiLangLoo
     IMultiLangLookupElement AddRange(int first, int last, string? globalConfigSection = null);
 }
 
-public interface IRadioElement : IRememberableValueField<IRadioElement>
+public interface IRadioElement : IStringValueField<IRadioElement>
 {
     IRadioElement AddOption(string id, string desc, bool isDefault = false);
     IRadioElement VerticalAlignment();
@@ -63,7 +63,7 @@ public interface ITextAreaElement : IValueFieldWithPlaceholder<ITextAreaElement>
     ITextAreaElement MaxLength(int minLength);
 }
 
-public interface ISliderElement : IRememberableValueField<ISliderElement>
+public interface ISliderElement : IStringValueField<ISliderElement>
 {
     ISliderElement MinValue(int minValue);
     ISliderElement DefaultValue(int value);

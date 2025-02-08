@@ -4,6 +4,8 @@ public interface ISearchElement : IInputField<ISearchElement>
 {
     ISearchElement VisibleFields(params string[] fields);
     ISearchElement FilterUserName();
+    ISearchElement Filter<T>(IStringValueField<T> element);
+    ISearchElement Filter(ISearchElement element, string field);
     ISearchElement AllowBarcodeScanner();
     ISearchElement RememberLastSearch();
     ICondition FieldHasValue(string field);
@@ -11,7 +13,7 @@ public interface ISearchElement : IInputField<ISearchElement>
     ICondition FieldHasExactValue(string field, string value);
 }
 
-public interface IDrawingElement : IValueField<IDrawingElement>
+public interface IDrawingElement : IInputElement<IDrawingElement>
 {
 }
 
