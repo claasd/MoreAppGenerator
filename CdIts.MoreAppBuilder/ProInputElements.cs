@@ -13,7 +13,7 @@ public interface ISearchElement : IInputField<ISearchElement>
     ICondition FieldHasExactValue(string field, string value);
 }
 
-public interface IDrawingElement : IInputElement<IDrawingElement>
+public interface IDrawingElement : IValueField<IDrawingElement>
 {
 }
 
