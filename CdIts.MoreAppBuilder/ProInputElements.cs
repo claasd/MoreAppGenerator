@@ -22,9 +22,7 @@ public interface ILocation : IValueField<ILocation>, IRememberable<ILocation>
     ILocation InitialCurrentLocation();
 }
 
-public interface IReadOnlyText : IInputElement<IReadOnlyText>
+public interface IReadOnlyText : IInputElement<IReadOnlyText>, IStringValueOperations<IReadOnlyText>
 {
     IReadOnlyText ShowHeader();
-    IReadOnlyText SetValueWhen(string value, params ICondition[] conditions);
-    IReadOnlyText SetValueWhenAny(string value, params ICondition[] conditions);
 }

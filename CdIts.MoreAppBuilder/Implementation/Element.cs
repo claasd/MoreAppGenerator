@@ -37,6 +37,17 @@ internal class Element<T> : Element, IElement<T> where T : class
     protected Element(string widgetType) : base(widgetType)
     {
     }
+    internal override List<RuleBase> Rules => GetAllRules();
+
+    private List<RuleBase> GetAllRules()
+    {
+        var rules = base.Rules;
+        rules.AddRange(SetValueRules.Values);
+        return rules;
+    }
+
+    Dictionary<string, SetValueRule> SetValueRules { get; set; } = new();
+
     public T EnabledWhen(params ICondition[] conditions)
     {
         if(conditions.Any())
@@ -59,6 +70,19 @@ internal class Element<T> : Element, IElement<T> where T : class
     }
 
     public virtual ICondition ValueIs(string value) => ValueIs((JToken)value);
+    public T SetValueWhen(string value, params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            SetValueRules[$"all/{value}"] = new SetValueRule(conditions, value, false);
+        return this as T;
+    }
+
+    public T SetValueWhenAny(string value, params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            SetValueRules[$"any/{value}"] = new SetValueRule(conditions, value, false);
+        return this as T;
+    }
 
     public virtual ICondition ValueIs(JToken value)
     {

@@ -29,9 +29,15 @@ public interface IValueField<out T> : IInputField<T>
     ICondition HasNoValue();    
 }
 
-public interface IStringValueField<out T> : IValueField<T>, IRememberable<T>
+public interface IStringValueField<out T> : IValueField<T>, IStringValueOperations<T>, IRememberable<T>
+{
+}
+
+public interface IStringValueOperations<out T>
 {
     ICondition ValueIs(string value);
+    T SetValueWhen(string value, params ICondition[] conditions);
+    T SetValueWhenAny(string value, params ICondition[] conditions);
 }
 
 public interface IValueFieldWithPlaceholder<out T> : IStringValueField<T>
