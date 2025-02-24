@@ -79,6 +79,7 @@ public interface IFormBuilder : IFormContainer
     IFormBuilder Icon(string icon);
     IFormBuilder InAppDescription(string inAppDesc);
     Task<IFormInfo> BuildAsync();
+    string CreateOpenApiSpec();
     IFormBuilder Description(string desc);
     IFormBuilder AddToGroup(IGroup group);
     
@@ -90,6 +91,7 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     IMultiLangFormBuilder Icon(string icon);
     IMultiLangFormBuilder InAppDescription(string inAppDesc);
     Task<IFormInfo> BuildAsync();
+    string CreateOpenApiSpec();
     IMultiLangFormBuilder AddToGroup(IGroup group);
 }
 

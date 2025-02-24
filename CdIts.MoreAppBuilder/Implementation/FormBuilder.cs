@@ -111,6 +111,13 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         return new FormInfo(form.Id, _name, _label, form.Meta?.Tags);
     }
 
+    public string CreateOpenApiSpec()
+    {
+        var builder = new OpenApiBuilder();
+        builder.Add(Elements, _name);
+        return builder.GenerateSpec();
+    }
+
     private async ValueTask AddFormToGroups(string formId)
     {
         if(_groupIds.Count == 0)

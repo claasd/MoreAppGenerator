@@ -2,15 +2,15 @@
 
 namespace MoreAppBuilder.Implementation;
 
-interface IGenericFormContainer : IFormContainer
+internal interface IGenericFormContainer : IFormContainer
 {
     TElem AddElement<TElem>(TElem element) where TElem : Element;
+    List<Element> Elements { get; }
 }
 
 internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : class
 {
-    protected readonly List<Element> Elements = new();
-
+    public List<Element> Elements { get; protected set; } = new();
     protected FormContainer() : base("com.moreapps:detail:1")
     {
     }
@@ -31,7 +31,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     public IHtmlElement AddHtmlSection(string title, HeaderElementSize size, params string[] lines)
     {
         var data = string.Join("\n", lines.Select(line => $"<p style=\"margin: 0\">{line}</p>"));
-        return AddHtml($"<hr/><{size} style=\"text-align:center\">{title}</h3>{data}");
+        return AddHtml($"<hr/><{size} style=\"text-align:center\">{title}</{size}>{data}");
     }
 
     public ILabelElement AddLabel(string data) => AddElement(new LabelElement(data));
