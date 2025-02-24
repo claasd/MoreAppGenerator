@@ -41,6 +41,9 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     public ITimeCalculation AddTimeCalculation(string id, IDateTimeElement start, IDateTimeElement end) => _languageData.AddTimeCalculation(id, start, end);
     public ITimeCalculation AddTimeCalculation(string id, ITimeElement start, ITimeElement end) => _languageData.AddTimeCalculation(id, start, end);
     public ICatalogueItem AddCatalogue(string id, IDataSource dataSource) => _languageData.AddCatalogue(id, dataSource);
+    public IRatingElement AddRating(string id) => _languageData.AddRating(id);
+
+    public ISmileyElement AddSmiley(string id) => _languageData.AddSmiley(id);
 
     public new IMultiLangFormBuilder Tag(string tag)
     {

@@ -22,9 +22,12 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     }
 
     public IHtmlElement AddHtml(string data) => AddElement(new HtmlElement(data));
+
     public IHtmlElement AddHtmlSection(string title, string singleLine, HeaderElementSize size = HeaderElementSize.H3) =>
         AddHtmlSection(title, size, singleLine);
+
     public IHtmlElement AddHtmlSection(string title, params string[] lines) => AddHtmlSection(title, HeaderElementSize.H3, lines);
+
     public IHtmlElement AddHtmlSection(string title, HeaderElementSize size, params string[] lines)
     {
         var data = string.Join("\n", lines.Select(line => $"<p style=\"margin: 0\">{line}</p>"));
@@ -75,10 +78,12 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     public IPhoneElement AddPhone(string id, string label) => AddElement(new PhoneElement(id, label));
 
     public ITextElement AddText(string id, string label) => AddElement(new TextElement(id, label));
-    
+
     public ITimeCalculation AddTimeCalculation(string id, string label, ITimeElement start, ITimeElement end) => AddElement(new TimeCalculation(id, label, start, end));
     public ICatalogueItem AddCatalogue(string id, string label, IDataSource dataSource) => AddElement(new CatalogueItem(id, label, dataSource as DataSource));
-    
+    public IRatingElement AddRating(string id, string label) => AddElement(new RatingItem(id, label));
+    public ISmileyElement AddSmiley(string id, string label) => AddElement(new SmileyElement(id, label));
+
 
     public ITimeCalculation AddTimeCalculation(string id, string label, IDateTimeElement start, IDateTimeElement end) => AddElement(new TimeCalculation(id, label, start, end));
 }

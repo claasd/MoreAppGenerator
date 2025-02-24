@@ -35,6 +35,8 @@ public interface IFormContainer
     ITimeCalculation AddTimeCalculation(string id, string label, IDateTimeElement start, IDateTimeElement end);
     ITimeCalculation AddTimeCalculation(string id, string label, ITimeElement start, ITimeElement end);
     ICatalogueItem AddCatalogue(string id, string label, IDataSource dataSource);
+    IRatingElement AddRating(string id, string label);
+    ISmileyElement AddSmiley(string id, string label);
 }
 
 public interface IMultiLangFormContainer
@@ -67,6 +69,8 @@ public interface IMultiLangFormContainer
     ITimeCalculation AddTimeCalculation(string id, IDateTimeElement start, IDateTimeElement end);
     ITimeCalculation AddTimeCalculation(string id, ITimeElement start, ITimeElement end);
     ICatalogueItem AddCatalogue(string id, IDataSource dataSource);
+    IRatingElement AddRating(string id);
+    ISmileyElement AddSmiley(string id);
 }
 
 public interface IFormBuilder : IFormContainer

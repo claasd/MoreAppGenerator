@@ -56,6 +56,8 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public ITimeCalculation AddTimeCalculation(string id, IDateTimeElement start, IDateTimeElement end) => _builder.AddTimeCalculation(id, Title(id), start, end);
     public ITimeCalculation AddTimeCalculation(string id, ITimeElement start, ITimeElement end) => _builder.AddTimeCalculation(id, Title(id), start, end);
     public ICatalogueItem AddCatalogue(string id, IDataSource dataSource) => _builder.AddCatalogue(id, Title(id), dataSource);
+    public IRatingElement AddRating(string id) => _builder.AddRating(id, Title(id));
+    public ISmileyElement AddSmiley(string id) => _builder.AddSmiley(id, Title(id));
 
     public string FormName() => Title("__title", false);
     
