@@ -4,7 +4,7 @@ namespace MoreAppBuilder.Implementation;
 
 internal class DateTimeElement : InputElement<IDateTimeElement>, IDateTimeElement
 {
-    public DateTimeElement(string id, string label) : base("com.moreapps:date:1", id, label)
+    public DateTimeElement(string id, string label) : base("com.moreapps:datetime:1", id, label)
     {
         Field.Properties["now_as_default"] = false;
     }
