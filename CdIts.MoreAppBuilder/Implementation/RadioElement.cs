@@ -2,7 +2,7 @@
 
 namespace MoreAppBuilder.Implementation;
 
-internal class RadioElement : InputElement<IRadioElement>, IRadioElement
+internal class RadioElement<T> : InputElement<T>  where T : class
 {
     private List<LookupOption> _options = new();
     internal RadioElement(string id, string label) : base("com.moreapps:radio:1", id, label)
@@ -12,7 +12,7 @@ internal class RadioElement : InputElement<IRadioElement>, IRadioElement
         Field.Properties["radio_options"] = _options;
     }
 
-    public IRadioElement AddOption(string id, string desc, bool isDefault = false)
+    public T AddOption(string id, string desc, bool isDefault = false)
     {
         _options.Add(new LookupOption()
         {
@@ -22,21 +22,43 @@ internal class RadioElement : InputElement<IRadioElement>, IRadioElement
         Field.Properties["radio_options"] = _options;
         if(isDefault)
             Field.Properties["default_value"] = id;
-        return this;
+        return this as T;
     }
 
-    public IRadioElement VerticalAlignment()
+    public T VerticalAlignment()
     {
         Field.Properties["vertical_alignment"] = true;
-        return this;
+        return this as T;
     }
 
-    public IRadioElement AddOptions(IEnumerable<KeyValuePair<string, string>> options)
+    public T AddOptions(IEnumerable<KeyValuePair<string, string>> options)
     {
         foreach (var (id, value) in options)
         {
             AddOption(id, value);
         }
-        return this;
+        return this as T;
+    }
+}
+
+internal class RadioElement : RadioElement<IRadioElement>, IRadioElement
+{
+    public RadioElement(string id, string label) : base(id, label)
+    {
+    }
+}
+
+internal class MultiLangRadioElement : RadioElement<IMultiLangRadioElement>, IMultiLangRadioElement
+{
+    private readonly FieldLangLookup _lookup;
+
+    public MultiLangRadioElement(string id, string title, FieldLangLookup lookup) : base(id, title)
+    {
+        _lookup = lookup;
+    }
+
+    public IMultiLangRadioElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null)
+    {
+        return AddOption(id, _lookup.GetOption(id, globalConfigSection: globalConfigSection, defaultValue: id), isDefault);
     }
 }

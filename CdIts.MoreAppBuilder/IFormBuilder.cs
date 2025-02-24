@@ -15,8 +15,9 @@ public interface IFormContainer
     IRadioElement AddRadio(string id, string label);
     ISignatureElement AddSignature(string id, string label);
     ISliderElement AddSlider(string id, string label);
-    ISearchElement AddSearch(string id, string label, IDataSource dataSoruce);
+    ISearchElement AddSearch(string id, string label, IDataSource dataSource);
     IPhotoElement AddPhoto(string id, string label);
+    IFileElement AddFile(string id, string label);
     IBarcodeScannerElement AddBarcodeScanner(string id, string label);
     ICheckboxItem AddCheckbox(string id, string label);
     IDateElement AddDate(string id, string label);
@@ -31,6 +32,9 @@ public interface IFormContainer
     IDrawingElement AddDrawing(string id, string label);
     ILocation AddLocation(string id, string label);
     IReadOnlyText AddReadOnlyText(string id, string label);
+    ITimeCalculation AddTimeCalculation(string id, string label, IDateTimeElement start, IDateTimeElement end);
+    ITimeCalculation AddTimeCalculation(string id, string label, ITimeElement start, ITimeElement end);
+    ICatalogueItem AddCatalogue(string id, string label, IDataSource dataSource);
 }
 
 public interface IMultiLangFormContainer
@@ -40,11 +44,12 @@ public interface IMultiLangFormContainer
     ILabelElement AddLabelById(string id);
     IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2);
     IMultiLangLookupElement AddLookup(string id);
-    IRadioElement AddRadio(string id);
+    IMultiLangRadioElement AddRadio(string id);
     ISignatureElement AddSignature(string id);
     ISliderElement AddSlider(string id);
     ISearchElement AddSearch(string id, IDataSource dataSource);
     IPhotoElement AddPhoto(string id);
+    IFileElement AddFile(string id);
     IBarcodeScannerElement AddBarcodeScanner(string id);
     ICheckboxItem AddCheckbox(string id);
     IDateElement AddDate(string id);
@@ -59,6 +64,9 @@ public interface IMultiLangFormContainer
     IDrawingElement AddDrawing(string id);
     ILocation AddLocation(string id);
     IReadOnlyText AddReadOnlyText(string id);
+    ITimeCalculation AddTimeCalculation(string id, IDateTimeElement start, IDateTimeElement end);
+    ITimeCalculation AddTimeCalculation(string id, ITimeElement start, ITimeElement end);
+    ICatalogueItem AddCatalogue(string id, IDataSource dataSource);
 }
 
 public interface IFormBuilder : IFormContainer

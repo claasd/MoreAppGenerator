@@ -32,11 +32,12 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public ILabelElement AddLabelById(string id) => _builder.AddLabel(Title(id));
     public IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2) => _builder.AddHeader(Title(id), size);
     public IMultiLangLookupElement AddLookup(string id) => _builder.AddElement(new MultiLineLookupElement(id, Title(id), new FieldLangLookup(_languageFile, _formId, WithPrefix(id))));
-    public IRadioElement AddRadio(string id) => _builder.AddRadio(id, Title(id));
+    public IMultiLangRadioElement AddRadio(string id) => _builder.AddElement(new MultiLangRadioElement(id, Title(id), new FieldLangLookup(_languageFile, _formId, WithPrefix(id))));
     public ISignatureElement AddSignature(string id) => _builder.AddSignature(id, Title(id));
     public ISliderElement AddSlider(string id) => _builder.AddSlider(id, Title(id));
     public ISearchElement AddSearch(string id, IDataSource dataSource) => _builder.AddSearch(id, Title(id), dataSource);
     public IPhotoElement AddPhoto(string id) => _builder.AddPhoto(id, Title(id));
+    public IFileElement AddFile(string id) => _builder.AddFile(id, Title(id));
     public IBarcodeScannerElement AddBarcodeScanner(string id) => _builder.AddBarcodeScanner(id, Title(id));
     public ICheckboxItem AddCheckbox(string id) => _builder.AddCheckbox(id, Title(id));
     public IDateElement AddDate(string id) => _builder.AddDate(id, Title(id));
@@ -52,6 +53,9 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public IDrawingElement AddDrawing(string id) => _builder.AddDrawing(id, Title(id));
     public ILocation AddLocation(string id) => _builder.AddLocation(id, Title(id));
     public IReadOnlyText AddReadOnlyText(string id) => _builder.AddReadOnlyText(id, Title(id));
+    public ITimeCalculation AddTimeCalculation(string id, IDateTimeElement start, IDateTimeElement end) => _builder.AddTimeCalculation(id, Title(id), start, end);
+    public ITimeCalculation AddTimeCalculation(string id, ITimeElement start, ITimeElement end) => _builder.AddTimeCalculation(id, Title(id), start, end);
+    public ICatalogueItem AddCatalogue(string id, IDataSource dataSource) => _builder.AddCatalogue(id, Title(id), dataSource);
 
     public string FormName() => Title("__title", false);
     

@@ -45,9 +45,10 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
 
     public ISliderElement AddSlider(string id, string label) => AddElement(new SliderElement(id, label));
 
-    public ISearchElement AddSearch(string id, string label, IDataSource dataSoruce) => AddElement(new SearchElement(id, label, dataSoruce as DataSource));
+    public ISearchElement AddSearch(string id, string label, IDataSource dataSource) => AddElement(new SearchElement(id, label, dataSource as DataSource));
 
     public IPhotoElement AddPhoto(string id, string label) => AddElement(new PhotoElement(id, label));
+    public IFileElement AddFile(string id, string label) => AddElement(new FileElement(id, label));
 
     public IBarcodeScannerElement AddBarcodeScanner(string id, string label) => AddElement(new BarcodeScannerElement(id, label));
 
@@ -74,4 +75,10 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     public IPhoneElement AddPhone(string id, string label) => AddElement(new PhoneElement(id, label));
 
     public ITextElement AddText(string id, string label) => AddElement(new TextElement(id, label));
+    
+    public ITimeCalculation AddTimeCalculation(string id, string label, ITimeElement start, ITimeElement end) => AddElement(new TimeCalculation(id, label, start, end));
+    public ICatalogueItem AddCatalogue(string id, string label, IDataSource dataSource) => AddElement(new CatalogueItem(id, label, dataSource as DataSource));
+    
+
+    public ITimeCalculation AddTimeCalculation(string id, string label, IDateTimeElement start, IDateTimeElement end) => AddElement(new TimeCalculation(id, label, start, end));
 }

@@ -23,9 +23,9 @@ public interface ILookupElement : IStringValueField<ILookupElement>
 public interface IMultiLangLookupElement : IStringValueField<IMultiLangLookupElement>
 {
     IMultiLangLookupElement AddOption(string id, string desc, bool isDefault = false);
+    IMultiLangLookupElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null);
     IMultiLangLookupElement AddOptions(IEnumerable<KeyValuePair<string, string>> options);
     IMultiLangLookupElement MultiSelection();
-    IMultiLangLookupElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null);
     IMultiLangLookupElement AddRange(int first, int last, string? globalConfigSection = null);
 }
 
@@ -35,6 +35,15 @@ public interface IRadioElement : IStringValueField<IRadioElement>
     IRadioElement VerticalAlignment();
     IRadioElement AddOptions(IEnumerable<KeyValuePair<string, string>> options);
 }
+
+public interface IMultiLangRadioElement : IStringValueField<IMultiLangRadioElement>
+{
+    IMultiLangRadioElement AddOption(string id, string desc, bool isDefault = false);
+    IMultiLangRadioElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null);
+    IMultiLangRadioElement VerticalAlignment();
+    IMultiLangRadioElement AddOptions(IEnumerable<KeyValuePair<string, string>> options);
+}
+
 public interface ICheckboxItem : IInputElement<ICheckboxItem>
 {
     ICheckboxItem CheckedAsDefault();

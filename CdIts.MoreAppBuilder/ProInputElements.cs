@@ -26,3 +26,23 @@ public interface IReadOnlyText : IInputElement<IReadOnlyText>, IStringValueOpera
 {
     IReadOnlyText ShowHeader();
 }
+
+public interface IFileElement : IValueField<IFileElement>
+{
+    IFileElement ForDocuments();
+    IFileElement ForImages();
+    IFileElement ForAudio();
+    IFileElement ForVideo();
+}
+
+public interface ITimeCalculation : IValueField<ITimeCalculation>;
+
+public interface ICatalogueItem : IInputField<ICatalogueItem>
+{
+    ICatalogueItem SetCurrency(string currency);
+    ICatalogueItem SetVatRate(double vatRate);
+    ICatalogueItem ShowPrices();
+    ICatalogueItem ShowVat();
+    ICatalogueItem AllowRemarks();
+    ICatalogueItem UseBarcodeScanner();
+}

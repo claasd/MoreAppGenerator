@@ -207,6 +207,24 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             return null;
         return new FormInfo(form.Id, name, form.Meta.Name, form.Meta.Tags);
     }
+
+    public static async Task<MoreAppReadInfo> ReadAsync(RestClient client, string nameOrId, string versionId, bool useLangFile, string lang)
+    {
+        var formClient = new MoreAppFormsClient(client.HttpClient);
+        var allForms = await formClient.Find1Async(client.CustomerId, null);
+        var form = allForms.FirstOrDefault(form => form.Meta.Tags.Contains($"generatorId:{nameOrId}") || form.Id == nameOrId);
+        if(form is null)
+            throw new InvalidOperationException($"Form {nameOrId} not found");
+        var versionClient = new MoreAppFormVersionsClient(client.HttpClient);
+        var versions = await versionClient.GetFormVersionsForForm1Async(client.CustomerId, form.Id, null, 100);
+        var version = versions.FirstOrDefault(v=>v.Id == versionId);
+        if(version is null && !string.IsNullOrEmpty(versionId))
+            throw new InvalidOperationException($"Version {versionId} not found");
+        version ??= versions.FirstOrDefault(v=>v.Id == form.PublishedVersion.FormVersion);
+        if(version is null)
+            throw new InvalidOperationException($"No active version found");
+        return new ReverseReader(form, version).Read(useLangFile, lang);
+    }
 }
 
 internal class FormInfo : IFormInfo
