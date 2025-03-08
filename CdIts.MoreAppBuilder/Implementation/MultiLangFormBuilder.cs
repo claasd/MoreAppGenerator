@@ -4,7 +4,8 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
 {
     private readonly MoreAppMultiLangData _languageData;
 
-    internal MultiLangFormBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) : base(client, id, languageData.FormName(langId), folder)
+    internal MultiLangFormBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) 
+        : base(client, id, languageData.FormName(langId), folder)
     {
         _languageData = new MoreAppMultiLangData(this, languageData, langId);
         try
@@ -44,6 +45,12 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     public IRatingElement AddRating(string id) => _languageData.AddRating(id);
 
     public ISmileyElement AddSmiley(string id) => _languageData.AddSmiley(id);
+
+    public new IMultiLangFormBuilder Name(string name)
+    {
+        base.Name(name);
+        return this;
+    }
 
     public new IMultiLangFormBuilder Tag(string tag)
     {

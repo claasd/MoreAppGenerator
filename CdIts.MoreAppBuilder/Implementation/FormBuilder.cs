@@ -15,7 +15,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     private static string? FormUserRoleId = null;
     private readonly RestClient _client;
     private readonly string _name;
-    private readonly string _label;
+    private string _label;
     private readonly IFolder? _folder;
     private string? _desc;
     private readonly List<string> _tags = new();
@@ -74,6 +74,12 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     public IFormBuilder InAppDescription(string inAppDesc)
     {
         _inAppDesc = inAppDesc;
+        return this;
+    }
+
+    public IFormBuilder Name(string name)
+    {
+        _label = name;
         return this;
     }
 
