@@ -37,7 +37,7 @@ public interface IFileElement : IValueField<IFileElement>
 
 public interface ITimeCalculation : IValueField<ITimeCalculation>;
 
-public interface ISmileyElement : IInputField<ISmileyElement>;
+public interface ISmileyElement : IInputField<ISmileyElement>, INumericValueField;
 public interface IRatingElement : IInputField<IRatingElement>
 {
     IRatingElement Scale(int scale);

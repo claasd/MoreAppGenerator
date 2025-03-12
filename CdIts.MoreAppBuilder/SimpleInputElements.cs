@@ -7,7 +7,7 @@ public interface IDateElement : IStringValueField<IDateElement>, IWithNowAsDefau
 public interface ITimeElement : IStringValueField<ITimeElement>, IWithNowAsDefault<ITimeElement>;
 public interface IDateTimeElement : IStringValueField<IDateTimeElement>, IWithNowAsDefault<IDateTimeElement>;
 
-public interface INumberElement : IValueFieldWithPlaceholder<INumberElement>
+public interface INumberElement : IValueFieldWithPlaceholder<INumberElement>, INumericValueField
 {
     INumberElement Minimum(int min);
     INumberElement Maximum(int max);
@@ -72,7 +72,7 @@ public interface ITextAreaElement : IValueFieldWithPlaceholder<ITextAreaElement>
     ITextAreaElement MaxLength(int minLength);
 }
 
-public interface ISliderElement : IStringValueField<ISliderElement>
+public interface ISliderElement : INumericValueField, IStringValueField<ISliderElement> 
 {
     ISliderElement MinValue(int minValue);
     ISliderElement DefaultValue(int value);

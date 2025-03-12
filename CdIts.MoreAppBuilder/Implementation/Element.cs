@@ -14,9 +14,10 @@ internal class Element
     internal virtual void Consolidate()
     {
     }
+
     internal virtual List<RuleBase> Rules => Rule is null ? [] : [Rule];
     protected VisibilityRule? Rule { get; set; } = null;
-    
+
     internal Field Field { get; }
 
     protected Element(string widgetType)
@@ -28,7 +29,7 @@ internal class Element
             Properties = new Dictionary<string, object>()
         };
     }
-    
+
     internal virtual string HashValue() => Hash(Field.Widget, JsonConvert.SerializeObject(Field.Properties), JsonConvert.SerializeObject(Rules));
 }
 
@@ -37,6 +38,7 @@ internal class Element<T> : Element, IElement<T> where T : class
     protected Element(string widgetType) : base(widgetType)
     {
     }
+
     internal override List<RuleBase> Rules => GetAllRules();
 
     private List<RuleBase> GetAllRules()
@@ -50,30 +52,22 @@ internal class Element<T> : Element, IElement<T> where T : class
 
     public T EnabledWhen(params ICondition[] conditions)
     {
-        if(conditions.Any())
-           Rule = new VisibilityRule(conditions, true);
+        if (conditions.Any())
+            Rule = new VisibilityRule(conditions, true);
         return this as T;
     }
 
     public T DisableWhen(params ICondition[] conditions)
     {
-        if(conditions.Any())
+        if (conditions.Any())
             Rule = new VisibilityRule(conditions, false, false);
         return this as T;
     }
 
     public T DisableWhenAny(params ICondition[] conditions)
     {
-        if(conditions.Any())
-            Rule = new VisibilityRule(conditions, false, true);
-        return this as T;
-    }
-
-    public virtual ICondition ValueIs(string value) => ValueIs((JToken)value);
-    public T SetValueWhen(string value, params ICondition[] conditions)
-    {
         if (conditions.Any())
-            SetValueRules[$"all/{value}"] = new SetValueRule(conditions, value, false);
+            Rule = new VisibilityRule(conditions, false, true);
         return this as T;
     }
 
@@ -84,7 +78,40 @@ internal class Element<T> : Element, IElement<T> where T : class
         return this as T;
     }
 
-    public virtual ICondition ValueIs(JToken value)
+    public T SetValueWhen(string value, params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            SetValueRules[$"all/{value}"] = new SetValueRule(conditions, value, false);
+        return this as T;
+    }
+
+
+    public ICondition GreaterThan(int value)
+    {
+        return new ConditionInfo()
+        {
+            Type = Condition.TypeValue.FIELD,
+            Key = "greaterThan",
+            Value = value,
+            FieldUid = Field.Uid
+        };
+    }
+
+    public ICondition LessThan(int value)
+    {
+        return new ConditionInfo()
+        {
+            Type = Condition.TypeValue.FIELD,
+            Key = "lessThan",
+            Value = value,
+            FieldUid = Field.Uid
+        };
+    }
+
+    public virtual ICondition ValueIs(string value) => ValueIs((JToken)value);
+    public virtual ICondition ValueIs(int value) => ValueIs((JToken)value);
+
+    public ICondition ValueIs(JToken value)
     {
         return new ConditionInfo()
         {

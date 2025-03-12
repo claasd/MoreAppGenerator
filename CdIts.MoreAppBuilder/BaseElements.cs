@@ -54,4 +54,11 @@ public interface IWithNowAsDefault<out T>
     T SetNowAsDefault();
 }
 
+public interface INumericValueField 
+{
+    ICondition ValueIs(int value);
+    ICondition GreaterThan(int value);
+    ICondition LessThan(int value);
+}
+
 public interface ICondition;
