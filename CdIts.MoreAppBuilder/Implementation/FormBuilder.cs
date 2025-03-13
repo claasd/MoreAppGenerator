@@ -22,6 +22,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     private HashSet<string> _groupIds = new();
     private string _icon = "ios-paper-outline";
     private string? _inAppDesc = null;
+    private int? _folderPosition;
 
     public FormBuilder(RestClient client, string name, string label, IFolder? folder = null)
     {
@@ -94,6 +95,8 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         {
             var folderClient = new MoreAppFoldersClient(_client.HttpClient);
             await folderClient.MoveFormAsync(_client.CustomerId, _folder.Uid, form.Id);
+            if(_folderPosition != null)
+                await folderClient.MovePositionFormAsync(_client.CustomerId, _folder.Uid, form.Id, _folderPosition.Value);
         }
         Elements.ForEach(e=>e.Consolidate());
         var hashBaseElements = Elements.Select(e => e.HashValue()).ToList();
@@ -193,6 +196,12 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     public IFormBuilder AddToGroup(IGroup group)
     {
         _groupIds.Add(group.Id);
+        return this;
+    }
+
+    public IFormBuilder FolderPosition(int position)
+    {
+        _folderPosition = position;
         return this;
     }
 

@@ -83,6 +83,7 @@ public interface IFormBuilder : IFormContainer
     string CreateOpenApiSpec();
     IFormBuilder Description(string desc);
     IFormBuilder AddToGroup(IGroup group);
+    IFormBuilder FolderPosition(int position);
     
 }
 
@@ -95,6 +96,7 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     Task<IFormInfo> BuildAsync();
     string CreateOpenApiSpec();
     IMultiLangFormBuilder AddToGroup(IGroup group);
+    IMultiLangFormBuilder FolderPosition(int position);
 }
 
 

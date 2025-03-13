@@ -75,4 +75,10 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         base.AddToGroup(group);
         return this;
     }
+
+    public new IMultiLangFormBuilder FolderPosition(int position)
+    {
+        base.FolderPosition(position);
+        return this;
+    }
 }
