@@ -22,6 +22,25 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
     }
 
     public IHtmlElement AddHtml(string data) => AddElement(new HtmlElement(data));
+    public IHtmlElement AddCard(CardType type, string title, string[] lines)
+    {
+        var (borderColor, textColor, bgColor) = GetCardColors(type);
+        var data = string.Join("\n", lines.Select(line => $"<p style=\"margin: 0\">{line}</p>"));
+        var style = $"border: 1px solid {borderColor};background-color: {bgColor}; color: {textColor}; padding: 10px; margin: 5px; border-radius: 5px;";
+        return AddHtml($"<div style=\"{style}\"><h3 style=\"text-align:center; margin-top: 2px\">{title}</h3>{data}</div>");
+    }
+    
+    private static (string BorderColor, string TextColor, string BgColor) GetCardColors(CardType type)
+    {
+        return type switch
+        {
+            CardType.Info => ("#17a2b8", "#0c5460", "#d1ecf1"), // Info: Light Blue
+            CardType.Success => ("#28a745", "#155724", "#d4edda"), // Success: Green
+            CardType.Warning => ("#ffc107", "#856404", "#fff3cd"), // Warning: Yellow
+            CardType.Error => ("#dc3545", "#721c24", "#f8d7da"), // Danger: Red
+            _ => ("#6c757d", "black", "white") // Fallback (same as Default)
+        };
+    }
 
     public IHtmlElement AddHtmlSection(string title, string singleLine, HeaderElementSize size = HeaderElementSize.H3) =>
         AddHtmlSection(title, size, singleLine);

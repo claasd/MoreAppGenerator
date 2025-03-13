@@ -12,3 +12,12 @@ public enum HeaderElementSize
     H5,
     H6
 }
+
+public enum CardType
+{
+    Info,
+    Success,
+    Warning,
+    Error,
+    Default
+}

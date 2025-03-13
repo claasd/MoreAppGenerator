@@ -29,6 +29,13 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
         return _builder.AddHtmlSection(title, size, lines);
     }
 
+    public IHtmlElement AddCardById(CardType type, string id)
+    {
+        var title = Title(id);
+        var lines = Desc(id).Split("\n");
+        return _builder.AddCard(type, title, lines);
+    }
+
     public ILabelElement AddLabelById(string id) => _builder.AddLabel(Title(id));
     public IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2) => _builder.AddHeader(Title(id), size);
     public IMultiLangLookupElement AddLookup(string id) => _builder.AddElement(new MultiLineLookupElement(id, Title(id), new FieldLangLookup(_languageFile, _formId, WithPrefix(id))));
