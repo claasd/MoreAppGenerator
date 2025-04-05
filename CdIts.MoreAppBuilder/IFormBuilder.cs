@@ -7,9 +7,9 @@ public interface IFormContainer
     IHtmlElement AddHtml(string data);
     IHtmlElement AddCard(CardType type, string title, string[] lines);
     
-    [Obsolete("use AddCard, AddInfo, etc. instead")] IHtmlElement AddHtmlSection(string title, string singleLine, HeaderElementSize size = HeaderElementSize.H3);
-    [Obsolete("use AddCard, AddInfo, etc. instead")] IHtmlElement AddHtmlSection(string title, HeaderElementSize size, params string[] lines);
-    [Obsolete("use AddCard, AddInfo, etc. instead")] IHtmlElement AddHtmlSection(string title, params string[] lines);
+    IHtmlElement AddHtmlSection(string title, string singleLine, HeaderElementSize size = HeaderElementSize.H3);
+    IHtmlElement AddHtmlSection(string title, HeaderElementSize size, params string[] lines);
+    IHtmlElement AddHtmlSection(string title, params string[] lines);
     IImageElement AddImage(string resourceId);
     ILabelElement AddLabel(string data);
     IHeaderElement AddHeader(string data, HeaderElementSize size = HeaderElementSize.H2);
@@ -44,7 +44,7 @@ public interface IFormContainer
 public interface IMultiLangFormContainer
 {
     IHtmlElement AddHtmlById(string id);
-    [Obsolete("use AddCardById, AddInfoById, etc. instead")] IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3);
+    IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3);
     IHtmlElement AddCardById(CardType type, string id);
     ILabelElement AddLabelById(string id);
     IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2);

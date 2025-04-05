@@ -6,6 +6,7 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 {
     private readonly DataSource _dataSource;
     private readonly List<string> _filterfields = new();
+    private readonly List<object> _colors = new();
 
     protected internal SearchElement(string id, string label, DataSource dataSource) : base("com.moreapps:search:1", id, label)
     {
@@ -13,7 +14,7 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
         Field.Properties["allow_barcode"] = false;
         Field.Properties["remember_search"] = false;
         Field.Properties["default_value"] = "";
-        Field.Properties["colors"] = Array.Empty<string>();
+        Field.Properties["colors"] = _colors;
         Field.Properties["filter_fields"] = _filterfields;
         VisibleFields(dataSource.Columns.ToArray());
     }
@@ -55,6 +56,13 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
     public ISearchElement RememberLastSearch()
     {
         Field.Properties["remember_search"] = true;
+        return this;
+    }
+
+    public ISearchElement AddColorQuery(string query, string color)
+    {
+        _colors.Add(new { query, color });
+        Field.Properties["colors"] = _colors.ToList();
         return this;
     }
 
