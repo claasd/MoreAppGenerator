@@ -82,7 +82,8 @@ public interface IFormBuilder : IFormContainer
     IFormBuilder Icon(string icon);
     IFormBuilder InAppDescription(string inAppDesc);
     IFormBuilder Name(string name);
-    Task<IFormInfo> BuildAsync();
+    Task<IFormInfo> BuildAsync(bool removeDrafts = true);
+    string GetHash();
     string CreateOpenApiSpec();
     IFormBuilder Description(string desc);
     IFormBuilder AddToGroup(IGroup group);
@@ -96,7 +97,8 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     IMultiLangFormBuilder Tag(string tag);
     IMultiLangFormBuilder Icon(string icon);
     IMultiLangFormBuilder InAppDescription(string inAppDesc);
-    Task<IFormInfo> BuildAsync();
+    Task<IFormInfo> BuildAsync(bool removeDrafts = true);
+    string GetHash();
     string CreateOpenApiSpec();
     IMultiLangFormBuilder AddToGroup(IGroup group);
     IMultiLangFormBuilder FolderPosition(int position);

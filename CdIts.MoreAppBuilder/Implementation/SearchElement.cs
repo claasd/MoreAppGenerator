@@ -1,12 +1,22 @@
 ﻿using MoreAppBuilder.Implementation.Model.Forms;
+using Newtonsoft.Json;
 
 namespace MoreAppBuilder.Implementation;
 
 internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 {
     private readonly DataSource _dataSource;
-    private readonly List<string> _filterfields = new();
+    private List<FilterField> _filterfields = new();
     private readonly List<object> _colors = new();
+
+    record FilterField(string Name, string Uid);
+    internal override string HashValue()
+    {
+        var props = new Dictionary<string, object>(Field.Properties);
+        // replace filter fields with names to avoid new hashes every time
+        props["filter_fields"] = _filterfields.Select(f=>f.Name).ToList();
+        return Hash(Field.Widget, JsonConvert.SerializeObject(props), JsonConvert.SerializeObject(Rules));
+    }
 
     protected internal SearchElement(string id, string label, DataSource dataSource) : base("com.moreapps:search:1", id, label)
     {
@@ -15,7 +25,7 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
         Field.Properties["remember_search"] = false;
         Field.Properties["default_value"] = "";
         Field.Properties["colors"] = _colors;
-        Field.Properties["filter_fields"] = _filterfields;
+        Field.Properties["filter_fields"] = new List<string>();
         VisibleFields(dataSource.Columns.ToArray());
     }
 
@@ -35,16 +45,28 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
         return this;
     }
 
-    private ISearchElement AddFilter(string filterName)
+    private ISearchElement AddFilter(Element element, string? subField)
     {
-        _filterfields.Add(filterName);
-        Field.Properties["filter_fields"] = _filterfields.Distinct().ToList();
+        var uid = element.Field.Uid;
+        var name = element.Field.Properties["data_name"].ToString()!;
+        if (subField != null)
+        {
+            uid += "." + subField;
+            name += "." + subField;
+        }
+        return AddFilter(name, uid);
+    }
+    private ISearchElement AddFilter(string name, string uid)
+    {
+        _filterfields.Add(new FilterField(name, uid));
+        _filterfields = _filterfields.DistinctBy(f=>f.Name).OrderBy(f=>f.Name).ToList();
+        Field.Properties["filter_fields"] = _filterfields.Select(f=>f.Uid).ToList();
         return this;
     }
 
-    public ISearchElement FilterUserName() => AddFilter("username");
-    public ISearchElement Filter<T>(IStringValueField<T> element) => AddFilter(((Element)element).Field.Uid);
-    public ISearchElement Filter(ISearchElement element, string field) => AddFilter(((Element)element).Field.Uid + "." + field);
+    public ISearchElement FilterUserName() => AddFilter("username", "username");
+    public ISearchElement Filter<T>(IStringValueField<T> element) => AddFilter((Element)element, null);
+    public ISearchElement Filter(ISearchElement element, string field) => AddFilter((Element)element, field);
 
 
     public ISearchElement AllowBarcodeScanner()
