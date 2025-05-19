@@ -1,8 +1,8 @@
-﻿namespace MoreAppBuilder.Debug;
+﻿namespace MoreAppBuilder.Testing;
 
-public class MoreAppDevBuilder(MoreAppDevFactory? factory = null) : IMoreAppBuilder
+public class LocalTestingMoreAppBuilder(LocalTestingMoreAppFactory? factory = null) : IMoreAppBuilder
 {
-    public MoreAppDevFactory Factory { get; set; } = factory ?? new MoreAppDevFactory();
+    public LocalTestingMoreAppFactory Factory { get; set; } = factory ?? new LocalTestingMoreAppFactory();
 
     public IFolderBuilder Folder(string id, string name) => Factory.Folder(id, name);
 

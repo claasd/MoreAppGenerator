@@ -1,6 +1,6 @@
-﻿namespace MoreAppBuilder.Debug;
+﻿namespace MoreAppBuilder.Testing;
 
-public class DevMoreAppGroup(string name, string? idHint) : IGroupBuilder, IGroup
+public class LocalTestingMoreAppGroup(string name, string? idHint) : IGroupBuilder, IGroup
 {
     public Task<IGroup> BuildAsync() => Task.FromResult<IGroup>(this);
 

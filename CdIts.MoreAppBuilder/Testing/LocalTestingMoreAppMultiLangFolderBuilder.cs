@@ -1,7 +1,7 @@
-namespace MoreAppBuilder.Debug;
+namespace MoreAppBuilder.Testing;
 
-internal class MoreAppDevMultiLangFolderBuilder(MoreAppDevFactory moreAppDevFactory, MoreAppLanguageInstance languageData, string id, string langSectionId)
-    : MoreAppDevFolderBuilder(moreAppDevFactory, id, languageData.FolderName(langSectionId)), IMultiLangFolderBuilder, IMultiLangFolder
+internal class LocalTestingMoreAppMultiLangFolderBuilder(LocalTestingMoreAppFactory factory, MoreAppLanguageInstance languageData, string id, string langSectionId)
+    : MoreAppDevFolderBuilder(factory, id, languageData.FolderName(langSectionId)), IMultiLangFolderBuilder, IMultiLangFolder
 {
     public new IMultiLangFolderBuilder Icon(string icon) => this;
 

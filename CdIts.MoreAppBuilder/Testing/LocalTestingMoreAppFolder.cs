@@ -1,6 +1,6 @@
-﻿namespace MoreAppBuilder.Debug;
+﻿namespace MoreAppBuilder.Testing;
 
-class MoreAppDevFolderBuilder(MoreAppDevFactory factory, string id, string name) : IFolderBuilder, IFolder
+class MoreAppDevFolderBuilder(LocalTestingMoreAppFactory factory, string id, string name) : IFolderBuilder, IFolder
 {
     public string Id { get; } = id;
     public string Uid { get; } = Guid.NewGuid().ToString("N");
@@ -10,7 +10,7 @@ class MoreAppDevFolderBuilder(MoreAppDevFactory factory, string id, string name)
     public IMultiLangFormBuilder MultiLangForm(MoreAppLanguageInstance data, string formId, string? languageId = null) => 
         Factory.MultiLangForm(data, formId, this, languageId);
 
-    public MoreAppDevFactory Factory { get; set; } = factory;
+    public LocalTestingMoreAppFactory Factory { get; set; } = factory;
     public IFolderBuilder Icon(string icon) => this;
     public IFolderBuilder Description(string description) => this;
     public IFolderBuilder HideInApp() => this;

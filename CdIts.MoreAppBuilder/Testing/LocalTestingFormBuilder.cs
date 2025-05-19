@@ -1,9 +1,9 @@
 using MoreAppBuilder.Implementation;
 using Newtonsoft.Json.Linq;
 
-namespace MoreAppBuilder.Debug;
+namespace MoreAppBuilder.Testing;
 
-internal class DevFormBuilder(string id, string label, IFolder? folder) :  FormContainer<IFormBuilder>, IFormBuilder, IFormInfo
+internal class LocalTestingFormBuilder(string id, string label, IFolder? folder) :  FormContainer<IFormBuilder>, IFormBuilder, IFormInfo
 {
     public string Id { get; } = Guid.NewGuid().ToString("N");
     string IFormInfo.Name => id;
@@ -52,7 +52,7 @@ internal class DevFormBuilder(string id, string label, IFolder? folder) :  FormC
                 data[name] = Json(sub1.Elements);
             else if (element is SubFormElement sub2)
                 data[name] = Json(sub2.Elements);
-            else if (element is SearchElement { DataSource: DevDataSource devDataSource })
+            else if (element is SearchElement { DataSource: LocalTestingDataSource devDataSource })
                 data[name] = JObject.FromObject(devDataSource.Data);
             else if (element is PhotoElement or DrawingElement)
                 data[name] = $"gridfs://registrationFiles/{Guid.NewGuid()}";

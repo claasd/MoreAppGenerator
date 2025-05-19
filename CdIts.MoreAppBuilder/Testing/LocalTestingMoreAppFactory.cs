@@ -1,19 +1,18 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MoreAppBuilder.Implementation;
+﻿using MoreAppBuilder.Implementation;
 
-namespace MoreAppBuilder.Debug;
+namespace MoreAppBuilder.Testing;
 
-public class MoreAppDevFactory
+public class LocalTestingMoreAppFactory
 {
     public virtual IFolderBuilder Folder(string id, string name) => new MoreAppDevFolderBuilder(this, id, name);
     public virtual IMultiLangFolderBuilder MultiLangFolder(MoreAppLanguageInstance languageData, string id, string? langSectionId)
     {
-        return new MoreAppDevMultiLangFolderBuilder(this, languageData, id, langSectionId ?? id);
+        return new LocalTestingMoreAppMultiLangFolderBuilder(this, languageData, id, langSectionId ?? id);
     }
 
-    public virtual IGroupBuilder Group(string name, string? groupIdHint) => new DevMoreAppGroup(name, groupIdHint);
+    public virtual IGroupBuilder Group(string name, string? groupIdHint) => new LocalTestingMoreAppGroup(name, groupIdHint);
 
-    public virtual IFormBuilder Form(string id, string name, IFolder? folder) => new DevFormBuilder(id, name, folder);
+    public virtual IFormBuilder Form(string id, string name, IFolder? folder) => new LocalTestingFormBuilder(id, name, folder);
 
     public virtual IUrlDataSourceBuilder UrlDataSource(string name, string url)
     {
@@ -22,7 +21,7 @@ public class MoreAppDevFactory
             ["id"] = "testId",
             ["name"] = "Gandalf"
         };
-        return new DevUrlDataSource(name, url, testData);
+        return new LocalTestingUrlDataSource(name, url, testData);
     }
 
     public IMultiLangFormBuilder MultiLangForm(MoreAppLanguageInstance data, string formId, IFolder folder, string? languageId = null)
