@@ -5,7 +5,7 @@ namespace MoreAppBuilder.Implementation;
 
 internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 {
-    private readonly DataSource _dataSource;
+    internal readonly DataSource DataSource;
     private List<FilterField> _filterfields = new();
     private readonly List<object> _colors = new();
 
@@ -20,7 +20,7 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 
     protected internal SearchElement(string id, string label, DataSource dataSource) : base("com.moreapps:search:1", id, label)
     {
-        _dataSource = dataSource;
+        DataSource = dataSource;
         Field.Properties["allow_barcode"] = false;
         Field.Properties["remember_search"] = false;
         Field.Properties["default_value"] = "";
@@ -33,10 +33,10 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
     {
         var source = new SearchDataSource
         {
-            Id = _dataSource.Id,
+            Id = DataSource.Id,
             Mapping = new(),
         };
-        foreach (var field in _dataSource.Columns)
+        foreach (var field in DataSource.Columns)
         {
             source.Mapping[field] = fields.Contains(field, StringComparer.OrdinalIgnoreCase);
         }

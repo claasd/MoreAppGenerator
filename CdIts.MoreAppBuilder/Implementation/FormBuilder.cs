@@ -84,7 +84,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         return this;
     }
 
-    public async Task<IFormInfo> BuildAsync(bool removeDrafts = true)
+    public virtual async Task<IFormInfo> BuildAsync(bool removeDrafts = true)
     {
         var formClient = new MoreAppFormsClient(_client.HttpClient);
         var allForms = await formClient.Find1Async(_client.CustomerId, null);
