@@ -5,6 +5,7 @@ public interface ISearchElement : IInputField<ISearchElement>
     ISearchElement VisibleFields(params string[] fields);
     ISearchElement FilterUserName();
     ISearchElement Filter<T>(IStringValueField<T> element);
+    ISearchElement Filter<T>(IReadOnlyText element);
     ISearchElement Filter(ISearchElement element, string field);
     ISearchElement AllowBarcodeScanner();
     ISearchElement RememberLastSearch();
