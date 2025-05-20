@@ -66,7 +66,7 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 
     public ISearchElement FilterUserName() => AddFilter("username", "username");
     public ISearchElement Filter<T>(IStringValueField<T> element) => AddFilter((Element)element, null);
-    public ISearchElement Filter<T>(IReadOnlyText element) => AddFilter((Element)element, null);
+    public ISearchElement Filter(IReadOnlyText element) => AddFilter((Element)element, null);
 
     public ISearchElement Filter(ISearchElement element, string field) => AddFilter((Element)element, field);
 
