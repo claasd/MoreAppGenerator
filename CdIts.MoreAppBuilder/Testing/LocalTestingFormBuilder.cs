@@ -21,7 +21,6 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
 
     public async Task<IFormInfo> BuildAsync(bool removeDrafts = true)
     {
-        // TODO
         await Task.Yield(); 
         return this;
     }
@@ -49,9 +48,9 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
                 continue;
             var name = element.Field.Properties["data_name"].ToString()!;
             if (element is MultiLangSubFormElement sub1)
-                data[name] = Json(sub1.Elements);
+                data[name] = new JArray() { Json(sub1.Elements) };
             else if (element is SubFormElement sub2)
-                data[name] = Json(sub2.Elements);
+                data[name] = new JArray() { Json(sub2.Elements) };
             else if (element is SearchElement { DataSource: LocalTestingDataSource devDataSource })
                 data[name] = JObject.FromObject(devDataSource.Data);
             else if (element is PhotoElement or DrawingElement)
