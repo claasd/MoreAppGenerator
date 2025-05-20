@@ -102,6 +102,7 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     string CreateOpenApiSpec();
     IMultiLangFormBuilder AddToGroup(IGroup group);
     IMultiLangFormBuilder FolderPosition(int position);
+    public string Language { get; }
 }
 
 

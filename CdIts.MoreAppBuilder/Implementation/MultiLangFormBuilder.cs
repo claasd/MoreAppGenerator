@@ -7,13 +7,14 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     internal MultiLangFormBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) 
         : base(client, id, languageData.FormName(langId), folder)
     {
+        Language = languageData.Language;
         _languageData = new MoreAppMultiLangData(this, languageData, langId);
         try
         {
             Description(languageData.FormDesc(langId));
         } catch(KeyNotFoundException) { /*okay */ }
     }
-
+    public string Language { get; }
     public IHtmlElement AddHtmlById(string id) => _languageData.AddHtmlById(id);
     public IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3) => _languageData.AddHtmlSectionById(id, size);
     public IHtmlElement AddCardById(CardType type, string id) => _languageData.AddCardById(type, id);
@@ -83,4 +84,6 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         base.FolderPosition(position);
         return this;
     }
+
+    
 }
