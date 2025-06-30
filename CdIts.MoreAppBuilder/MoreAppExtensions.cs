@@ -17,4 +17,14 @@ public static class MoreAppExtensions
     public static IMultiLangRadioElement TrueFalseRadio(this IMultiLangFormContainer form, string id, bool? defaultSelection = null, string trueString = "yes",  string falseString = "no") =>
         form.AddRadio(id).AddOption("true", defaultSelection is true, "radio", trueString)
             .AddOption("false", defaultSelection is false, "radio", falseString);
+    
+    public static ICondition IsTrue(this IRadioElement radio) => radio.ValueIs("true");
+    public static ICondition IsFalse(this IRadioElement radio) => radio.ValueIs("false");
+    public static IRadioElement SetValueWhen(this IRadioElement radio, bool value, params ICondition[] conditions) => radio.SetValueWhen(value ?  "true" : "false", conditions);
+    public static IRadioElement SetValueWhenAny(this IRadioElement radio, bool value, params ICondition[] conditions) => radio.SetValueWhenAny(value ?  "true" : "false", conditions);
+    public static ICondition IsTrue(this IMultiLangRadioElement radio) => radio.ValueIs("true");
+    public static ICondition IsFalse(this IMultiLangRadioElement radio) => radio.ValueIs("false");
+    public static IMultiLangRadioElement SetValueWhen(this IMultiLangRadioElement radio, bool value, params ICondition[] conditions) => radio.SetValueWhen(value ?  "true" : "false", conditions);
+    public static IMultiLangRadioElement SetValueWhenAny(this IMultiLangRadioElement radio, bool value, params ICondition[] conditions) => radio.SetValueWhenAny(value ?  "true" : "false", conditions);
+
 }

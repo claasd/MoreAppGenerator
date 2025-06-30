@@ -56,11 +56,17 @@ internal class Element<T> : Element, IElement<T> where T : class
             Rule = new VisibilityRule(conditions, true);
         return this as T;
     }
+    public T EnabledWhenAny(params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            Rule = new VisibilityRule(conditions, true, isAny: true);
+        return this as T;
+    }
 
     public T DisableWhen(params ICondition[] conditions)
     {
         if (conditions.Any())
-            Rule = new VisibilityRule(conditions, false, false);
+            Rule = new VisibilityRule(conditions, false);
         return this as T;
     }
 
