@@ -56,9 +56,8 @@ internal class MultiLangRadioElement : RadioElement<IMultiLangRadioElement>, IMu
     {
         _lookup = lookup;
     }
-
-    public IMultiLangRadioElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null)
+    public IMultiLangRadioElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null, string? fallbackValue = null)
     {
-        return AddOption(id, _lookup.GetOption(id, globalConfigSection: globalConfigSection, defaultValue: id), isDefault);
+        return AddOption(id, _lookup.GetOption(id, globalConfigSection: globalConfigSection, defaultValue: fallbackValue ?? id), isDefault);
     }
 }

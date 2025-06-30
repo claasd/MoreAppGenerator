@@ -39,7 +39,7 @@ public interface IRadioElement : IStringValueField<IRadioElement>
 public interface IMultiLangRadioElement : IStringValueField<IMultiLangRadioElement>
 {
     IMultiLangRadioElement AddOption(string id, string desc, bool isDefault = false);
-    IMultiLangRadioElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null);
+    IMultiLangRadioElement AddOption(string id, bool isDefault = false, string? globalConfigSection = null, string? fallbackValue = null);
     IMultiLangRadioElement VerticalAlignment();
     IMultiLangRadioElement AddOptions(IEnumerable<KeyValuePair<string, string>> options);
 }

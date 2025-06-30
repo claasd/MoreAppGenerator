@@ -12,4 +12,9 @@ public static class MoreAppExtensions
     public static IHtmlElement AddWarningCardById(this IMultiLangFormContainer form, string id) => form.AddCardById(CardType.Warning, id);
     public static IHtmlElement AddErrorCardById(this IMultiLangFormContainer form, string id) => form.AddCardById(CardType.Error, id);
     public static IHtmlElement AddSuccessCardById(this IMultiLangFormContainer form, string id) => form.AddCardById(CardType.Success, id);
+    public static IRadioElement TrueFalseRadio(this IFormContainer form, string id, string label, string trueString = "yes",  string falseString = "no", bool? defaultSelection = null) =>
+    form.AddRadio(id, label).AddOption("true",  trueString, defaultSelection is true).AddOption("false", falseString, defaultSelection is false);
+    public static IMultiLangRadioElement TrueFalseRadio(this IMultiLangFormContainer form, string id, string label, string trueString = "yes",  string falseString = "no", bool? defaultSelection = null) =>
+        form.AddRadio(id).AddOption("true", defaultSelection is true, "radio", trueString)
+            .AddOption("false", defaultSelection is false, "radio", falseString);
 }
