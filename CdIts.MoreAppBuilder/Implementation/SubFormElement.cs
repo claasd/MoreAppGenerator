@@ -13,10 +13,17 @@ internal class SubFormElement : SubFormContainer<ISubFormElement>, ISubFormEleme
 internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormElement>, IMultiLangSubFormElement
 {
     private readonly MoreAppMultiLangData _languageData;
-
-    public MultiLangSubFormElement(string id, MoreAppLanguageInstance languageFile, string parentForm, string idWithPrefix) : base(id, languageFile.GetTitle(parentForm, idWithPrefix))
+    
+    public MultiLangSubFormElement(string id, MoreAppLanguageInstance languageFile, string parentForm, string idWithPrefix, LangPrefixMode prefixMode) : base(id, languageFile.GetTitle(parentForm, idWithPrefix))
     {
-        _languageData = new MoreAppMultiLangData(this, languageFile, parentForm, idWithPrefix);
+        var subLangPrefix =  prefixMode switch
+        {
+            LangPrefixMode.NoPrefix => null,
+            LangPrefixMode.ParentPrefixOnly => id,
+            LangPrefixMode.FirstPrefixOnly => idWithPrefix.Split('.').First(),
+            _ => idWithPrefix
+        };    
+        _languageData = new MoreAppMultiLangData(this, languageFile, parentForm, subLangPrefix);
         try
         {
             AddButtonText(languageFile.GetButton(parentForm, idWithPrefix));
@@ -51,7 +58,7 @@ internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormEleme
     public IPhoneElement AddPhone(string id) => _languageData.AddPhone(id);
     public ITextElement AddText(string id) => _languageData.AddText(id);
     public ITextAreaElement AddTextArea(string id)  => _languageData.AddTextArea(id);
-    public IMultiLangSubFormElement AddSubForm(string id) => _languageData.AddSubForm(id);
+    public IMultiLangSubFormElement AddSubForm(string id, LangPrefixMode prefixMode) => _languageData.AddSubForm(id, prefixMode);
     public IDrawingElement AddDrawing(string id) => _languageData.AddDrawing(id);
     public ILocation AddLocation(string id) => _languageData.AddLocation(id);
     public IReadOnlyText AddReadOnlyText(string id) => _languageData.AddReadOnlyText(id);

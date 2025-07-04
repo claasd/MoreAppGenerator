@@ -65,7 +65,11 @@ public interface IMultiLangFormContainer
     IPhoneElement AddPhone(string id);
     ITextElement AddText(string id);
     ITextAreaElement AddTextArea(string id);
-    IMultiLangSubFormElement AddSubForm(string id);
+
+    /// <param name="id">The id from the language file</param>
+    /// <param name="prefixMode"></param>
+    /// <returns></returns>
+    IMultiLangSubFormElement AddSubForm(string id, LangPrefixMode prefixMode = LangPrefixMode.FullPrefix);
     IDrawingElement AddDrawing(string id);
     ILocation AddLocation(string id);
     IReadOnlyText AddReadOnlyText(string id);

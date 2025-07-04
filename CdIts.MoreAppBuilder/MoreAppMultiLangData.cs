@@ -9,7 +9,7 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     private readonly string _formId;
     private readonly string? _fieldPrefix;
 
-    internal MoreAppMultiLangData(IGenericFormContainer builder, MoreAppLanguageInstance languageFile, string formId, string? fieldPrefix = null) 
+    internal MoreAppMultiLangData(IGenericFormContainer builder, MoreAppLanguageInstance languageFile, string formId, string? fieldPrefix = null)
     {
         Builder = builder;
         _languageFile = languageFile;
@@ -18,10 +18,12 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     }
 
     private string WithPrefix(string name) => _fieldPrefix is null ? name : $"{_fieldPrefix}.{name}";
+
     private string Title(string name, bool allowGlobal = true) => _languageFile.GetTitle(_formId, WithPrefix(name), allowGlobal);
     private string Desc(string name, bool allowGlobal = true) => _languageFile.GetDesc(_formId, WithPrefix(name), allowGlobal);
 
     public IHtmlElement AddHtmlById(string id) => Builder.AddHtml(Title(id));
+
     public IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3)
     {
         var title = Title(id);
@@ -38,7 +40,10 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
 
     public ILabelElement AddLabelById(string id) => Builder.AddLabel(Title(id));
     public IHeaderElement AddHeaderById(string id, HeaderElementSize size = HeaderElementSize.H2) => Builder.AddHeader(Title(id), size);
-    public IMultiLangLookupElement AddLookup(string id) => Builder.AddElement(new MultiLineLookupElement(id, Title(id), new FieldLangLookup(_languageFile, _formId, WithPrefix(id))));
+
+    public IMultiLangLookupElement AddLookup(string id) =>
+        Builder.AddElement(new MultiLineLookupElement(id, Title(id), new FieldLangLookup(_languageFile, _formId, WithPrefix(id))));
+
     public IMultiLangRadioElement AddRadio(string id) => Builder.AddElement(new MultiLangRadioElement(id, Title(id), new FieldLangLookup(_languageFile, _formId, WithPrefix(id))));
     public ISignatureElement AddSignature(string id) => Builder.AddSignature(id, Title(id));
     public ISliderElement AddSlider(string id) => Builder.AddSlider(id, Title(id));
@@ -55,7 +60,9 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public IPhoneElement AddPhone(string id) => Builder.AddPhone(id, Title(id));
     public ITextElement AddText(string id) => Builder.AddText(id, Title(id));
     public ITextAreaElement AddTextArea(string id) => Builder.AddTextArea(id, Title(id));
-    public IMultiLangSubFormElement AddSubForm(string id) => Builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id)));
+
+    public IMultiLangSubFormElement AddSubForm(string id, LangPrefixMode prefixMode) =>
+        Builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id), prefixMode));
 
     public IDrawingElement AddDrawing(string id) => Builder.AddDrawing(id, Title(id));
     public ILocation AddLocation(string id) => Builder.AddLocation(id, Title(id));
@@ -67,5 +74,4 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public ISmileyElement AddSmiley(string id) => Builder.AddSmiley(id, Title(id));
 
     public string FormName() => Title("__title", false);
-    
 }
