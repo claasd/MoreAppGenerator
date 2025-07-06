@@ -78,6 +78,9 @@ public interface IMultiLangFormContainer
     ICatalogueItem AddCatalogue(string id, IDataSource dataSource);
     IRatingElement AddRating(string id);
     ISmileyElement AddSmiley(string id);
+    string GetTitleForCurrentLanguage(string fieldName);
+    string GetDescForCurrentLanguage(string fieldName);
+    string GetOptionForCurrentLanguage(string option);
 }
 
 public interface IFormBuilder : IFormContainer

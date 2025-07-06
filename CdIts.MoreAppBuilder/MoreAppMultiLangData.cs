@@ -72,6 +72,10 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public ICatalogueItem AddCatalogue(string id, IDataSource dataSource) => Builder.AddCatalogue(id, Title(id), dataSource);
     public IRatingElement AddRating(string id) => Builder.AddRating(id, Title(id));
     public ISmileyElement AddSmiley(string id) => Builder.AddSmiley(id, Title(id));
+    public string GetTitleForCurrentLanguage(string fieldName) => Title(fieldName);
+    public string GetDescForCurrentLanguage(string fieldName) => Desc(fieldName);
+    
+    public string GetOptionForCurrentLanguage(string option) => _languageFile.GetOption(_formId, WithPrefix(option), option);
 
     public string FormName() => Title("__title", false);
 }

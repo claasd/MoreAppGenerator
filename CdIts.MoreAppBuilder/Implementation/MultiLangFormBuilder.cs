@@ -48,7 +48,11 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
     public IRatingElement AddRating(string id) => _languageData.AddRating(id);
 
     public ISmileyElement AddSmiley(string id) => _languageData.AddSmiley(id);
+    public string GetTitleForCurrentLanguage(string fieldName) => _languageData.GetTitleForCurrentLanguage(fieldName);
 
+    public string GetDescForCurrentLanguage(string fieldName) => _languageData.GetDescForCurrentLanguage(fieldName);
+
+    public string GetOptionForCurrentLanguage(string option) => _languageData.GetOptionForCurrentLanguage(option);
     public new IMultiLangFormBuilder Name(string name)
     {
         base.Name(name);
