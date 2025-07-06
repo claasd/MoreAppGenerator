@@ -75,7 +75,7 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public string GetTitleForCurrentLanguage(string fieldName) => Title(fieldName);
     public string GetDescForCurrentLanguage(string fieldName) => Desc(fieldName);
     
-    public string GetOptionForCurrentLanguage(string option) => _languageFile.GetOption(_formId, WithPrefix(option), option);
+    public string GetOptionForCurrentLanguage(string fieldName, string option) => _languageFile.GetOption(_formId, WithPrefix(fieldName), option);
 
     public string FormName() => Title("__title", false);
 }

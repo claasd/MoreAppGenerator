@@ -80,7 +80,7 @@ public interface IMultiLangFormContainer
     ISmileyElement AddSmiley(string id);
     string GetTitleForCurrentLanguage(string fieldName);
     string GetDescForCurrentLanguage(string fieldName);
-    string GetOptionForCurrentLanguage(string option);
+    string GetOptionForCurrentLanguage(string fieldName, string option);
 }
 
 public interface IFormBuilder : IFormContainer

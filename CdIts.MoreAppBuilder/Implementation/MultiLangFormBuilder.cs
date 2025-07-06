@@ -52,7 +52,7 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
 
     public string GetDescForCurrentLanguage(string fieldName) => _languageData.GetDescForCurrentLanguage(fieldName);
 
-    public string GetOptionForCurrentLanguage(string option) => _languageData.GetOptionForCurrentLanguage(option);
+    public string GetOptionForCurrentLanguage(string fieldName, string option) => _languageData.GetOptionForCurrentLanguage(fieldName, option);
     public new IMultiLangFormBuilder Name(string name)
     {
         base.Name(name);

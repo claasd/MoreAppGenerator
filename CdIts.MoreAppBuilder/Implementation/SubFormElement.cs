@@ -90,7 +90,6 @@ internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormEleme
     public IRatingElement AddRating(string id) => _languageData.AddRating(id);
     public ISmileyElement AddSmiley(string id) => _languageData.AddSmiley(id);
     public string GetTitleForCurrentLanguage(string fieldName) => _languageData.GetTitleForCurrentLanguage(fieldName);
-
     public string GetDescForCurrentLanguage(string fieldName) => _languageData.GetDescForCurrentLanguage(fieldName);
-    public string GetOptionForCurrentLanguage(string option) => _languageData.GetOptionForCurrentLanguage(option);
+    public string GetOptionForCurrentLanguage(string fieldName, string option) => _languageData.GetOptionForCurrentLanguage(fieldName, option);
 }
