@@ -37,6 +37,7 @@ public interface IStringValueField<out T> : IValueField<T>, IStringValueOperatio
 public interface IStringValueOperations<out T>
 {
     ICondition ValueIs(string value);
+    ICondition ValueContains(string value);
     T SetValueWhen(string value, params ICondition[] conditions);
     T SetValueWhenAny(string value, params ICondition[] conditions);
 }

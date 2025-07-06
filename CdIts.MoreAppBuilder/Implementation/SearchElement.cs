@@ -113,6 +113,17 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
             FieldObjectKey = field
         };
     }
+    public ICondition FieldContainsValue(string field, string value)
+    {
+        return new ConditionInfo()
+        {
+            Type = Condition.TypeValue.FIELD_DATA_SOURCE,
+            Key = "contains",
+            Value = value,
+            FieldUid = Field.Uid,
+            FieldObjectKey = field
+        };
+    }
 
     public ICondition FieldHasNoValue(string field)
     {

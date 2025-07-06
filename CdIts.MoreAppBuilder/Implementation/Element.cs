@@ -127,6 +127,17 @@ internal class Element<T> : Element, IElement<T> where T : class
             FieldUid = Field.Uid
         };
     }
+    
+    public ICondition ValueContains(string value)
+    {
+        return new ConditionInfo()
+        {
+            Type = Condition.TypeValue.FIELD,
+            Key = "contains",
+            Value = value,
+            FieldUid = Field.Uid
+        };
+    }
 
     public virtual ICondition HasValue()
     {
