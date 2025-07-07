@@ -10,27 +10,23 @@ using Newtonsoft.Json;
 
 namespace MoreAppBuilder.Implementation;
 
-internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
+internal class FormBuilder(
+    RestClient client,
+    IMoreAppCaching caching,
+    string name,
+    string label,
+    IFolder? folder = null)
+    : FormContainer<IFormBuilder>, IFormBuilder
 {
     private static string? _formUserRoleId = null;
-    private readonly RestClient _client;
-    private readonly string _name;
-    private string _label;
-    private readonly IFolder? _folder;
+    private string _label = label;
     private string? _desc;
-    private readonly List<string> _tags = new();
-    private readonly HashSet<string> _groupIds = new();
+    private readonly List<string> _tags = [];
+    private readonly HashSet<string> _groupIds = [];
     private string _icon = "ios-paper-outline";
     private string? _inAppDesc = null;
     private int? _folderPosition;
-
-    public FormBuilder(RestClient client, string name, string label, IFolder? folder = null)
-    {
-        _client = client;
-        _name = name;
-        _label = label;
-        _folder = folder;
-    }
+    private readonly IMoreAppCaching _caching = caching;
 
 
     private FormDto FormUpdate(string hash, FormVersionDto? formVersion = null)
@@ -48,7 +44,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             Meta = new FormMetadataDto()
             {
                 Name = _label,
-                Tags = new[] { GeneratorTag, $"{GeneratorHashPrefix}{hash}" }.Concat(_tags).ToArray(),
+                Tags = CreateTags(hash),
                 Icon = _icon,
                 IconColor = FormMetadataDto.IconColorValue.Default,
                 Description = _desc
@@ -56,8 +52,10 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         };
     }
 
+    private ICollection<string> CreateTags(string hash) => new[] { GeneratorTag, $"{GeneratorHashPrefix}{hash}" }.Concat(_tags).ToArray();
+
     private string GeneratorPrefix => $"generatorId:";
-    private string GeneratorTag => $"{GeneratorPrefix}{_name}";
+    private string GeneratorTag => $"{GeneratorPrefix}{name}";
     private const string GeneratorHashPrefix = "generatorHash:";
 
     public IFormBuilder Tag(string tag)
@@ -78,29 +76,33 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
         return this;
     }
 
-    public IFormBuilder Name(string name)
+    public IFormBuilder Name(string label)
     {
-        _label = name;
+        _label = label;
         return this;
     }
 
     public virtual async Task<IFormInfo> BuildAsync(bool removeDrafts = true)
     {
-        var formClient = new MoreAppFormsClient(_client.HttpClient);
-        var allForms = await formClient.Find1Async(_client.CustomerId, null);
+        var hash = GetHash();
+        var cached = await caching.FindFormIdByHashAsync(client.CustomerId, name, hash);
+        if (cached != null)
+            return new FormInfo(cached, name, _label, CreateTags(hash));
+
+        var formClient = new MoreAppFormsClient(client.HttpClient);
+        var allForms = await formClient.Find1Async(client.CustomerId, null);
         var form = allForms.FirstOrDefault(form => form.Meta.Tags.Contains(GeneratorTag));
         if (form is null)
-            form = await formClient.CreateForm1Async(_client.CustomerId, FormUpdate("0"));
-        var hash = GetHash();
+            form = await formClient.CreateForm1Async(client.CustomerId, FormUpdate("0"));
         var currentHash = form.Meta?.Tags?.FirstOrDefault(tag => tag.StartsWith(GeneratorHashPrefix))?.Split(":")[1];
         if (hash != currentHash)
         {
-            if (_folder != null)
+            if (folder != null)
             {
-                var folderClient = new MoreAppFoldersClient(_client.HttpClient);
-                await folderClient.MoveFormAsync(_client.CustomerId, _folder.Uid, form.Id);
+                var folderClient = new MoreAppFoldersClient(client.HttpClient);
+                await folderClient.MoveFormAsync(client.CustomerId, folder.Uid, form.Id);
                 if (_folderPosition != null)
-                    await folderClient.MovePositionFormAsync(_client.CustomerId, _folder.Uid, form.Id, _folderPosition.Value);
+                    await folderClient.MovePositionFormAsync(client.CustomerId, folder.Uid, form.Id, _folderPosition.Value);
             }
 
             FormVersionDto newVersion;
@@ -114,11 +116,12 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
                 newVersion = await UpdateForm(form.Id);
             }
 
-            form = await formClient.PatchForm1Async(_client.CustomerId, form.Id, FormUpdate(hash, newVersion));
+            form = await formClient.PatchForm1Async(client.CustomerId, form.Id, FormUpdate(hash, newVersion));
             await AddFormToGroups(form.Id);
         }
 
-        return new FormInfo(form.Id, _name, _label, form.Meta?.Tags);
+        await _caching.StoreFormIdAsync(client.CustomerId, name, hash, form.Id);
+        return new FormInfo(form.Id, name, _label, form.Meta?.Tags);
     }
 
     public string GetHash()
@@ -135,8 +138,8 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             hashBaseElements.Add(_inAppDesc);
         if (_folderPosition != null)
             hashBaseElements.Add(_folderPosition.Value.ToString());
-        if (_folder != null)
-            hashBaseElements.Add(_folder.Uid);
+        if (folder != null)
+            hashBaseElements.Add(folder.Uid);
         if(_groupIds.Count > 0)
             hashBaseElements.Add(Hash(_groupIds.OrderBy(i=>i).ToArray()));
         return Hash(hashBaseElements.ToArray());
@@ -145,7 +148,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     public string CreateOpenApiSpec()
     {
         var builder = new OpenApiBuilder();
-        builder.Add(Elements, _name);
+        builder.Add(Elements, name);
         return builder.GenerateSpec();
     }
 
@@ -155,19 +158,19 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             return;
         if (_formUserRoleId is null)
         {
-            var rolesClient = new MoreAppRolesClient(_client.HttpClient);
-            var roles = await rolesClient.GetRolesAsync(_client.CustomerId);
+            var rolesClient = new MoreAppRolesClient(client.HttpClient);
+            var roles = await rolesClient.GetRolesAsync(client.CustomerId);
             _formUserRoleId = roles.First(r => r.TranslatableKey == "ROLE_FORM_USER").Id;
         }
 
-        var groupClient = new MoreAppGroupsClient(_client.HttpClient);
-        var groups = await groupClient.GetGroupsAsync(_client.CustomerId);
+        var groupClient = new MoreAppGroupsClient(client.HttpClient);
+        var groups = await groupClient.GetGroupsAsync(client.CustomerId);
         foreach (var groupId in _groupIds)
         {
             var existing = groups.FirstOrDefault(g => g.Id == groupId)?.Grants.FirstOrDefault(g => g.ResourceId == formId && g.RoleId == _formUserRoleId);
             if (existing != null)
                 continue;
-            await groupClient.PatchGrant2Async(_client.CustomerId, groupId, new RestGrantChange()
+            await groupClient.PatchGrant2Async(client.CustomerId, groupId, new RestGrantChange()
             {
                 Operation = RestGrantChange.OperationValue.ADD,
                 ResourceId = formId,
@@ -179,7 +182,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
 
     private async Task<FormVersionDto> UpdateForm(string formId)
     {
-        var versionClient = new MoreAppFormVersionsClient(_client.HttpClient);
+        var versionClient = new MoreAppFormVersionsClient(client.HttpClient);
         var data = new FormVersionDto()
         {
             FormId = formId,
@@ -201,17 +204,17 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
             }
         };
         
-        var formVersion = await versionClient.CreateFormVersion1Async(_client.CustomerId, formId, data);
+        var formVersion = await versionClient.CreateFormVersion1Async(client.CustomerId, formId, data);
         try
         {
-            return await versionClient.FinalizeFormVersion1Async(_client.CustomerId, formId, formVersion.Id);
+            return await versionClient.FinalizeFormVersion1Async(client.CustomerId, formId, formVersion.Id);
         }
         catch(Exception)
         {
             // try to delete the newly created version if it could not be finalized, but ignore errors
             try
             {
-                await versionClient.DeleteFormVersion1Async(_client.CustomerId, formId, formVersion.Id);
+                await versionClient.DeleteFormVersion1Async(client.CustomerId, formId, formVersion.Id);
             } catch (Exception)
             {
                 // ignored
@@ -223,11 +226,11 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
 
     private async Task RemoveVersionDrafts(string formId)
     {
-        var versionClient = new MoreAppFormVersionsClient(_client.HttpClient);
+        var versionClient = new MoreAppFormVersionsClient(client.HttpClient);
         var versions = new List<FormVersionDto>();
         for (var page = 0; page < 999; page++)
         {
-            var versionPage = await versionClient.GetFormVersionsForForm1Async(_client.CustomerId, formId, page, 50);
+            var versionPage = await versionClient.GetFormVersionsForForm1Async(client.CustomerId, formId, page, 50);
             if (versionPage.Count == 0)
                 break;
             versions.AddRange(versionPage.Where(v => v.Meta.Status != FormVersionMetadata.StatusValue.FINAL));
@@ -235,7 +238,7 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
 
         foreach (var version in versions)
         {
-            await versionClient.DeleteFormVersion1Async(_client.CustomerId, formId, version.Id);
+            await versionClient.DeleteFormVersion1Async(client.CustomerId, formId, version.Id);
         }
     }
 
@@ -301,18 +304,12 @@ internal class FormBuilder : FormContainer<IFormBuilder>, IFormBuilder
     }
 }
 
-internal class FormInfo : IFormInfo
+[method: JsonConstructor]
+internal class FormInfo(string id, string name, string label, ICollection<string>? tags)
+    : IFormInfo
 {
-    public FormInfo(string id, string name, string label, ICollection<string>? tags)
-    {
-        Id = id;
-        Name = name;
-        Label = label;
-        Tags = tags?.ToList() ?? [];
-    }
-
-    public string Id { get; }
-    public string Name { get; }
-    public string Label { get; }
-    public IReadOnlyCollection<string> Tags { get; }
+    public string Id { get; } = id;
+    public string Name { get; } = name;
+    public string Label { get; } = label;
+    public IReadOnlyCollection<string> Tags { get; } = tags?.ToList() ?? [];
 }

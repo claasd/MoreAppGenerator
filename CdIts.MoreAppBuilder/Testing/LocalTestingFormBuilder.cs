@@ -13,9 +13,9 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
     public IFormBuilder Icon(string icon) => this;
 
     public IFormBuilder InAppDescription(string inAppDesc) => this;
-    public IFormBuilder Name(string name)
+    public IFormBuilder Name(string label)
     {
-        Label = name;
+        Label = label;
         return this;
     }
 

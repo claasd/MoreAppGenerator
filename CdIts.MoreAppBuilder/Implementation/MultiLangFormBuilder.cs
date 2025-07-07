@@ -4,8 +4,8 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
 {
     private readonly MoreAppMultiLangData _languageData;
 
-    internal MultiLangFormBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) 
-        : base(client, id, languageData.FormName(langId), folder)
+    internal MultiLangFormBuilder(RestClient client, IMoreAppCaching caching, MoreAppLanguageInstance languageData, string id, string langId, IFolder? folder = null) 
+        : base(client, caching, id, languageData.FormName(langId), folder: folder)
     {
         Language = languageData.Language;
         _languageData = new MoreAppMultiLangData(this, languageData, langId);

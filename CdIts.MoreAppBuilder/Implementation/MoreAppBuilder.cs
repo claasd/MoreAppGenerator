@@ -1,47 +1,40 @@
 ﻿namespace MoreAppBuilder.Implementation;
 
-internal class MoreAppBuilder : IMoreAppBuilder
+internal class MoreAppBuilder(RestClient client, IMoreAppCaching caching) : IMoreAppBuilder
 {
-    private readonly RestClient _client;
-
-    internal MoreAppBuilder(RestClient client)
-    {
-        _client = client;
-    }
-
     public IFolderBuilder Folder(string id, string name)
     {
-        return new FolderBuilder(_client, id, name);
+        return new FolderBuilder(client, caching,  id, name);
     }
 
     public IMultiLangFolderBuilder Folder(MoreAppLanguageInstance languageData, string id, string? langSectionId = null)
     {
-        return new MultiLangFolderBuilder(_client, languageData, id, langSectionId ?? id);
+        return new MultiLangFolderBuilder(client, caching, languageData, id, langSectionId ?? id);
     }
 
 
     public IGroupBuilder Group(string name, string? groupIdHint = null)
     {
-        return new GroupBuilder(_client, name, groupIdHint);
+        return new GroupBuilder(client, name, groupIdHint);
     }
 
     public IUserBuilder User(string email)
     {
-        return new UserBuilder(_client, email);
+        return new UserBuilder(client, email);
     }
 
     public IFormBuilder Form(string id, string name, IFolder? folder = null)
     {
-        return new FormBuilder(_client, id, name, folder);
+        return new FormBuilder(client, caching, id, name, folder);
     }
 
     public IUrlDataSourceBuilder UrlDataSource(string name, string url)
     {
-        return new UrlDataSourceBuilder(_client, name, url);
+        return new UrlDataSourceBuilder(client, name, url);
     }
 
     public IWebHookBuilder WebHook(string name, string url)
     {
-        return new WebHookBuilder(_client, name, url);
+        return new WebHookBuilder(client, name, url);
     }
 }

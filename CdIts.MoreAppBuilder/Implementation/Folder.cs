@@ -1,40 +1,40 @@
 namespace MoreAppBuilder.Implementation;
 
-internal class Folder : IFolder
+internal class FolderInfo
 {
-    private readonly RestClient _client;
-
-    internal Folder(RestClient client, string id, string uid, string name)
-    {
-        _client = client;
-        Id = id;
-        Uid = uid;
-        Name = name;
-    }
+    public string Id { get; set;  } = string.Empty;
+    public string Uid { get; set;  } = string.Empty;
+    public string Name { get; set;  } = string.Empty;
+}
+internal class Folder(RestClient client, IMoreAppCaching caching, string id, string uid, string name)
+    : IFolder
+{
     public IFormBuilder Form(string id, string name)
     {
-        return new FormBuilder(_client, id, name, this);
+        return new FormBuilder(client, caching, id, name, folder: this);
     }
 
     public IMultiLangFormBuilder MultiLangForm(MoreAppLanguageInstance data, string formId, string? languageId = null)
     {
-        return new MultiLangFormBuilder(_client, data, formId, languageId ?? formId, this);
+        return new MultiLangFormBuilder(client, caching, data, formId, languageId ?? formId, this);
     }
 
-    public string Id { get; }
-    public string Uid { get; }
-    public string Name { get; }
+    public string Id { get; } = id;
+    public string Uid { get; } = uid;
+    public string Name { get; } = name;
 }
 
-internal class MultiLangFolder : Folder, IMultiLangFolder
+internal class MultiLangFolder(
+    RestClient client,
+    IMoreAppCaching caching,
+    MoreAppLanguageInstance languageData,
+    string id,
+    string uid,
+    string name)
+    : Folder(client, caching, id, uid, name), IMultiLangFolder
 {
-    private readonly MoreAppLanguageInstance _languageData;
+    public IMultiLangFormBuilder MultiLangForm(string formId, string? languageId = null) =>
+        MultiLangForm(languageData, formId, languageId);
 
-    public MultiLangFolder(RestClient client, MoreAppLanguageInstance languageData, string id, string uid, string name) : base(client, id, uid, name)
-    {
-        _languageData = languageData;
-    }
-
-    public IMultiLangFormBuilder MultiLangForm(string formId, string? languageId = null) => MultiLangForm(_languageData, formId, languageId);
-    public string Language => _languageData.Language;
+    public string Language => languageData.Language;
 }

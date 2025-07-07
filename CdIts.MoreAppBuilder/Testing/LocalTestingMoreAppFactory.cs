@@ -31,7 +31,7 @@ public class LocalTestingMoreAppFactory
 }
 
 internal class DevMultiLangFormBuilder(MoreAppLanguageInstance languageData, string formId, IFolder? folder, string langId)
-    : MultiLangFormBuilder(null!, languageData, formId, langId, folder), IFormInfo
+    : MultiLangFormBuilder(null!, null!, languageData, formId, langId, folder), IFormInfo
 {
     public override async Task<IFormInfo> BuildAsync(bool removeDrafts = true)
     {

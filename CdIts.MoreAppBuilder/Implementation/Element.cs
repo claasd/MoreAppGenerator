@@ -8,7 +8,7 @@ namespace MoreAppBuilder.Implementation;
 
 internal class Element
 {
-    internal protected static string Hash(params string?[] data) => Convert
+    internal static string Hash(params string?[] data) => Convert
         .ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(string.Join("|", data.Where(d => d is not null))))).Replace("-", "").ToLower();
 
     internal virtual void Consolidate()

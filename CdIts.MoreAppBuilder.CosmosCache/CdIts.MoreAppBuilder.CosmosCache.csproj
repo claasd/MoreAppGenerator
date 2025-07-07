@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>MoreAppBuilder.Cache</RootNamespace>
+        <IsPackable>true</IsPackable>
+        <RepositoryUrl>https://github.com/claasd/MoreAppGenerator.git</RepositoryUrl>
+        <Authors>claasd</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>Fluent generator for MoreApp.</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CdIts.MoreAppBuilder\CdIts.MoreAppBuilder.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CdIts.CosmosExtensions" Version="1.5.0" />
+    </ItemGroup>
+
+</Project>

@@ -8,6 +8,7 @@ namespace MoreAppBuilder.Implementation;
 internal class FolderBuilder : IFolderBuilder
 {
     protected readonly RestClient Client;
+    protected readonly IMoreAppCaching Caching;
     private readonly FolderMetadataDto _metadata;
     private FolderDto.StatusValue _status = FolderDto.StatusValue.ACTIVE;
     private readonly string _id;
@@ -18,10 +19,11 @@ internal class FolderBuilder : IFolderBuilder
         set => _metadata.Name = value;
     }
 
-    internal FolderBuilder(RestClient client, string id, string name)
+    internal FolderBuilder(RestClient client, IMoreAppCaching caching, string id, string name)
     {
         _id = id;
         Client = client;
+        Caching = caching;
         _metadata = new FolderMetadataDto()
         {
             Description = GeneratorId,
@@ -51,9 +53,16 @@ internal class FolderBuilder : IFolderBuilder
 
     public async Task<IFolder> BuildAsync()
     {
+        var hash = GetHash();
+        var cached = await Caching.FindFolderIdByHashAsync(Client.CustomerId, _id, hash);
+        if (cached != null)
+        {
+            return new Folder(Client, Caching, _id, cached, _metadata.Name);
+        }
         var folderClient = new MoreAppFoldersClient(Client.HttpClient);
         var folders = await folderClient.GetFoldersByCustomerIdAsync(Client.CustomerId);
-        var folder = folders.FirstOrDefault(f => f.Meta?.Description != null && f.Meta.Description.Contains(GeneratorId));
+        var folder =
+            folders.FirstOrDefault(f => f.Meta?.Description != null && f.Meta.Description.Contains(GeneratorId));
         if (folder is null)
         {
             folder = await folderClient.CreateFolderAsync(Client.CustomerId, new FolderDto()
@@ -74,7 +83,14 @@ internal class FolderBuilder : IFolderBuilder
             folder = await folderClient.UpdateFolderAsync(Client.CustomerId, folder.Id, patch);
         }
 
-        return new Folder(Client, _id, folder.Id, folder.Meta.Name);
+        await Caching.StoreFolderIdAsync(Client.CustomerId, _id, hash, folder.Id);
+        return new Folder(Client, Caching, _id, folder.Id, folder.Meta.Name);
+    }
+
+    private string GetHash()
+    {
+        var data = JsonConvert.SerializeObject(_metadata);
+        return Element.Hash(data, _status.Value());
     }
 }
 
@@ -82,8 +98,9 @@ internal class MultiLangFolderBuilder : FolderBuilder, IMultiLangFolderBuilder
 {
     private readonly MoreAppLanguageInstance _languageData;
 
-    internal MultiLangFolderBuilder(RestClient client, MoreAppLanguageInstance languageData, string id, string langFileSectionId) : base(client, id,
-        languageData.FolderName(langFileSectionId))
+    internal MultiLangFolderBuilder(RestClient client, IMoreAppCaching caching, MoreAppLanguageInstance languageData,
+        string id, string langFileSectionId)
+        : base(client, caching, id, languageData.FolderName(langFileSectionId))
     {
         _languageData = languageData;
         try
@@ -117,6 +134,6 @@ internal class MultiLangFolderBuilder : FolderBuilder, IMultiLangFolderBuilder
     public new async Task<IMultiLangFolder> BuildAsync()
     {
         var folder = await base.BuildAsync();
-        return new MultiLangFolder(Client, _languageData, folder.Id, folder.Uid, folder.Name);
+        return new MultiLangFolder(Client, Caching, _languageData, folder.Id, folder.Uid, folder.Name);
     }
 }

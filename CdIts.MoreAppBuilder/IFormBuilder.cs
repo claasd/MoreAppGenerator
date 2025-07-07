@@ -88,7 +88,7 @@ public interface IFormBuilder : IFormContainer
     IFormBuilder Tag(string tag);
     IFormBuilder Icon(string icon);
     IFormBuilder InAppDescription(string inAppDesc);
-    IFormBuilder Name(string name);
+    IFormBuilder Name(string label);
     Task<IFormInfo> BuildAsync(bool removeDrafts = true);
     string GetHash();
     string CreateOpenApiSpec();
