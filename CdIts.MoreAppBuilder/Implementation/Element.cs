@@ -80,7 +80,7 @@ internal class Element<T> : Element, IElement<T> where T : class
     public T SetValueWhenAny(string value, params ICondition[] conditions)
     {
         if (conditions.Any())
-            SetValueRules[$"any/{value}"] = new SetValueRule(conditions, value, false);
+            SetValueRules[$"any/{value}"] = new SetValueRule(conditions, value, true);
         return this as T;
     }
 
