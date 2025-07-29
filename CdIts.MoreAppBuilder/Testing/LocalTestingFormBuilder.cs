@@ -40,9 +40,9 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
     public IFormBuilder AddToGroup(IGroup group) => this;
     public IFormBuilder FolderPosition(int position) => this;
 
-    public static JObject Json(IEnumerable<Element> elements)
+    public static JObject Json(IEnumerable<Element> elements, JObject? testData = null)
     {
-        var data = new JObject();
+        var data = testData ?? new JObject();
         foreach (var element in elements)
         {
             if(!element.Field.Properties.ContainsKey("data_name"))
@@ -51,13 +51,15 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
                 continue; // Skip read-only text elements
             element.Consolidate();
             var name = element.Field.Properties["data_name"].ToString()!;
+            if(data.ContainsKey(name))
+                continue; // Skip if already exists in data
             if (element is MultiLangSubFormElement sub1)
                 data[name] = new JArray() { Json(sub1.Elements) };
             else if (element is SubFormElement sub2)
                 data[name] = new JArray() { Json(sub2.Elements) };
             else if (element is SearchElement { DataSource: LocalTestingDataSource devDataSource })
                 data[name] = JObject.FromObject(devDataSource.Data);
-            else if (element is PhotoElement or DrawingElement)
+            else if (element is PhotoElement or DrawingElement or SignatureElement)
                 data[name] = $"gridfs://registrationFiles/{Guid.NewGuid()}";
             else if (element is CheckboxItem)
                 data[name] = true;
