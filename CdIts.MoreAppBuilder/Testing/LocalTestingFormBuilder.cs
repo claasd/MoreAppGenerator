@@ -1,4 +1,5 @@
 using MoreAppBuilder.Implementation;
+using MoreAppBuilder.Implementation.Model.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace MoreAppBuilder.Testing;
@@ -46,6 +47,9 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
         {
             if(!element.Field.Properties.ContainsKey("data_name"))
                 continue;
+            if(element is ReadOnlyTextElement)
+                continue; // Skip read-only text elements
+            element.Consolidate();
             var name = element.Field.Properties["data_name"].ToString()!;
             if (element is MultiLangSubFormElement sub1)
                 data[name] = new JArray() { Json(sub1.Elements) };
@@ -61,6 +65,12 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
                 data[name] = defaultValue.ToString();
             else if (element.Field.Properties.TryGetValue("radio_options", out var radioOptions) && radioOptions is ICollection<string> radioOptionList && radioOptionList.Any())
                 data[name] = radioOptionList.FirstOrDefault();
+            else if (element.Field.Properties.TryGetValue("radio_options", out var radioOptions2) && radioOptions2 is ICollection<LookupOption> radioOptionList2 && radioOptionList2.Any())
+                data[name] = radioOptionList2.FirstOrDefault()?.Id;
+            else if (element.Field.Properties.TryGetValue("options", out var options) && options is ICollection<string> optionList && optionList.Any())
+                data[name] = optionList.FirstOrDefault();
+            else if (element.Field.Properties.TryGetValue("options", out var options2) && options2 is ICollection<LookupOption> optionList2 && optionList2.Any())
+                data[name] = optionList2.FirstOrDefault()?.Id;
             else
                 data[name] = element.Field.Properties["label_text"].ToString();
         }
