@@ -1,3 +1,4 @@
+using MoreAppBuilder.DefaultFormObjects;
 using MoreAppBuilder.Implementation;
 using MoreAppBuilder.Implementation.Model.Forms;
 using Newtonsoft.Json.Linq;
@@ -39,7 +40,24 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
     public IFormBuilder Description(string desc) => this;
     public IFormBuilder AddToGroup(IGroup group) => this;
     public IFormBuilder FolderPosition(int position) => this;
-
+    
+    public static MoreAppLocation TestLocation { get; set; } = new MoreAppLocation
+    {
+        Location = new MoreAppLocationInfo
+        {
+            Road = "Test Road",
+            HouseNumber = "123",
+            City = "Berlin",
+            PostalCode = "10115",
+            Country = "Germany"
+        },
+        Coordinates = new MoreAppCoordinates
+        {
+            Latitude = 52.5200,
+            Longitude = 13.4050
+        },
+        FormattedValue = "Test Road 123, 10115 Berlin, Germany"
+    };
     public static JObject Json(IEnumerable<Element> elements, JObject? testData = null)
     {
         var data = testData ?? new JObject();
@@ -63,8 +81,12 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
                 data[name] = $"gridfs://registrationFiles/{Guid.NewGuid()}";
             else if (element is CheckboxItem)
                 data[name] = true;
+            else if (element is LocationElement)
+                data[name] = JObject.FromObject(TestLocation);
             else if (element.Field.Properties.TryGetValue("default_value", out var defaultValue) && !string.IsNullOrWhiteSpace(defaultValue?.ToString()))
                 data[name] = defaultValue.ToString();
+            else if (element is NumberElement)
+                data[name] = 10;
             else if (element.Field.Properties.TryGetValue("radio_options", out var radioOptions) && radioOptions is ICollection<string> radioOptionList && radioOptionList.Any())
                 data[name] = radioOptionList.FirstOrDefault();
             else if (element.Field.Properties.TryGetValue("radio_options", out var radioOptions2) && radioOptions2 is ICollection<LookupOption> radioOptionList2 && radioOptionList2.Any())
