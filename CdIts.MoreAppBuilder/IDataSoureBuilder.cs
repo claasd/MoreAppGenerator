@@ -8,6 +8,9 @@ public interface IDataSoureBuilder
 public interface IUrlDataSourceBuilder : IDataSoureBuilder
 {
     IUrlDataSourceBuilder Header(string key, string value);
+    IUrlDataSourceBuilder WeeklyUpdate();
     IUrlDataSourceBuilder DailyUpdate();
     IUrlDataSourceBuilder HourlyUpdate();
+    IUrlDataSourceBuilder HalfHourlyUpdate();
+    IUrlDataSourceBuilder QuarterHourlyUpdate();
 }

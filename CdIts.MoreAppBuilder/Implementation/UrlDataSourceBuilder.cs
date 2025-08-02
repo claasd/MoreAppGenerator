@@ -28,7 +28,11 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
         return this;
     }
 
-    public IUrlDataSourceBuilder DailyUpdate()
+    public IUrlDataSourceBuilder WeeklyUpdate()
+    {
+        Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.WEEKLY;
+        return this;
+    }public IUrlDataSourceBuilder DailyUpdate()
     {
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.DAILY;
         return this;
@@ -37,6 +41,16 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
     public IUrlDataSourceBuilder HourlyUpdate()
     {
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.HOURLY;
+        return this;
+    }
+    public IUrlDataSourceBuilder HalfHourlyUpdate()
+    {
+        Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.HALF_HOUR;
+        return this;
+    }
+    public IUrlDataSourceBuilder QuarterHourlyUpdate()
+    {
+        Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.QUARTER_HOUR;
         return this;
     }
 
