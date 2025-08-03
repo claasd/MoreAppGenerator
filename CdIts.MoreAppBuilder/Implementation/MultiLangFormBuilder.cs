@@ -15,6 +15,24 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         } catch(KeyNotFoundException) { /*okay */ }
     }
     public string Language { get; }
+    public new IMultiLangFormBuilder DefaultPhotoQualityHigh()
+    {
+        base.DefaultPhotoQualityHigh();
+        return this;
+    }
+
+    public new IMultiLangFormBuilder DefaultPhotoQualityBest()
+    {
+        base.DefaultPhotoQualityBest();
+        return this;
+    }
+
+    public new IMultiLangFormBuilder DefaultPhotoQualityFast()
+    {
+        base.DefaultPhotoQualityFast();
+        return this;
+    }
+
     public IHtmlElement AddHtmlById(string id) => _languageData.AddHtmlById(id);
     public IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3) => _languageData.AddHtmlSectionById(id, size);
     public IHtmlElement AddCardById(CardType type, string id) => _languageData.AddCardById(type, id);

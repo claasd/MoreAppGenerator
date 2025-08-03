@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MoreAppBuilder.Testing;
 
-internal class LocalTestingFormBuilder(string id, string label, IFolder? folder) :  FormContainer<IFormBuilder>, IFormBuilder, IFormInfo
+internal class LocalTestingFormBuilder(string id, string label, IFolder? folder) :  FormContainer<IFormBuilder>(PhotoElement.PhotoQuality.High), IFormBuilder, IFormInfo
 {
     public string Id { get; } = Guid.NewGuid().ToString("N");
     string IFormInfo.Name => id;

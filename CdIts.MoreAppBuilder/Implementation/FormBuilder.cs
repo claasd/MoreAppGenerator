@@ -16,7 +16,7 @@ internal class FormBuilder(
     string name,
     string label,
     IFolder? folder = null)
-    : FormContainer<IFormBuilder>, IFormBuilder
+    : FormContainer<IFormBuilder>(PhotoElement.PhotoQuality.High), IFormBuilder
 {
     private static string? _formUserRoleId = null;
     private string _label = label;
@@ -26,7 +26,6 @@ internal class FormBuilder(
     private string _icon = "ios-paper-outline";
     private string? _inAppDesc = null;
     private int? _folderPosition;
-    private readonly IMoreAppCaching _caching = caching;
 
 
     private FormDto FormUpdate(string hash, FormVersionDto? formVersion = null)
@@ -120,7 +119,7 @@ internal class FormBuilder(
             await AddFormToGroups(form.Id);
         }
 
-        await _caching.StoreFormIdAsync(client.CustomerId, name, hash, form.Id);
+        await caching.StoreFormIdAsync(client.CustomerId, name, hash, form.Id);
         return new FormInfo(form.Id, name, _label, form.Meta?.Tags);
     }
 

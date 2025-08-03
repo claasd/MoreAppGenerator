@@ -62,7 +62,7 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public ITextAreaElement AddTextArea(string id) => Builder.AddTextArea(id, Title(id));
 
     public IMultiLangSubFormElement AddSubForm(string id, LangPrefixMode prefixMode) =>
-        Builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id), prefixMode));
+        Builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id), prefixMode, Builder.DefaultPhotoQuality));
 
     public IDrawingElement AddDrawing(string id) => Builder.AddDrawing(id, Title(id));
     public ILocation AddLocation(string id) => Builder.AddLocation(id, Title(id));

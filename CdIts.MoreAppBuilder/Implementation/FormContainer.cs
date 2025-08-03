@@ -6,14 +6,27 @@ internal interface IGenericFormContainer : IFormContainer
 {
     TElem AddElement<TElem>(TElem element) where TElem : Element;
     List<Element> Elements { get; }
+    PhotoElement.PhotoQuality DefaultPhotoQuality { get; }
 }
 
 internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : class
 {
+    public PhotoElement.PhotoQuality DefaultPhotoQuality { get; private set; }
     public List<Element> Elements { get; protected set; } = new();
-    protected FormContainer() : base("com.moreapps:detail:1")
+    protected FormContainer(PhotoElement.PhotoQuality defaultQuality) : base("com.moreapps:detail:1")
     {
+        DefaultPhotoQuality = defaultQuality;
     }
+    
+    public T SetDefaultPhotoQuality(PhotoElement.PhotoQuality quality)
+    {
+        DefaultPhotoQuality = quality;
+        return this as T;
+    }
+
+    public T DefaultPhotoQualityBest() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.Best);
+    public T DefaultPhotoQualityHigh() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.High);
+    public T DefaultPhotoQualityFast() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.Fast);
 
     public TElem AddElement<TElem>(TElem element) where TElem : Element
     {
@@ -69,7 +82,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
 
     public ISearchElement AddSearch(string id, string label, IDataSource dataSource) => AddElement(new SearchElement(id, label, dataSource as DataSource));
 
-    public IPhotoElement AddPhoto(string id, string label) => AddElement(new PhotoElement(id, label));
+    public IPhotoElement AddPhoto(string id, string label) => AddElement(new PhotoElement(id, label, DefaultPhotoQuality));
     public IFileElement AddFile(string id, string label) => AddElement(new FileElement(id, label));
 
     public IBarcodeScannerElement AddBarcodeScanner(string id, string label) => AddElement(new BarcodeScannerElement(id, label));
@@ -78,7 +91,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
 
     public ITextAreaElement AddTextArea(string id, string label) => AddElement(new TextAreaElement(id, label));
 
-    public ISubFormElement AddSubForm(string id, string label) => AddElement(new SubFormElement(id, label));
+    public ISubFormElement AddSubForm(string id, string label) => AddElement(new SubFormElement(id, label, DefaultPhotoQuality));
 
     public IDrawingElement AddDrawing(string id, string label) => AddElement(new DrawingElement(id, label));
     public ILocation AddLocation(string id, string label) => AddElement(new LocationElement(id, label));

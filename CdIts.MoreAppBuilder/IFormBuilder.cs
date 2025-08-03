@@ -95,7 +95,10 @@ public interface IFormBuilder : IFormContainer
     IFormBuilder Description(string desc);
     IFormBuilder AddToGroup(IGroup group);
     IFormBuilder FolderPosition(int position);
-    
+    IFormBuilder DefaultPhotoQualityBest();
+    IFormBuilder DefaultPhotoQualityHigh();
+    IFormBuilder DefaultPhotoQualityFast();
+
 }
 
 public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
@@ -110,6 +113,9 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     IMultiLangFormBuilder AddToGroup(IGroup group);
     IMultiLangFormBuilder FolderPosition(int position);
     public string Language { get; }
+    IMultiLangFormBuilder DefaultPhotoQualityHigh();
+    IMultiLangFormBuilder DefaultPhotoQualityBest();
+    IMultiLangFormBuilder DefaultPhotoQualityFast();
 }
 
 

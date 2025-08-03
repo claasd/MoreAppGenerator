@@ -5,7 +5,7 @@ namespace MoreAppBuilder.Implementation;
 
 internal class SubFormContainer<T> : FormContainer<T>,  ISubformContainer<T>  where T : class
 {
-    public SubFormContainer(string id, string label)
+    public SubFormContainer(string id, string label, PhotoElement.PhotoQuality defaultPhotoQuality) : base(defaultPhotoQuality)
     {
         Field.Properties["data_name"] = id.Trim();
         Field.Properties["label_text"] = label.Trim();

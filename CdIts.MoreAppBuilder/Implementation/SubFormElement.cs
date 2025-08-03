@@ -3,19 +3,15 @@ using Newtonsoft.Json;
 
 namespace MoreAppBuilder.Implementation;
 
-internal class SubFormElement : SubFormContainer<ISubFormElement>, ISubFormElement
-{
-    public SubFormElement(string id, string label) : base(id, label)
-    {
-    }
-}
+internal class SubFormElement(string id, string label, PhotoElement.PhotoQuality defaultPhotoQuality)
+    : SubFormContainer<ISubFormElement>(id, label, defaultPhotoQuality), ISubFormElement;
 
 internal class MultiLangSubFormElement : SubFormContainer<IMultiLangSubFormElement>, IMultiLangSubFormElement
 {
     private readonly MoreAppMultiLangData _languageData;
 
     public MultiLangSubFormElement(string id, MoreAppLanguageInstance languageFile, string parentForm,
-        string idWithPrefix, LangPrefixMode prefixMode) : base(id, languageFile.GetTitle(parentForm, idWithPrefix))
+        string idWithPrefix, LangPrefixMode prefixMode, PhotoElement.PhotoQuality defaultPhotoQuality) : base(id, languageFile.GetTitle(parentForm, idWithPrefix), defaultPhotoQuality)
     {
         var subLangPrefix = prefixMode switch
         {
