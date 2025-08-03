@@ -26,7 +26,7 @@ internal class FormContainer<T> : Element<T>, IGenericFormContainer where T : cl
 
     public T DefaultPhotoQualityBest() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.Best);
     public T DefaultPhotoQualityHigh() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.High);
-    public T DefaultPhotoQualityFast() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.Fast);
+    public T DefaultPhotoQualityFast() => SetDefaultPhotoQuality(PhotoElement.PhotoQuality.Low);
 
     public TElem AddElement<TElem>(TElem element) where TElem : Element
     {

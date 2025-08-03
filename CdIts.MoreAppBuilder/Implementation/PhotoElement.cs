@@ -5,7 +5,7 @@ internal class PhotoElement : InputElement<IPhotoElement>, IPhotoElement
     public enum PhotoQuality {
         Best,
         High,
-        Fast
+        Low
     }
     public PhotoElement(string id, string label, PhotoQuality quality = PhotoQuality.High) : base("com.moreapps:photo:1", id, label, false)
     {
@@ -51,7 +51,7 @@ internal class PhotoElement : InputElement<IPhotoElement>, IPhotoElement
 
     public IPhotoElement FastUploadQuality()
     {
-        Field.Properties["quality"] = nameof(PhotoQuality.Fast).ToLower();
+        Field.Properties["quality"] = nameof(PhotoQuality.Low).ToLower();
         return this;
     }
 
