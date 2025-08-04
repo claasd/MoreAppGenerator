@@ -8,7 +8,8 @@ public class CosmosFormCache
     public enum CacheType
     {
         Form,
-        Folder
+        Folder,
+        DataSource
     };
 
     [JsonProperty("id")] public Guid Id { get; set; } = Guid.NewGuid();
@@ -17,5 +18,8 @@ public class CosmosFormCache
     public string FormName { get; set; } = string.Empty;
     public string ElementId { get; set; } = string.Empty;
     public string Hash { get; set; } = string.Empty;
+    public List<string> Columns { get; set; } = [];
+    public DateTimeOffset Timestamp { get; set; }
     [JsonProperty("ttl")] public int TimeToLive { get; set; }
 }
+

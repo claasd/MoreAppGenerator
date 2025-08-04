@@ -30,7 +30,7 @@ internal class MoreAppBuilder(RestClient client, IMoreAppCaching caching) : IMor
 
     public IUrlDataSourceBuilder UrlDataSource(string name, string url)
     {
-        return new UrlDataSourceBuilder(client, name, url);
+        return new UrlDataSourceBuilder(client, name, url, caching);
     }
 
     public IWebHookBuilder WebHook(string name, string url)
