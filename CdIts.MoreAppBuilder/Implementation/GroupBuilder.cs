@@ -8,17 +8,28 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
     : IGroupBuilder
 {
     public Task<IGroup> BuildAsync(bool allowUseCache = true) => ReadOrBuildAsync(allowUseCache, true);
-    private async Task<IGroup> ReadOrBuildAsync(bool allowUseCache, bool allowCreation)
+
+    private async Task<IGroup> ReadOrBuildAsync(bool allowUseCache, bool allowCreation, bool useIdOnly = false)
     {
         var logger = MoreAppService.Logger;
         logger.LogInformation("Building group with name {Name}", name);
-        if (allowUseCache)
+        if (allowUseCache && !useIdOnly)
         {
             var cachedId = await caching.FindGroupIdAsync(client.CustomerId, name);
             if (cachedId is not null)
             {
                 logger.LogInformation("Found cached group with name {Name} and id {Id}", name, cachedId);
-                return new GroupInfo( cachedId, name);
+                return new GroupInfo(cachedId, name);
+            }
+        }
+
+        if (allowUseCache && groupIdHint is not null)
+        {
+            var cachedName = await caching.FindGroupNameAsync(client.CustomerId, groupIdHint);
+            if (cachedName is not null)
+            {
+                logger.LogInformation("Found cached group with name {Name} and id {Id}", cachedName, groupIdHint);
+                return new GroupInfo(groupIdHint, cachedName);
             }
         }
 
@@ -29,13 +40,17 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
         {
             group = groups.FirstOrDefault(g => g.Id.Equals(groupIdHint, StringComparison.InvariantCulture));
         }
-
+        if(!useIdOnly)
+        {
+            group ??= groups.FirstOrDefault(g => g.Name.Equals(name, StringComparison.InvariantCulture));
+        }
         group ??= groups.FirstOrDefault(g => g.Name.Equals(name, StringComparison.InvariantCulture));
-        if(group is null && !allowCreation)
+        if (group is null && !allowCreation)
         {
             throw new InvalidOperationException($"Group with name {name} not found.");
         }
-        else if (group is null)
+
+        if (group is null)
         {
             logger.LogInformation("Creating new group with name {Name}", name);
             group = await groupClient.CreateGroupAsync(client.CustomerId, new CreateGroupRequest()
@@ -48,7 +63,7 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
             logger.LogInformation("Updating existing group with id {Id} to new name {Name}", group.Id, name);
             group.Name = name;
             group = await groupClient.PatchGroupAsync(client.CustomerId, group.Id, group);
-        } 
+        }
         else
         {
             logger.LogInformation("Using existing group with id {Id} and name {Name}", group.Id, group.Name);
@@ -58,13 +73,20 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
         return new GroupInfo(group.Id, group.Name);
     }
 
-    public static async Task<IGroup> LoadAsync(RestClient restClient, string groupName, IMoreAppCaching moreAppCaching, bool allowUseCache)
+    public static async Task<IGroup> LoadAsync(RestClient restClient, string groupName, IMoreAppCaching caching,
+        bool allowUseCache)
     {
-        var builder = new GroupBuilder(restClient, moreAppCaching, groupName);
+        var builder = new GroupBuilder(restClient, caching, groupName);
         return await builder.ReadOrBuildAsync(allowUseCache, false);
     }
 
-    
+
+    public static async Task<IGroup> LoadByIdAsync(RestClient restClient, string id, IMoreAppCaching caching,
+        bool allowUseCache)
+    {
+        var builder = new GroupBuilder(restClient, caching, "", id);
+        return await builder.ReadOrBuildAsync(allowUseCache, false, true);
+    }
 }
 
 internal class GroupInfo : IGroup

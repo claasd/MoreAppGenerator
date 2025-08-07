@@ -12,5 +12,6 @@ public interface IMoreAppCaching
     ValueTask StoreFolderIdAsync(int customerId, string name, string hash, string id);
     ValueTask StoreDataSourceAsync(int customerId, string hash, IDataSource dataSource);
     ValueTask<string?> FindGroupIdAsync(int customerId, string name);
+    Task<string?> FindGroupNameAsync(int customerId, string groupId);
     ValueTask StoreGroupIdAsync(int customerId, string name, string id);
 }

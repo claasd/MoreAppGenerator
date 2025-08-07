@@ -89,6 +89,13 @@ public class MoreAppCosmosCache(Container container) : IMoreAppCaching
             .Select(c => c.ElementId)
             .FirstOrDefaultItemAsync();
 
+    public async Task<string?> FindGroupNameAsync(int customerId, string groupId) =>
+        await container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
+                c.CustomerId == customerId && c.ElementId == groupId)
+            .Where(c => c.Type == CosmosFormCache.CacheType.Group)
+            .Select(c => c.FormName)
+            .FirstOrDefaultItemAsync();
+
     public async ValueTask StoreGroupIdAsync(int customerId, string name, string id)
     {
         await container.CreateItemAsync(new CosmosFormCache

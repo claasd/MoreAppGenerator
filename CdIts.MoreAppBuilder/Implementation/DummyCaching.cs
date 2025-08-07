@@ -13,5 +13,8 @@ internal class DummyCaching : IMoreAppCaching
     public ValueTask StoreFolderIdAsync(int customerId, string name, string hash, string id) => ValueTask.CompletedTask;
     public ValueTask StoreDataSourceAsync(int customerId, string hash, IDataSource dataSource) => ValueTask.CompletedTask;
     public ValueTask<string?> FindGroupIdAsync(int customerId, string name) => new((string?)null);
+    public Task<string?> FindGroupNameAsync(int customerId, string groupId) => Task.FromResult<string?>(null);
+    
+
     public ValueTask StoreGroupIdAsync(int customerId, string name, string id) => ValueTask.CompletedTask;
 }
