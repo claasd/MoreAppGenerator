@@ -13,7 +13,7 @@ public class CosmosFormCache
         Group
     };
 
-    [JsonProperty("id")] public Guid Id { get; set; } = Guid.NewGuid();
+    [JsonProperty("id")] public string Id { get; set; } = Guid.NewGuid().ToString();
     public CacheType Type { get; set; }
     public int CustomerId { get; set; }
     public string FormName { get; set; } = string.Empty;
@@ -22,5 +22,6 @@ public class CosmosFormCache
     public List<string> Columns { get; set; } = [];
     public DateTimeOffset Timestamp { get; set; }
     [JsonProperty("ttl")] public int TimeToLive { get; set; }
+    public bool IsLatest { get; set; }
 }
 
