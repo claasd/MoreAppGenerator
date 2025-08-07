@@ -69,8 +69,7 @@ public class MoreAppCosmosCache(Container container) : IMoreAppCaching
             Timestamp = DateTimeOffset.UtcNow
         });
 
-    public async ValueTask StoreDataSourceAsync(int customerId, string hash, IDataSource dataSource)
-    {
+    public async ValueTask StoreDataSourceAsync(int customerId, string hash, IDataSource dataSource) =>
         await container.CreateItemAsync(new CosmosFormCache
         {
             CustomerId = customerId,
@@ -79,6 +78,25 @@ public class MoreAppCosmosCache(Container container) : IMoreAppCaching
             ElementId = dataSource.Id,
             Columns = dataSource.Columns?.ToList() ?? [],
             Type = CosmosFormCache.CacheType.DataSource,
+            TimeToLive = (int)CacheDuration.TotalSeconds,
+            Timestamp = DateTimeOffset.UtcNow
+        });
+
+    public async ValueTask<string?> FindGroupIdAsync(int customerId, string name) =>
+        await container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
+                c.CustomerId == customerId && c.FormName == name)
+            .Where(c => c.Type == CosmosFormCache.CacheType.Group)
+            .Select(c => c.ElementId)
+            .FirstOrDefaultItemAsync();
+
+    public async ValueTask StoreGroupIdAsync(int customerId, string name, string id)
+    {
+        await container.CreateItemAsync(new CosmosFormCache
+        {
+            CustomerId = customerId,
+            FormName = name,
+            ElementId = id,
+            Type = CosmosFormCache.CacheType.Group,
             TimeToLive = (int)CacheDuration.TotalSeconds,
             Timestamp = DateTimeOffset.UtcNow
         });

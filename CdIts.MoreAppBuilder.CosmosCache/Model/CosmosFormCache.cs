@@ -9,7 +9,8 @@ public class CosmosFormCache
     {
         Form,
         Folder,
-        DataSource
+        DataSource,
+        Group
     };
 
     [JsonProperty("id")] public Guid Id { get; set; } = Guid.NewGuid();

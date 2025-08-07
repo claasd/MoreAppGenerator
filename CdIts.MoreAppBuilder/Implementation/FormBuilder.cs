@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Caffoa;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using MoreAppBuilder.Implementation.Client;
 using MoreAppBuilder.Implementation.Model.Core;
 using MoreAppBuilder.Implementation.Model.Forms;
@@ -15,7 +16,7 @@ internal class FormBuilder(
     IMoreAppCaching caching,
     string name,
     string label,
-    IFolder? folder = null)
+    IFolder? folder)
     : FormContainer<IFormBuilder>(PhotoElement.PhotoQuality.High), IFormBuilder
 {
     private static string? _formUserRoleId = null;
@@ -83,21 +84,32 @@ internal class FormBuilder(
 
     public virtual async Task<IFormInfo> BuildAsync(bool removeDrafts = true)
     {
+        var logger = MoreAppService.Logger;
+        logger.LogInformation("Building form {Name}", name);
         var hash = GetHash();
         var cached = await caching.FindFormIdByHashAsync(client.CustomerId, name, hash);
         if (cached != null)
+        {
+            logger.LogInformation("Using cached form {Name} with id {Id}", name, cached);
             return new FormInfo(cached, name, _label, CreateTags(hash));
+        }
 
         var formClient = new MoreAppFormsClient(client.HttpClient);
         var allForms = await formClient.Find1Async(client.CustomerId, null);
         var form = allForms.FirstOrDefault(form => form.Meta.Tags.Contains(GeneratorTag));
         if (form is null)
+        {
+            logger.LogInformation("No existing form found for {Name}, creating new form", name);
             form = await formClient.CreateForm1Async(client.CustomerId, FormUpdate("0"));
+        }
+
         var currentHash = form.Meta?.Tags?.FirstOrDefault(tag => tag.StartsWith(GeneratorHashPrefix))?.Split(":")[1];
         if (hash != currentHash)
         {
+            logger.LogInformation("Updating form {Name}", name);
             if (folder != null)
             {
+                logger.LogInformation("Moving form {Name} to folder {Folder}", name, folder.Name);
                 var folderClient = new MoreAppFoldersClient(client.HttpClient);
                 await folderClient.MoveFormAsync(client.CustomerId, folder.Uid, form.Id);
                 if (_folderPosition != null)
@@ -108,15 +120,21 @@ internal class FormBuilder(
             try
             {
                 newVersion = await UpdateForm(form.Id);
+                logger.LogInformation("Updated form {Name} to new version {VersionId}", name, newVersion.Id);
             }
             catch (Exception) when (removeDrafts)
             {
+                logger.LogWarning("Failed to update form {Name}, removing draft versions", name);
                 await RemoveVersionDrafts(form.Id);
                 newVersion = await UpdateForm(form.Id);
+                logger.LogInformation("Removed draft versions and updated form {Name} to new version {VersionId}", name, newVersion.Id);
             }
 
             form = await formClient.PatchForm1Async(client.CustomerId, form.Id, FormUpdate(hash, newVersion));
             await AddFormToGroups(form.Id);
+        } else
+        {
+            logger.LogInformation("Form {Name} is already up to date with hash {Hash}", name, hash);
         }
 
         await caching.StoreFormIdAsync(client.CustomerId, name, hash, form.Id);

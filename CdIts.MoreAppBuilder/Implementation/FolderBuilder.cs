@@ -1,4 +1,5 @@
 ﻿using Caffoa;
+using Microsoft.Extensions.Logging;
 using MoreAppBuilder.Implementation.Client;
 using MoreAppBuilder.Implementation.Model.Forms;
 using Newtonsoft.Json;
@@ -53,10 +54,13 @@ internal class FolderBuilder : IFolderBuilder
 
     public async Task<IFolder> BuildAsync()
     {
+        var logger = MoreAppService.Logger;
+        logger.LogInformation("Building folder {Id} with name {Name}", _id, _metadata.Name);
         var hash = GetHash();
         var cached = await Caching.FindFolderIdByHashAsync(Client.CustomerId, _id, hash);
         if (cached != null)
         {
+            logger.LogInformation("Found cached folder {Id} with name {Name}", _id, _metadata.Name);
             return new Folder(Client, Caching, _id, cached, _metadata.Name);
         }
         var folderClient = new MoreAppFoldersClient(Client.HttpClient);
@@ -65,6 +69,7 @@ internal class FolderBuilder : IFolderBuilder
             folders.FirstOrDefault(f => f.Meta?.Description != null && f.Meta.Description.Contains(GeneratorId));
         if (folder is null)
         {
+            logger.LogInformation("Creating new folder {Id} with name {Name}", _id, _metadata.Name);
             folder = await folderClient.CreateFolderAsync(Client.CustomerId, new FolderDto()
             {
                 Meta = _metadata,
@@ -73,6 +78,7 @@ internal class FolderBuilder : IFolderBuilder
         }
         else if (!folder.Meta.Equals(_metadata) || _status != folder.Status)
         {
+            logger.LogInformation("Updating existing folder {Id} with name {Name}", _id, _metadata.Name);
             var patch = new JsonPatch();
             patch.AddReplace("/meta/name", _metadata.Name);
             patch.AddReplace("/meta/description", _metadata.Description);
@@ -81,6 +87,10 @@ internal class FolderBuilder : IFolderBuilder
             patch.AddReplace("/status", _status.Value());
             var data = JsonConvert.SerializeObject(patch);
             folder = await folderClient.UpdateFolderAsync(Client.CustomerId, folder.Id, patch);
+        }
+        else
+        {
+            logger.LogInformation("Using existing folder {Id} with name {Name}", _id, _metadata.Name);
         }
 
         await Caching.StoreFolderIdAsync(Client.CustomerId, _id, hash, folder.Id);

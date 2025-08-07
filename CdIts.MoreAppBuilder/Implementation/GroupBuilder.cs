@@ -1,43 +1,70 @@
-﻿using MoreAppBuilder.Implementation.Client;
+﻿using Microsoft.Extensions.Logging;
+using MoreAppBuilder.Implementation.Client;
 using MoreAppBuilder.Implementation.Model.Core;
 
 namespace MoreAppBuilder.Implementation;
 
-internal class GroupBuilder : IGroupBuilder
+internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string name, string? groupIdHint = null)
+    : IGroupBuilder
 {
-    private readonly RestClient _client;
-    private readonly string _name;
-    private readonly string? _groupIdHint;
-
-    internal GroupBuilder(RestClient client, string name, string? groupIdHint = null)
+    public Task<IGroup> BuildAsync(bool allowUseCache = true) => ReadOrBuildAsync(allowUseCache, true);
+    private async Task<IGroup> ReadOrBuildAsync(bool allowUseCache, bool allowCreation)
     {
-        _client = client;
-        _name = name;
-        _groupIdHint = groupIdHint;
-    }
-
-    public async Task<IGroup> BuildAsync()
-    {
-        var groupClient = new MoreAppGroupsClient(_client.HttpClient);
-        var groups = await groupClient.GetGroupsAsync(_client.CustomerId);
-        Group? group = null;
-        if(_groupIdHint is not null)
+        var logger = MoreAppService.Logger;
+        logger.LogInformation("Building group with name {Name}", name);
+        if (allowUseCache)
         {
-            group = groups.FirstOrDefault(g => g.Id.Equals(_groupIdHint, StringComparison.InvariantCulture));
-        }
-        group ??= groups.FirstOrDefault(g => g.Name.Equals(_name, StringComparison.InvariantCulture));
-        if(group is null)
-            group = await groupClient.CreateGroupAsync(_client.CustomerId, new CreateGroupRequest()
+            var cachedId = await caching.FindGroupIdAsync(client.CustomerId, name);
+            if (cachedId is not null)
             {
-                Name = _name
-            });
-        else if (group.Name != _name)
-        {
-            group.Name = _name;
-            group = await groupClient.PatchGroupAsync(_client.CustomerId, group.Id, group);
+                logger.LogInformation("Found cached group with name {Name} and id {Id}", name, cachedId);
+                return new GroupInfo( cachedId, name);
+            }
         }
+
+        var groupClient = new MoreAppGroupsClient(client.HttpClient);
+        var groups = await groupClient.GetGroupsAsync(client.CustomerId);
+        Group? group = null;
+        if (groupIdHint is not null)
+        {
+            group = groups.FirstOrDefault(g => g.Id.Equals(groupIdHint, StringComparison.InvariantCulture));
+        }
+
+        group ??= groups.FirstOrDefault(g => g.Name.Equals(name, StringComparison.InvariantCulture));
+        if(group is null && !allowCreation)
+        {
+            throw new InvalidOperationException($"Group with name {name} not found.");
+        }
+        else if (group is null)
+        {
+            logger.LogInformation("Creating new group with name {Name}", name);
+            group = await groupClient.CreateGroupAsync(client.CustomerId, new CreateGroupRequest()
+            {
+                Name = name
+            });
+        }
+        else if (allowCreation && group.Name != name)
+        {
+            logger.LogInformation("Updating existing group with id {Id} to new name {Name}", group.Id, name);
+            group.Name = name;
+            group = await groupClient.PatchGroupAsync(client.CustomerId, group.Id, group);
+        } 
+        else
+        {
+            logger.LogInformation("Using existing group with id {Id} and name {Name}", group.Id, group.Name);
+        }
+
+        await caching.StoreGroupIdAsync(client.CustomerId, name, group.Id);
         return new GroupInfo(group.Id, group.Name);
     }
+
+    public static async Task<IGroup> LoadAsync(RestClient restClient, string groupName, IMoreAppCaching moreAppCaching, bool allowUseCache)
+    {
+        var builder = new GroupBuilder(restClient, moreAppCaching, groupName);
+        return await builder.ReadOrBuildAsync(allowUseCache, false);
+    }
+
+    
 }
 
 internal class GroupInfo : IGroup

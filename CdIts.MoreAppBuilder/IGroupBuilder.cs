@@ -2,7 +2,7 @@
 
 public interface IGroupBuilder
 {
-    Task<IGroup> BuildAsync();
+    Task<IGroup> BuildAsync(bool allowUseCache = true);
 }
 
 public interface IGroup

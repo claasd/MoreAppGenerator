@@ -2,6 +2,7 @@
 
 internal class MoreAppBuilder(RestClient client, IMoreAppCaching caching) : IMoreAppBuilder
 {
+    
     public IFolderBuilder Folder(string id, string name)
     {
         return new FolderBuilder(client, caching,  id, name);
@@ -15,7 +16,7 @@ internal class MoreAppBuilder(RestClient client, IMoreAppCaching caching) : IMor
 
     public IGroupBuilder Group(string name, string? groupIdHint = null)
     {
-        return new GroupBuilder(client, name, groupIdHint);
+        return new GroupBuilder(client, caching, name, groupIdHint);
     }
 
     public IUserBuilder User(string email)
