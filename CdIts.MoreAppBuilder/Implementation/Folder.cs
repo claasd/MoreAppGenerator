@@ -2,22 +2,18 @@ namespace MoreAppBuilder.Implementation;
 
 internal class FolderInfo
 {
-    public string Id { get; set;  } = string.Empty;
-    public string Uid { get; set;  } = string.Empty;
-    public string Name { get; set;  } = string.Empty;
+    public string Id { get; set; } = string.Empty;
+    public string Uid { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 }
-internal class Folder(RestClient client, IMoreAppCaching caching, string id, string uid, string name)
+
+internal class Folder(IMoreAppBuilder builder, string id, string uid, string name)
     : IFolder
 {
-    public IFormBuilder Form(string id, string name)
-    {
-        return new FormBuilder(client, caching, id, name, folder: this);
-    }
+    public IFormBuilder Form(string id, string name) => builder.Form(id, name, this);
 
     public IMultiLangFormBuilder MultiLangForm(MoreAppLanguageInstance data, string formId, string? languageId = null)
-    {
-        return new MultiLangFormBuilder(client, caching, data, formId, languageId ?? formId, this);
-    }
+        => builder.Form(data, formId, languageId, this);
 
     public string Id { get; } = id;
     public string Uid { get; } = uid;
@@ -25,13 +21,12 @@ internal class Folder(RestClient client, IMoreAppCaching caching, string id, str
 }
 
 internal class MultiLangFolder(
-    RestClient client,
-    IMoreAppCaching caching,
+    IMoreAppBuilder builder,
     MoreAppLanguageInstance languageData,
     string id,
     string uid,
     string name)
-    : Folder(client, caching, id, uid, name), IMultiLangFolder
+    : Folder(builder, id, uid, name), IMultiLangFolder
 {
     public IMultiLangFormBuilder MultiLangForm(string formId, string? languageId = null) =>
         MultiLangForm(languageData, formId, languageId);

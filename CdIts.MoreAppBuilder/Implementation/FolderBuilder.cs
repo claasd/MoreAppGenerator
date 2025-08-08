@@ -10,6 +10,7 @@ internal class FolderBuilder : IFolderBuilder
 {
     protected readonly RestClient Client;
     protected readonly IMoreAppCaching Caching;
+    protected readonly IMoreAppBuilder Builder;
     private readonly FolderMetadataDto _metadata;
     private FolderDto.StatusValue _status = FolderDto.StatusValue.ACTIVE;
     private readonly string _id;
@@ -20,11 +21,12 @@ internal class FolderBuilder : IFolderBuilder
         set => _metadata.Name = value;
     }
 
-    internal FolderBuilder(RestClient client, IMoreAppCaching caching, string id, string name)
+    internal FolderBuilder(RestClient client, IMoreAppCaching caching, IMoreAppBuilder builder, string id, string name)
     {
         _id = id;
         Client = client;
         Caching = caching;
+        Builder = builder;
         _metadata = new FolderMetadataDto()
         {
             Description = GeneratorId,
@@ -61,7 +63,7 @@ internal class FolderBuilder : IFolderBuilder
         if (cached != null)
         {
             logger.LogInformation("Found cached folder {Id} with name {Name}", _id, _metadata.Name);
-            return new Folder(Client, Caching, _id, cached, _metadata.Name);
+            return new Folder(Builder, _id, cached, _metadata.Name);
         }
         var folderClient = new MoreAppFoldersClient(Client.HttpClient);
         var folders = await folderClient.GetFoldersByCustomerIdAsync(Client.CustomerId);
@@ -94,7 +96,7 @@ internal class FolderBuilder : IFolderBuilder
         }
 
         await Caching.StoreFolderIdAsync(Client.CustomerId, _id, hash, folder.Id);
-        return new Folder(Client, Caching, _id, folder.Id, folder.Meta.Name);
+        return new Folder(Builder, _id, folder.Id, folder.Meta.Name);
     }
 
     private string GetHash()
@@ -108,9 +110,9 @@ internal class MultiLangFolderBuilder : FolderBuilder, IMultiLangFolderBuilder
 {
     private readonly MoreAppLanguageInstance _languageData;
 
-    internal MultiLangFolderBuilder(RestClient client, IMoreAppCaching caching, MoreAppLanguageInstance languageData,
+    internal MultiLangFolderBuilder(RestClient client, IMoreAppCaching caching, IMoreAppBuilder builder, MoreAppLanguageInstance languageData,
         string id, string langFileSectionId)
-        : base(client, caching, id, languageData.FolderName(langFileSectionId))
+        : base(client, caching, builder, id, languageData.FolderName(langFileSectionId))
     {
         _languageData = languageData;
         try
@@ -144,6 +146,6 @@ internal class MultiLangFolderBuilder : FolderBuilder, IMultiLangFolderBuilder
     public new async Task<IMultiLangFolder> BuildAsync()
     {
         var folder = await base.BuildAsync();
-        return new MultiLangFolder(Client, Caching, _languageData, folder.Id, folder.Uid, folder.Name);
+        return new MultiLangFolder(Builder, _languageData, folder.Id, folder.Uid, folder.Name);
     }
 }

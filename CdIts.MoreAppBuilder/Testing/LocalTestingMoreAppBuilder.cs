@@ -17,7 +17,11 @@ public class LocalTestingMoreAppBuilder(LocalTestingMoreAppFactory? factory = nu
     }
 
     public IFormBuilder Form(string id, string name, IFolder? folder = null) => Factory.Form(id, name, folder);
-    
+    public IMultiLangFormBuilder Form(MoreAppLanguageInstance data, string id, string? languageId = null, IFolder? folder = null)
+    {
+        return Factory.MultiLangForm(data, id, folder, languageId ?? id);
+    }
+
     public IUrlDataSourceBuilder UrlDataSource(string name, string url) => Factory.UrlDataSource(name, url);
 
     public IWebHookBuilder WebHook(string name, string url)

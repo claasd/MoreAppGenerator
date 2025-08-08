@@ -8,10 +8,12 @@ namespace MoreAppBuilder.Cache;
 public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = false) : IMoreAppCaching
 {
     public TimeSpan CacheDuration { get; set; } = TimeSpan.FromDays(14);
-
+    public List<string> IgnoreFormPrefixes { get; } = [];
     public async ValueTask<string?> FindElementIdAsync(int customerId, string name, CosmosFormCache.CacheType type,
         string hash)
     {
+        if(IgnoreFormPrefixes.Any(prefix => name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+            return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
             c.CustomerId == customerId && c.FormName == name && c.Type == type && c.Hash == hash);
         if (cacheLatestOnly)

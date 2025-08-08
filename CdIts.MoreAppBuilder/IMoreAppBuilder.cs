@@ -9,6 +9,7 @@ public interface IMoreAppBuilder
     IGroupBuilder Group(string name, string? groupIdHint = null);
     IUserBuilder User(string email);
     IFormBuilder Form(string id, string name, IFolder? folder = null);
+    IMultiLangFormBuilder Form(MoreAppLanguageInstance data, string id, string? languageId = null, IFolder? folder = null);
     
     IUrlDataSourceBuilder UrlDataSource(string name, string url);
 
