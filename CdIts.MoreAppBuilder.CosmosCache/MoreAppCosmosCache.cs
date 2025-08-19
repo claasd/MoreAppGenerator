@@ -7,7 +7,8 @@ namespace MoreAppBuilder.Cache;
 
 public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = false, bool returnCacheOnMismatch = false) : IMoreAppCaching
 {
-    public TimeSpan CacheDuration { get; set; } = TimeSpan.FromDays(14);
+    public bool ReturnCacheOnMismatch { get; set; } = returnCacheOnMismatch;
+    public TimeSpan? CacheDuration { get; set; } = TimeSpan.FromDays(14);
     public List<string> IgnoreFormPrefixes { get; } = [];
     public async ValueTask<string?> FindElementIdAsync(int customerId, string name, CosmosFormCache.CacheType type,
         string hash)
@@ -16,7 +17,7 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
             return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
             c.CustomerId == customerId && c.FormName == name && c.Type == type);
-        if(!returnCacheOnMismatch)
+        if(!ReturnCacheOnMismatch)
             query = query.Where(c=>c.Hash == hash);
         if (cacheLatestOnly)
             query = query.Where(c => c.IsLatest);
@@ -38,7 +39,7 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
             return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
             c.CustomerId == customerId && c.FormName == name && c.Type == CosmosFormCache.CacheType.DataSource);
-        if (hash != null && !returnCacheOnMismatch)
+        if (hash != null && !ReturnCacheOnMismatch)
             query = query.Where(c => c.Hash == hash);
         if (cacheLatestOnly)
             query = query.Where(c => c.IsLatest);
@@ -66,7 +67,7 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
             Type = type,
             Columns = columns?.ToList() ?? [],
             IsLatest = cacheLatestOnly,
-            TimeToLive = (int)CacheDuration.TotalSeconds,
+            TimeToLive = (int) (CacheDuration?.TotalSeconds ?? -1),
             Timestamp = DateTimeOffset.UtcNow
         });
 
