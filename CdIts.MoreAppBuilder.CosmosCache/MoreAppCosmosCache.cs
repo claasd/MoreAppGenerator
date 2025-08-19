@@ -5,7 +5,7 @@ using MoreAppBuilder.Implementation;
 
 namespace MoreAppBuilder.Cache;
 
-public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = false) : IMoreAppCaching
+public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = false, bool returnCacheOnMismatch = false) : IMoreAppCaching
 {
     public TimeSpan CacheDuration { get; set; } = TimeSpan.FromDays(14);
     public List<string> IgnoreFormPrefixes { get; } = [];
@@ -15,10 +15,12 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
         if(IgnoreFormPrefixes.Any(prefix => name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
             return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
-            c.CustomerId == customerId && c.FormName == name && c.Type == type && c.Hash == hash);
+            c.CustomerId == customerId && c.FormName == name && c.Type == type);
+        if(!returnCacheOnMismatch)
+            query = query.Where(c=>c.Hash == hash);
         if (cacheLatestOnly)
             query = query.Where(c => c.IsLatest);
-        return await query.Select(c => c.ElementId).FirstOrDefaultItemAsync();
+        return await query.OrderByDescending(c=>c.Timestamp).Select(c => c.ElementId).FirstOrDefaultItemAsync();
     }
 
     public ValueTask<string?> FindFormIdByHashAsync(int customerId, string name, string hash)
@@ -32,9 +34,11 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
 
     public async ValueTask<IDataSource?> FindDataSourceIntAsync(int customerId, string name, string? hash = null)
     {
+        if(IgnoreFormPrefixes.Any(prefix => name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+            return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
             c.CustomerId == customerId && c.FormName == name && c.Type == CosmosFormCache.CacheType.DataSource);
-        if (hash != null)
+        if (hash != null && !returnCacheOnMismatch)
             query = query.Where(c => c.Hash == hash);
         if (cacheLatestOnly)
             query = query.Where(c => c.IsLatest);
