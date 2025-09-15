@@ -3,7 +3,7 @@
 public class LocalTestingUrlDataSource(string name, string url, Dictionary<string, object> testData)
     : IUrlDataSourceBuilder
 {
-    public Task<IDataSource> BuildAsync() =>
+    public Task<IDataSource> BuildAsync(bool waitForCompletion = false, TimeSpan? timeout = null) =>
         Task.FromResult<IDataSource>(new LocalTestingDataSource(Id, name, testData.Keys.ToList(), testData));
 
     public IUrlDataSourceBuilder Header(string key, string value) => this;

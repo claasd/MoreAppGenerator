@@ -20,6 +20,8 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 
     protected internal SearchElement(string id, string label, DataSource dataSource) : base("com.moreapps:search:1", id, label)
     {
+        if(dataSource.Columns.Count == 0)
+            throw new InvalidOperationException($"Datasource {dataSource.Name} has no columns");
         DataSource = dataSource;
         Field.Properties["allow_barcode"] = false;
         Field.Properties["remember_search"] = false;
@@ -31,6 +33,11 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
 
     public ISearchElement VisibleFields(params string[] fields)
     {
+        foreach (var field in fields)
+        {
+            if(!DataSource.Columns.Contains(field, StringComparer.OrdinalIgnoreCase))
+                throw new InvalidOperationException($"Field {field} not found in datasource {DataSource.Name}. Available fields: {string.Join(", ", DataSource.Columns)}");
+        }
         var source = new SearchDataSource
         {
             Id = DataSource.Id,

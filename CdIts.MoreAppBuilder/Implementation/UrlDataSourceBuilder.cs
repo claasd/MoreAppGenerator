@@ -10,6 +10,7 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
     private readonly RestClient _client;
     private readonly IMoreAppCaching _caching;
     internal RestCreateDataSource Source { get; private set; }
+
     internal UrlDataSourceBuilder(RestClient client, string name, string url, IMoreAppCaching caching)
     {
         _client = client;
@@ -36,7 +37,9 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
     {
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.WEEKLY;
         return this;
-    }public IUrlDataSourceBuilder DailyUpdate()
+    }
+
+    public IUrlDataSourceBuilder DailyUpdate()
     {
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.DAILY;
         return this;
@@ -47,11 +50,13 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.HOURLY;
         return this;
     }
+
     public IUrlDataSourceBuilder HalfHourlyUpdate()
     {
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.HALF_HOUR;
         return this;
     }
+
     public IUrlDataSourceBuilder QuarterHourlyUpdate()
     {
         Source.UrlConfiguration.UpdateInterval = RestUrlConfiguration.UpdateIntervalValue.QUARTER_HOUR;
@@ -60,25 +65,27 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
 
     internal string Hash() => Element.Hash(JsonConvert.SerializeObject(Source));
 
-    public async Task<IDataSource> BuildAsync()
+    public async Task<IDataSource> BuildAsync(bool waitForCompletion = false, TimeSpan? timeout = null)
     {
         var logger = MoreAppService.Logger;
-        logger.LogInformation("Building URL data source {Name} with URL {Url}", Source.Name, Source.UrlConfiguration.Url);
+        logger.LogInformation("Building URL data source {Name} with URL {Url}", Source.Name,
+            Source.UrlConfiguration.Url);
         var hash = Hash();
         var cached = await _caching.FindDataSourceByHashAsync(_client.CustomerId, Source.Name, hash);
-        if (cached != null)
+        if (cached is { Columns.Count: > 0 })
         {
             logger.LogInformation("Using cached data source {Name} with hash {Hash}", Source.Name, hash);
             return cached;
         }
 
-        var client = new MoreAppDatasourcesClient( _client.HttpClient);
+        var client = new MoreAppDatasourcesClient(_client.HttpClient);
         var list = await client.GetAllAsync(_client.CustomerId);
         var current = list.FirstOrDefault(item => item.Name == Source.Name);
         if (current is null)
         {
             logger.LogInformation("Creating new data source {Name}", Source.Name);
             current = await client.CreateAsync(_client.CustomerId, Source);
+            
         }
         else if (!current.UrlConfiguration.Equals(Source.UrlConfiguration))
         {
@@ -89,8 +96,22 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
         {
             logger.LogInformation("Data source {Name} already exists with matching configuration", Source.Name);
         }
-        var result = new DataSource(current.Id, current.Name, current.ColumnMapping.Select(key=>key.Id).ToList());
-        await _caching.StoreDataSourceAsync(_client.CustomerId, hash, result);
+        while (waitForCompletion && current.ColumnMapping.Count == 0)
+        {
+            var start = DateTimeOffset.UtcNow;timeout ??= TimeSpan.FromSeconds(30);
+            if (DateTimeOffset.UtcNow - start > timeout)
+            {
+                throw new TimeoutException($"Timeout reached while waiting for data source {Source.Name} to have columns");
+            }
+            logger.LogInformation("Waiting for data source {Name} to have columns", Source.Name);
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            current = await client.GetSingleAsync(_client.CustomerId, current.Id);
+        }
+        var result = new DataSource(current.Id, current.Name, current.ColumnMapping.Select(key => key.Id).ToList());
+        if (result.Columns.Count > 0)
+            await _caching.StoreDataSourceAsync(_client.CustomerId, hash, result);
+        else
+            logger.LogInformation("Data source {Name} has no columns, not caching", Source.Name);
         return result;
     }
 }
