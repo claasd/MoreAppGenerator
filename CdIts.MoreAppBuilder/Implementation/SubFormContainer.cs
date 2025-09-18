@@ -69,6 +69,12 @@ internal class SubFormContainer<T> : FormContainer<T>,  ISubformContainer<T>  wh
     {
         var props = new Dictionary<string, object>(Field.Properties);
         props.Remove("form");
-        return Hash(Field.Widget, JsonConvert.SerializeObject(props), Rule?.HashValue(), Hash(Elements.Select(e => e.HashValue()).ToArray()));
+        string? ruleHash = null;
+        // make distinction to keep legacy hashes for fields with only one rule
+        if(Rules?.Count == 1)
+            ruleHash = Rules[0].HashValue();
+        else if(Rules?.Count > 1)
+            ruleHash = Hash(Rules.Select(r=>r.HashValue()).ToArray());
+        return Hash(Field.Widget, JsonConvert.SerializeObject(props), ruleHash, Hash(Elements.Select(e => e.HashValue()).ToArray()));
     }
 }

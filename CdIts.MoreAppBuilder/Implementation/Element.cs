@@ -15,8 +15,7 @@ internal class Element
     {
     }
 
-    internal virtual List<RuleBase> Rules => Rule is null ? [] : [Rule];
-    protected VisibilityRule? Rule { get; set; } = null;
+    internal virtual List<RuleBase> Rules => [];
 
     internal Field Field { get; }
 
@@ -39,55 +38,45 @@ internal class Element<T> : Element, IElement<T> where T : class
     {
     }
 
-    internal override List<RuleBase> Rules => GetAllRules();
-
-    private List<RuleBase> GetAllRules()
-    {
-        var rules = base.Rules;
-        rules.AddRange(SetValueRules.Values);
-        return rules;
-    }
-
-    Dictionary<string, SetValueRule> SetValueRules { get; set; } = new();
 
     public T EnabledWhen(params ICondition[] conditions)
     {
         if (conditions.Any())
-            Rule = new VisibilityRule(conditions, true);
+            Rules.Add(new VisibilityRule(conditions, true));
         return this as T;
     }
     public T EnabledWhenAny(params ICondition[] conditions)
     {
         if (conditions.Any())
-            Rule = new VisibilityRule(conditions, true, isAny: true);
+            Rules.Add(new VisibilityRule(conditions, true, isAny: true));
         return this as T;
     }
 
     public T DisableWhen(params ICondition[] conditions)
     {
         if (conditions.Any())
-            Rule = new VisibilityRule(conditions, false);
+            Rules.Add(new VisibilityRule(conditions, false));
         return this as T;
     }
 
     public T DisableWhenAny(params ICondition[] conditions)
     {
         if (conditions.Any())
-            Rule = new VisibilityRule(conditions, false, true);
+            Rules.Add(new VisibilityRule(conditions, false, true));
         return this as T;
     }
 
     public T SetValueWhenAny(string value, params ICondition[] conditions)
     {
         if (conditions.Any())
-            SetValueRules[$"any/{value}"] = new SetValueRule(conditions, value, true);
+            Rules.Add(new SetValueRule(conditions, value, true));
         return this as T;
     }
 
     public T SetValueWhen(string value, params ICondition[] conditions)
     {
         if (conditions.Any())
-            SetValueRules[$"all/{value}"] = new SetValueRule(conditions, value, false);
+            Rules.Add(new SetValueRule(conditions, value, false));
         return this as T;
     }
 
