@@ -15,7 +15,7 @@ internal class Element
     {
     }
 
-    internal virtual List<RuleBase> Rules { get; set; } = [];
+    internal virtual List<RuleBase> Rules { get; } = [];
 
     internal Field Field { get; }
 
