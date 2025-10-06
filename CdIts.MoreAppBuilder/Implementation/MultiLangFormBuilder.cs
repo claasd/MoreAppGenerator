@@ -95,7 +95,7 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         return this;
     }
 
-    public new IMultiLangFormBuilder AddToGroup(IGroup group)
+    public new IMultiLangFormBuilder AddToGroup(params IGroup[] group)
     {
         base.AddToGroup(group);
         return this;

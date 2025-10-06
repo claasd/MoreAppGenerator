@@ -93,7 +93,7 @@ public interface IFormBuilder : IFormContainer
     string GetHash();
     string CreateOpenApiSpec();
     IFormBuilder Description(string desc);
-    IFormBuilder AddToGroup(IGroup group);
+    IFormBuilder AddToGroup(params IGroup[] group);
     IFormBuilder FolderPosition(int position);
     IFormBuilder DefaultPhotoQualityBest();
     IFormBuilder DefaultPhotoQualityHigh();
@@ -110,7 +110,7 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     Task<IFormInfo> BuildAsync(bool removeDrafts = true);
     string GetHash();
     string CreateOpenApiSpec();
-    IMultiLangFormBuilder AddToGroup(IGroup group);
+    IMultiLangFormBuilder AddToGroup(params IGroup[] group);
     IMultiLangFormBuilder FolderPosition(int position);
     public string Language { get; }
     IMultiLangFormBuilder DefaultPhotoQualityHigh();

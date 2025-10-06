@@ -38,7 +38,7 @@ internal class LocalTestingFormBuilder(string id, string label, IFolder? folder)
     }
 
     public IFormBuilder Description(string desc) => this;
-    public IFormBuilder AddToGroup(IGroup group) => this;
+    public IFormBuilder AddToGroup(params IGroup[] group) => this;
     public IFormBuilder FolderPosition(int position) => this;
     
     public static MoreAppLocation TestLocation { get; set; } = new MoreAppLocation

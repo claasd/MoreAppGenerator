@@ -265,9 +265,10 @@ internal class FormBuilder(
         return this;
     }
 
-    public IFormBuilder AddToGroup(IGroup group)
+    public IFormBuilder AddToGroup(params IGroup[] group)
     {
-        _groupIds.Add(group.Id);
+        foreach (var g in group)
+            _groupIds.Add(g.Id);
         return this;
     }
 
