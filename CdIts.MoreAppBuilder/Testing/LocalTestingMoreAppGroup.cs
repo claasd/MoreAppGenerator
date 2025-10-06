@@ -6,4 +6,5 @@ public class LocalTestingMoreAppGroup(string name, string? idHint) : IGroupBuild
 
     public string Id { get; } = idHint ?? "FakeId";
     public string Name { get; } = name;
+    public bool ExternallyManaged => false;
 }

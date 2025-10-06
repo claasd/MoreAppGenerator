@@ -21,11 +21,15 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         [JsonProperty("grants")]
         public ICollection<Grant> Grants { get; set; }
 
+        [JsonProperty("externallyManaged")]
+        public bool? ExternallyManaged { get; set; } = false;
+
         public Group(){}
         public Group(Group other) {
             Id = other.Id;
             Name = other.Name;
             Grants = other.Grants?.Select(value=>value?.ToGrant())?.ToList();
+            ExternallyManaged = other.ExternallyManaged;
         }
         public Group ToGroup() => new Group(this);
         public bool Equals(Group other) {
@@ -33,7 +37,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(this, other)) return true;
             var result = Id == other.Id
                 && Name == other.Name
-                && (Grants?.SequenceEqual(other.Grants) ?? other.Grants is null);
+                && (Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
+                && ExternallyManaged == other.ExternallyManaged;
             if(result) _PartialEquals(other, ref result);
             return result;
         }
@@ -44,6 +49,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Id);
             hashCode.Add(Name);
             hashCode.Add(Grants);
+            hashCode.Add(ExternallyManaged);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

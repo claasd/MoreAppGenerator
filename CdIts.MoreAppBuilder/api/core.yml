@@ -2289,6 +2289,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Grant'
+        externallyManaged:
+          type: boolean
+          default: false
       example:
         id: 60b8b724022e103a9a9aa6d3
         name: Delivery drivers

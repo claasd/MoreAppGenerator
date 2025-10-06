@@ -19,7 +19,7 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
             if (cachedId is not null)
             {
                 logger.LogInformation("Found cached group with name {Name} and id {Id}", name, cachedId);
-                return new GroupInfo(cachedId, name);
+                return new GroupInfo(cachedId, name, false);
             }
         }
 
@@ -29,7 +29,7 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
             if (cachedName is not null)
             {
                 logger.LogInformation("Found cached group with name {Name} and id {Id}", cachedName, groupIdHint);
-                return new GroupInfo(groupIdHint, cachedName);
+                return new GroupInfo(groupIdHint, cachedName, false);
             }
         }
 
@@ -68,9 +68,9 @@ internal class GroupBuilder(RestClient client, IMoreAppCaching caching, string n
         {
             logger.LogInformation("Using existing group with id {Id} and name {Name}", group.Id, group.Name);
         }
-
-        await caching.StoreGroupIdAsync(client.CustomerId, name, group.Id);
-        return new GroupInfo(group.Id, group.Name);
+        if(group.ExternallyManaged != true) // only store if not externally managed
+            await caching.StoreGroupIdAsync(client.CustomerId, name, group.Id);
+        return new GroupInfo(group.Id, group.Name, group.ExternallyManaged is true);
     }
 
     public static async Task<IGroup> LoadAsync(RestClient restClient, string groupName, IMoreAppCaching caching,
@@ -93,10 +93,12 @@ internal class GroupInfo : IGroup
 {
     public string Id { get; }
     public string Name { get; }
+    public bool ExternallyManaged { get; }
 
-    internal GroupInfo(string id, string name)
+    internal GroupInfo(string id, string name, bool externallyManaged)
     {
         Id = id;
         Name = name;
+        ExternallyManaged = externallyManaged;
     }
 }

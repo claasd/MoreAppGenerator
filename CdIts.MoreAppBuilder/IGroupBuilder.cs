@@ -9,4 +9,5 @@ public interface IGroup
 {
     string Id { get; }
     string Name { get; }
+    bool ExternallyManaged { get; }
 }

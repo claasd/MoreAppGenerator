@@ -8,6 +8,7 @@ namespace MoreAppBuilder.Cache;
 public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = false, bool returnCacheOnMismatch = false) : IMoreAppCaching
 {
     public bool ReturnCacheOnMismatch { get; set; } = returnCacheOnMismatch;
+    public bool CacheLatestOnly { get; set; } = cacheLatestOnly;
     public TimeSpan? CacheDuration { get; set; } = TimeSpan.FromDays(14);
     public List<string> IgnoreFormPrefixes { get; } = [];
     public async ValueTask<string?> FindElementIdAsync(int customerId, string name, CosmosFormCache.CacheType type,
@@ -19,7 +20,7 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
             c.CustomerId == customerId && c.FormName == name && c.Type == type);
         if(!ReturnCacheOnMismatch)
             query = query.Where(c=>c.Hash == hash);
-        if (cacheLatestOnly)
+        if (CacheLatestOnly)
             query = query.Where(c => c.IsLatest);
         return await query.OrderByDescending(c=>c.Timestamp).Select(c => c.ElementId).FirstOrDefaultItemAsync();
     }
@@ -41,7 +42,7 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
             c.CustomerId == customerId && c.FormName == name && c.Type == CosmosFormCache.CacheType.DataSource);
         if (hash != null && !ReturnCacheOnMismatch)
             query = query.Where(c => c.Hash == hash);
-        if (cacheLatestOnly)
+        if (CacheLatestOnly)
             query = query.Where(c => c.IsLatest);
         var result = await query.OrderByDescending(c => c.Timestamp).Select(c => new
             {
@@ -59,14 +60,14 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
         CosmosFormCache.CacheType type, IReadOnlyList<string>? columns = null) =>
         await container.UpsertItemAsync(new CosmosFormCache
         {
-            Id = cacheLatestOnly ? $"{customerId}-{type}-{name}" : Guid.NewGuid().ToString(),
+            Id = CacheLatestOnly ? $"{customerId}-{type}-{name}" : Guid.NewGuid().ToString(),
             CustomerId = customerId,
             FormName = name,
             Hash = hash,
             ElementId = id,
             Type = type,
             Columns = columns?.ToList() ?? [],
-            IsLatest = cacheLatestOnly,
+            IsLatest = CacheLatestOnly,
             TimeToLive = (int) (CacheDuration?.TotalSeconds ?? -1),
             Timestamp = DateTimeOffset.UtcNow
         });

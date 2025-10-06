@@ -473,6 +473,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             item.Id = other.Id;
             item.Name = other.Name;
             item.Grants = deepClone ? other.Grants?.Select(value=>value?.ToGrant())?.ToList() : other.Grants;
+            item.ExternallyManaged = other.ExternallyManaged;
         }
         
         /// <summary>
@@ -482,7 +483,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static Group ToGroup(this Group other, bool deepClone = true) => new Group() { 
             Id = other.Id,
             Name = other.Name,
-            Grants = deepClone ? other.Grants?.Select(value=>value?.ToGrant())?.ToList() : other.Grants
+            Grants = deepClone ? other.Grants?.Select(value=>value?.ToGrant())?.ToList() : other.Grants,
+            ExternallyManaged = other.ExternallyManaged
         };
         
         /// <summary>
@@ -491,7 +493,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static IQueryable<Group> SelectAsGroup(this IQueryable<Group> query) => query.Select(other => new Group() { 
             Id = other.Id,
             Name = other.Name,
-            Grants = other.Grants
+            Grants = other.Grants,
+            ExternallyManaged = other.ExternallyManaged
         });
 
         /// <summary>
