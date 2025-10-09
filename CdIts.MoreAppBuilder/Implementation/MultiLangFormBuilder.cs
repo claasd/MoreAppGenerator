@@ -89,7 +89,7 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         return this;
     }
 
-    public IMultiLangFormBuilder InAppDescription(string inAppDesc)
+    public new IMultiLangFormBuilder InAppDescription(string inAppDesc)
     {
         base.InAppDescription(inAppDesc);
         return this;

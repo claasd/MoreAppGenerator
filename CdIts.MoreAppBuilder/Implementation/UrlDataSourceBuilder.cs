@@ -96,9 +96,10 @@ internal class UrlDataSourceBuilder : IUrlDataSourceBuilder
         {
             logger.LogInformation("Data source {Name} already exists with matching configuration", Source.Name);
         }
+        var start = DateTimeOffset.UtcNow;
+        timeout ??= TimeSpan.FromSeconds(30);
         while (waitForCompletion && current.ColumnMapping.Count == 0)
         {
-            var start = DateTimeOffset.UtcNow;timeout ??= TimeSpan.FromSeconds(30);
             if (DateTimeOffset.UtcNow - start > timeout)
             {
                 throw new TimeoutException($"Timeout reached while waiting for data source {Source.Name} to have columns");
