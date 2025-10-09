@@ -28,6 +28,8 @@ public interface ILocation : IValueField<ILocation>, IRememberable<ILocation>
 public interface IReadOnlyText : IInputElement<IReadOnlyText>, IStringValueOperations<IReadOnlyText>
 {
     IReadOnlyText ShowHeader();
+    ICondition HasValue();
+    ICondition HasNoValue();
 }
 
 public interface IFileElement : IValueField<IFileElement>
