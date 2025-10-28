@@ -25,6 +25,7 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
         DataSource = dataSource;
         Field.Properties["allow_barcode"] = false;
         Field.Properties["remember_search"] = false;
+        Field.Properties["remember_input"] = false;
         Field.Properties["default_value"] = "";
         Field.Properties["colors"] = _colors;
         Field.Properties["filter_fields"] = new List<string>();
@@ -87,6 +88,12 @@ internal class SearchElement : InputElement<ISearchElement>, ISearchElement
     public ISearchElement RememberLastSearch()
     {
         Field.Properties["remember_search"] = true;
+        return this;
+    }
+
+    public ISearchElement RememberLastInput()
+    {
+        Field.Properties["remember_input"] = true;
         return this;
     }
 

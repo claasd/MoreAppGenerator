@@ -9,6 +9,7 @@ public interface ISearchElement : IInputField<ISearchElement>
     ISearchElement Filter(ISearchElement element, string field);
     ISearchElement AllowBarcodeScanner();
     ISearchElement RememberLastSearch();
+    ISearchElement RememberLastInput();
     ISearchElement AddColorQuery(string query, string color);
     ICondition FieldHasValue(string field);
     ICondition FieldHasNoValue(string field);
