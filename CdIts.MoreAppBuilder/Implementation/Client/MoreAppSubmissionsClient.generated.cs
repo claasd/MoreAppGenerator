@@ -232,7 +232,7 @@ namespace MoreAppBuilder.Implementation.Client
              var memoryStream = new MemoryStream();
              await httpResult.Content.CopyToAsync(memoryStream);
              memoryStream.Position = 0;
-             return new CaffoaStreamResult(memoryStream, httpResult.Headers);
+             return new CaffoaStreamResult(memoryStream, httpResult.Content.Headers, httpResult.Headers);
         }
 
         /// <summary>
