@@ -59,7 +59,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public bool Equals(TriggerConfiguration other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (Attachments?.SequenceEqual(other.Attachments) ?? other.Attachments is null)
+            var result = (other.Attachments is null ? Attachments is null : Attachments?.SequenceEqual(other.Attachments) ?? other.Attachments is null)
                 && AttachImages == other.AttachImages
                 && EmbedImages == other.EmbedImages
                 && AttachPdf == other.AttachPdf

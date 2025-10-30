@@ -37,7 +37,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(this, other)) return true;
             var result = Id == other.Id
                 && Name == other.Name
-                && (Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
+                && (other.Grants is null ? Grants is null : Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
                 && ExternallyManaged == other.ExternallyManaged;
             if(result) _PartialEquals(other, ref result);
             return result;

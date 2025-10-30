@@ -42,8 +42,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(this, other)) return true;
             var result = Url == other.Url
                 && (Credentials?.Equals(other.Credentials) ?? other.Credentials is null)
-                && (RequestHeaders?.SequenceEqual(other.RequestHeaders) ?? other.RequestHeaders is null)
-                && (Parameters?.SequenceEqual(other.Parameters) ?? other.Parameters is null)
+                && (other.RequestHeaders is null ? RequestHeaders is null : RequestHeaders?.SequenceEqual(other.RequestHeaders) ?? other.RequestHeaders is null)
+                && (other.Parameters is null ? Parameters is null : Parameters?.SequenceEqual(other.Parameters) ?? other.Parameters is null)
                 && UpdateInterval == other.UpdateInterval;
             if(result) _PartialEquals(other, ref result);
             return result;

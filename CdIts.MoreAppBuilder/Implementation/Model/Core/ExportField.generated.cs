@@ -39,7 +39,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             var result = Name == other.Name
                 && DataName == other.DataName
                 && ExportFieldType == other.ExportFieldType
-                && (Fields?.SequenceEqual(other.Fields) ?? other.Fields is null);
+                && (other.Fields is null ? Fields is null : Fields?.SequenceEqual(other.Fields) ?? other.Fields is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppSubmissionsClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -50,7 +55,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task ResendSubmissionAsync(double customerId, string submissionId, CancellationToken cancellationToken = default) {
+        public virtual async Task ResendSubmissionAsync(double customerId, string submissionId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/submissions/resend/{submissionId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Put, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -78,7 +83,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<RestPageableRegistrations> FilterSubmissionsWithSimpleFilterAsync(double customerId, string formId, double page, SimpleFilter payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestPageableRegistrations> FilterSubmissionsWithSimpleFilterAsync(double customerId, string formId, double page, SimpleFilter payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/forms/{formId}/submissions/filter/{page}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -109,7 +114,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<ExportScheduledResponse>> ScheduleExportAsync(double customerId, string formId, ExportRequest payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<ExportScheduledResponse>> ScheduleExportAsync(double customerId, string formId, ExportRequest payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/forms/{formId}/submissions/export"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -141,7 +146,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<RestRegistration> GetSubmissionAsync(double customerId, string submissionId, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestRegistration> GetSubmissionAsync(double customerId, string submissionId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/submissions/{submissionId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -172,7 +177,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task DeleteRegistrationAsync(double customerId, string submissionId, long? timestamp = null, CancellationToken cancellationToken = default) {
+        public virtual async Task DeleteRegistrationAsync(double customerId, string submissionId, long? timestamp = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/submissions/{submissionId}"));
             var queryBuilder = new QueryBuilder();
             if(timestamp != null)
@@ -204,7 +209,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Stream> GetFileAsync(double customerId, string fileId, CancellationToken cancellationToken = default) {
+        public virtual async Task<CaffoaStreamResult> GetFileAsync(double customerId, string fileId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/registrationFile/{fileId}/download"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -227,7 +232,7 @@ namespace MoreAppBuilder.Implementation.Client
              var memoryStream = new MemoryStream();
              await httpResult.Content.CopyToAsync(memoryStream);
              memoryStream.Position = 0;
-             return memoryStream;
+             return new CaffoaStreamResult(memoryStream, httpResult.Headers);
         }
 
         /// <summary>
@@ -235,7 +240,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<ExportField>> ExportFieldsAsync(double customerId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<ExportField>> ExportFieldsAsync(double customerId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/forms/{formId}/submissions/export/fields"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);

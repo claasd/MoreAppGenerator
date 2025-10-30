@@ -50,7 +50,7 @@ namespace MoreAppBuilder.Implementation.Model.Webhooks {
             var result = Id == other.Id
                 && Url == other.Url
                 && Name == other.Name
-                && (Type?.SequenceEqual(other.Type) ?? other.Type is null)
+                && (other.Type is null ? Type is null : Type?.SequenceEqual(other.Type) ?? other.Type is null)
                 && Status == other.Status
                 && Secret == other.Secret;
             if(result) _PartialEquals(other, ref result);

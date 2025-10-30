@@ -41,9 +41,9 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(this, other)) return true;
             var result = Enabled == other.Enabled
                 && OnlyForCurrentUser == other.OnlyForCurrentUser
-                && (Fields?.SequenceEqual(other.Fields) ?? other.Fields is null)
+                && (other.Fields is null ? Fields is null : Fields?.SequenceEqual(other.Fields) ?? other.Fields is null)
                 && FilteringEnabled == other.FilteringEnabled
-                && (FilteredFields?.SequenceEqual(other.FilteredFields) ?? other.FilteredFields is null);
+                && (other.FilteredFields is null ? FilteredFields is null : FilteredFields?.SequenceEqual(other.FilteredFields) ?? other.FilteredFields is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

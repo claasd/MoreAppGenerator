@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppTasksClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -50,7 +55,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task RevokeAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
+        public virtual async Task RevokeAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks/{taskId}/revoke"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -78,7 +83,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task CompleteAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
+        public virtual async Task CompleteAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks/{taskId}/complete"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -105,7 +110,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<RestPageableTasks> FilterTasksAsync(double customerId, string formId, double page, SimpleFilter payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestPageableTasks> FilterTasksAsync(double customerId, string formId, double page, SimpleFilter payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks/filter/{page}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -137,7 +142,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<RestTask> CreateTaskAsync(double customerId, string formId, TaskCreateRequest payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestTask> CreateTaskAsync(double customerId, string formId, TaskCreateRequest payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -169,7 +174,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<RestTask> GetTaskAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestTask> GetTaskAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks/{taskId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);

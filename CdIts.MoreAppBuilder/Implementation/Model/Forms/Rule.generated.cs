@@ -38,8 +38,8 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(this, other)) return true;
             var result = Name == other.Name
                 && Type == other.Type
-                && (Conditions?.SequenceEqual(other.Conditions) ?? other.Conditions is null)
-                && (Actions?.SequenceEqual(other.Actions) ?? other.Actions is null);
+                && (other.Conditions is null ? Conditions is null : Conditions?.SequenceEqual(other.Conditions) ?? other.Conditions is null)
+                && (other.Actions is null ? Actions is null : Actions?.SequenceEqual(other.Actions) ?? other.Actions is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

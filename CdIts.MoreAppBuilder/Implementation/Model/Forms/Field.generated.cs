@@ -33,7 +33,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(this, other)) return true;
             var result = Uid == other.Uid
                 && Widget == other.Widget
-                && (Properties?.SequenceEqual(other.Properties) ?? other.Properties is null);
+                && (other.Properties is null ? Properties is null : Properties?.SequenceEqual(other.Properties) ?? other.Properties is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

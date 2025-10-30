@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppFormsClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com/api/v1.0/forms" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -47,7 +52,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormDto> GetFormByCustomerId1Async(double customerId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormDto> GetFormByCustomerId1Async(double customerId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -66,7 +71,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// This will restore the form to both the app and the platform
         /// 200 -> OK
         /// </summary>
-        public async Task<FormDto> RestoreForm1Async(double customerId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormDto> RestoreForm1Async(double customerId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Put, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -85,7 +90,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// This will hide the form in both the app and the platform
         /// 200 -> OK
         /// </summary>
-        public async Task<FormDto> TrashForm1Async(double customerId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormDto> TrashForm1Async(double customerId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -103,7 +108,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormDto> PatchForm1Async(double customerId, string formId, FormDto payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormDto> PatchForm1Async(double customerId, string formId, FormDto payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Patch, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -122,7 +127,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<IReadOnlyList<FormDto>> Find1Async(double customerId, int? page = 0, string query = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<FormDto>> Find1Async(double customerId, int? page = 0, string query = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms"));
             var queryBuilder = new QueryBuilder();
             if(page != null)
@@ -146,7 +151,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormDto> CreateForm1Async(double customerId, FormDto payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormDto> CreateForm1Async(double customerId, FormDto payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");

@@ -32,8 +32,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = TotalSize == other.TotalSize
-                && (Elements?.SequenceEqual(other.Elements) ?? other.Elements is null)
-                && (Headers?.SequenceEqual(other.Headers) ?? other.Headers is null);
+                && (other.Elements is null ? Elements is null : Elements?.SequenceEqual(other.Elements) ?? other.Elements is null)
+                && (other.Headers is null ? Headers is null : Headers?.SequenceEqual(other.Headers) ?? other.Headers is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

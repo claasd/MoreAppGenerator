@@ -51,7 +51,7 @@ namespace MoreAppBuilder.Implementation.Model.Webhooks {
                 && CustomerId == other.CustomerId
                 && Type == other.Type
                 && IdempotencyKey == other.IdempotencyKey
-                && (Data?.SequenceEqual(other.Data) ?? other.Data is null);
+                && (other.Data is null ? Data is null : Data?.SequenceEqual(other.Data) ?? other.Data is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

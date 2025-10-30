@@ -38,8 +38,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(this, other)) return true;
             var result = EmailAddress == other.EmailAddress
                 && Language == other.Language
-                && (Groups?.SequenceEqual(other.Groups) ?? other.Groups is null)
-                && (Grants?.SequenceEqual(other.Grants) ?? other.Grants is null);
+                && (other.Groups is null ? Groups is null : Groups?.SequenceEqual(other.Groups) ?? other.Groups is null)
+                && (other.Grants is null ? Grants is null : Grants?.SequenceEqual(other.Grants) ?? other.Grants is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

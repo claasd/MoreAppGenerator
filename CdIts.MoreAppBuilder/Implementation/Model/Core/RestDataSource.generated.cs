@@ -85,8 +85,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && LastUpdated == other.LastUpdated
                 && LastSuccessfulUpdate == other.LastSuccessfulUpdate
                 && LastUpdateType == other.LastUpdateType
-                && (LastUpdateWarningMessages?.SequenceEqual(other.LastUpdateWarningMessages) ?? other.LastUpdateWarningMessages is null)
-                && (ColumnMapping?.SequenceEqual(other.ColumnMapping) ?? other.ColumnMapping is null)
+                && (other.LastUpdateWarningMessages is null ? LastUpdateWarningMessages is null : LastUpdateWarningMessages?.SequenceEqual(other.LastUpdateWarningMessages) ?? other.LastUpdateWarningMessages is null)
+                && (other.ColumnMapping is null ? ColumnMapping is null : ColumnMapping?.SequenceEqual(other.ColumnMapping) ?? other.ColumnMapping is null)
                 && Enabled == other.Enabled
                 && FailedExecutionCount == other.FailedExecutionCount
                 && Version == other.Version;

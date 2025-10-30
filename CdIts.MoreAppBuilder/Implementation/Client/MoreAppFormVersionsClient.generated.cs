@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppFormVersionsClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com/api/v1.0/forms" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -47,7 +52,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormVersionDto> GetFormVersionForForm1Async(double customerId, string formId, string formVersionId, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormVersionDto> GetFormVersionForForm1Async(double customerId, string formId, string formVersionId, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions/{formVersionId}"));
             var queryBuilder = new QueryBuilder();
             if(brandingId != null)
@@ -70,7 +75,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Updating is only allowed for form versions with a non-FINAL status
         /// 200 -> OK
         /// </summary>
-        public async Task<FormVersionDto> UpdateFormVersion1Async(double customerId, string formId, string formVersionId, FormVersionDto payload, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormVersionDto> UpdateFormVersion1Async(double customerId, string formId, string formVersionId, FormVersionDto payload, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions/{formVersionId}"));
             var queryBuilder = new QueryBuilder();
             if(brandingId != null)
@@ -94,7 +99,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Only form versions with status 'DRAFT' can be deleted.
         /// 200 -> OK
         /// </summary>
-        public async Task DeleteFormVersion1Async(double customerId, string formId, string formVersionId, CancellationToken cancellationToken = default) {
+        public virtual async Task DeleteFormVersion1Async(double customerId, string formId, string formVersionId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions/{formVersionId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -109,7 +114,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<IReadOnlyList<FormVersionDto>> GetFormVersionsForForm1Async(double customerId, string formId, int? page = 0, int? size = 10, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<FormVersionDto>> GetFormVersionsForForm1Async(double customerId, string formId, int? page = 0, int? size = 10, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions"));
             var queryBuilder = new QueryBuilder();
             if(page != null)
@@ -135,7 +140,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 201 -> Created
         /// </summary>
-        public async Task<FormVersionDto> CreateFormVersion1Async(double customerId, string formId, FormVersionDto payload, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormVersionDto> CreateFormVersion1Async(double customerId, string formId, FormVersionDto payload, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions"));
             var queryBuilder = new QueryBuilder();
             if(brandingId != null)
@@ -158,7 +163,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormVersionDto> FinalizeFormVersion1Async(double customerId, string formId, string formVersionId, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormVersionDto> FinalizeFormVersion1Async(double customerId, string formId, string formVersionId, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions/{formVersionId}/finalize"));
             var queryBuilder = new QueryBuilder();
             if(brandingId != null)
@@ -180,7 +185,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormVersionCopyResponseDto> CopyFormVersionAsync(double customerId, string formId, string formVersionId, FormVersionCopyDto payload, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormVersionCopyResponseDto> CopyFormVersionAsync(double customerId, string formId, string formVersionId, FormVersionCopyDto payload, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions/{formVersionId}/copy"));
             var queryBuilder = new QueryBuilder();
             if(brandingId != null)
@@ -203,7 +208,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task ValidateFormVersion1Async(double customerId, string formId, FormVersionDto payload, CancellationToken cancellationToken = default) {
+        public virtual async Task ValidateFormVersion1Async(double customerId, string formId, FormVersionDto payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/{formId}/versions/validate"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -219,7 +224,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FormVersionDto> GetTemplateFormVersionAsync(double customerId, string formVersionId, string brandingId = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<FormVersionDto> GetTemplateFormVersionAsync(double customerId, string formVersionId, string brandingId = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/forms/templates/{formVersionId}"));
             var queryBuilder = new QueryBuilder();
             if(brandingId != null)

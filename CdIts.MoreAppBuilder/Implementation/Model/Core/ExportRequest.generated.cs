@@ -45,11 +45,11 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = ExporterType == other.ExporterType
-                && (SubmissionIds?.SequenceEqual(other.SubmissionIds) ?? other.SubmissionIds is null)
-                && (ExportFields?.SequenceEqual(other.ExportFields) ?? other.ExportFields is null)
-                && (MailOnFinish?.SequenceEqual(other.MailOnFinish) ?? other.MailOnFinish is null)
+                && (other.SubmissionIds is null ? SubmissionIds is null : SubmissionIds?.SequenceEqual(other.SubmissionIds) ?? other.SubmissionIds is null)
+                && (other.ExportFields is null ? ExportFields is null : ExportFields?.SequenceEqual(other.ExportFields) ?? other.ExportFields is null)
+                && (other.MailOnFinish is null ? MailOnFinish is null : MailOnFinish?.SequenceEqual(other.MailOnFinish) ?? other.MailOnFinish is null)
                 && (Options?.Equals(other.Options) ?? other.Options is null)
-                && (FilterQueries?.SequenceEqual(other.FilterQueries) ?? other.FilterQueries is null);
+                && (other.FilterQueries is null ? FilterQueries is null : FilterQueries?.SequenceEqual(other.FilterQueries) ?? other.FilterQueries is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

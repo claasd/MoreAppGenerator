@@ -43,9 +43,9 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool Equals(TaskCreateRequest other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (Recipients?.SequenceEqual(other.Recipients) ?? other.Recipients is null)
+            var result = (other.Recipients is null ? Recipients is null : Recipients?.SequenceEqual(other.Recipients) ?? other.Recipients is null)
                 && Message == other.Message
-                && (Data?.SequenceEqual(other.Data) ?? other.Data is null)
+                && (other.Data is null ? Data is null : Data?.SequenceEqual(other.Data) ?? other.Data is null)
                 && InformationDate == other.InformationDate
                 && (PublishDate?.Equals(other.PublishDate) ?? other.PublishDate is null)
                 && (PublishInfo?.Equals(other.PublishInfo) ?? other.PublishInfo is null);

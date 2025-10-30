@@ -48,7 +48,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
                 && Namespace == other.Namespace
                 && Name == other.Name
                 && Version == other.Version
-                && (Configuration?.SequenceEqual(other.Configuration) ?? other.Configuration is null);
+                && (other.Configuration is null ? Configuration is null : Configuration?.SequenceEqual(other.Configuration) ?? other.Configuration is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

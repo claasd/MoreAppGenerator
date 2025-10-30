@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppInvitesClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -49,7 +54,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task UpdateInviteAsync(double customerId, string id, RestUserAccountInformation payload, CancellationToken cancellationToken = default) {
+        public virtual async Task UpdateInviteAsync(double customerId, string id, RestUserAccountInformation payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{id}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Put, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -77,7 +82,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task RevokeInviteAsync(double customerId, string id, CancellationToken cancellationToken = default) {
+        public virtual async Task RevokeInviteAsync(double customerId, string id, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{id}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -104,7 +109,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<RestInvite>> GetInvitesAsync(double customerId, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<RestInvite>> GetInvitesAsync(double customerId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -134,7 +139,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 201 -> Created
         /// 400 -> Bad Request
         /// </summary>
-        public async Task InviteUserAsync(double customerId, RestInviteUser payload, CancellationToken cancellationToken = default) {
+        public virtual async Task InviteUserAsync(double customerId, RestInviteUser payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -163,7 +168,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task AddGroupAsync(double customerId, string groupId, string inviteId, CancellationToken cancellationToken = default) {
+        public virtual async Task AddGroupAsync(double customerId, string groupId, string inviteId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{inviteId}/groups/{groupId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -181,7 +186,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task RemoveGroupAsync(double customerId, string groupId, string inviteId, CancellationToken cancellationToken = default) {
+        public virtual async Task RemoveGroupAsync(double customerId, string groupId, string inviteId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{inviteId}/groups/{groupId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -199,7 +204,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<IReadOnlyList<Grant>> GetGrants1Async(double customerId, string id, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<Grant>> GetGrants1Async(double customerId, string id, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{id}/grants"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -230,7 +235,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<IReadOnlyList<Grant>> PatchGrant1Async(double customerId, string id, RestGrantChange payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<Grant>> PatchGrant1Async(double customerId, string id, RestGrantChange payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{id}/grants"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Patch, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -262,7 +267,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task ResendInviteAsync(double customerId, string id, CancellationToken cancellationToken = default) {
+        public virtual async Task ResendInviteAsync(double customerId, string id, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/invites/{id}/resend"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);

@@ -52,8 +52,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && EmailAddress == other.EmailAddress
                 && (Settings?.Equals(other.Settings) ?? other.Settings is null)
                 && EmailValidated == other.EmailValidated
-                && (Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
-                && (Groups?.SequenceEqual(other.Groups) ?? other.Groups is null);
+                && (other.Grants is null ? Grants is null : Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
+                && (other.Groups is null ? Groups is null : Groups?.SequenceEqual(other.Groups) ?? other.Groups is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

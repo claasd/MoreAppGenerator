@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppCustomersClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -50,7 +55,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Customer> GetCustomerAsync(double customerId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Customer> GetCustomerAsync(double customerId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);

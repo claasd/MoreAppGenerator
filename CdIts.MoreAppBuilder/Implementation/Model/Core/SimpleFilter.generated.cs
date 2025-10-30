@@ -41,8 +41,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = PageSize == other.PageSize
-                && (Sort?.SequenceEqual(other.Sort) ?? other.Sort is null)
-                && (Query?.SequenceEqual(other.Query) ?? other.Query is null);
+                && (other.Sort is null ? Sort is null : Sort?.SequenceEqual(other.Sort) ?? other.Sort is null)
+                && (other.Query is null ? Query is null : Query?.SequenceEqual(other.Query) ?? other.Query is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

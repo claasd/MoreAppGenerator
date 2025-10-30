@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppGroupsClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -49,7 +54,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<Group>> GetGroupsAsync(double customerId, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<Group>> GetGroupsAsync(double customerId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -79,7 +84,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 201 -> Created
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<Group> CreateGroupAsync(double customerId, CreateGroupRequest payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<Group> CreateGroupAsync(double customerId, CreateGroupRequest payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -111,7 +116,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task AddUserAsync(double customerId, string groupId, string userId, CancellationToken cancellationToken = default) {
+        public virtual async Task AddUserAsync(double customerId, string groupId, string userId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}/users/{userId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -128,7 +133,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task RemoveUserAsync(double customerId, string groupId, string userId, CancellationToken cancellationToken = default) {
+        public virtual async Task RemoveUserAsync(double customerId, string groupId, string userId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}/users/{userId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -146,7 +151,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Group> GetGroupAsync(double customerId, string groupId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Group> GetGroupAsync(double customerId, string groupId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -167,7 +172,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Group> DeleteGroupAsync(double customerId, string groupId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Group> DeleteGroupAsync(double customerId, string groupId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -188,7 +193,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Group> PatchGroupAsync(double customerId, string groupId, Group payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<Group> PatchGroupAsync(double customerId, string groupId, Group payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Patch, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -209,7 +214,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<Grant>> PatchGrant2Async(double customerId, string groupId, RestGrantChange payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<Grant>> PatchGrant2Async(double customerId, string groupId, RestGrantChange payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}/grants"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Patch, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -230,7 +235,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<GroupUser>> GetGroupUsersAsync(double customerId, string groupId, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<GroupUser>> GetGroupUsersAsync(double customerId, string groupId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/groups/{groupId}/users"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);

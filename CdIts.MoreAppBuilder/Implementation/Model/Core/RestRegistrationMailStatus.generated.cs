@@ -43,10 +43,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool Equals(RestRegistrationMailStatus other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result = (MailIds?.SequenceEqual(other.MailIds) ?? other.MailIds is null)
+            var result = (other.MailIds is null ? MailIds is null : MailIds?.SequenceEqual(other.MailIds) ?? other.MailIds is null)
                 && PdfFileId == other.PdfFileId
-                && (EmailAddresses?.SequenceEqual(other.EmailAddresses) ?? other.EmailAddresses is null)
-                && (Status?.SequenceEqual(other.Status) ?? other.Status is null)
+                && (other.EmailAddresses is null ? EmailAddresses is null : EmailAddresses?.SequenceEqual(other.EmailAddresses) ?? other.EmailAddresses is null)
+                && (other.Status is null ? Status is null : Status?.SequenceEqual(other.Status) ?? other.Status is null)
                 && NotificationId == other.NotificationId
                 && Attempt == other.Attempt;
             if(result) _PartialEquals(other, ref result);

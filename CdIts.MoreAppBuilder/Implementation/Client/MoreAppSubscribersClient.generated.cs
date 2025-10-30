@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppSubscribersClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com/api/v1.0/webhooks" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -48,7 +53,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Retrieves the details of a subscriber.
         /// 200 -> OK
         /// </summary>
-        public async Task<Subscriber> GetWebhookSubscriberAsync(double customerId, string subscriberId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Subscriber> GetWebhookSubscriberAsync(double customerId, string subscriberId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/subscribers/{subscriberId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -67,7 +72,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Updates the subscriber by setting the values of the fields passed. All fields are required.
         /// 200 -> OK
         /// </summary>
-        public async Task<Subscriber> UpdateWebhookSubscriberAsync(double customerId, string subscriberId, Subscriber payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<Subscriber> UpdateWebhookSubscriberAsync(double customerId, string subscriberId, Subscriber payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/subscribers/{subscriberId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Put, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -87,7 +92,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Irrevocably deletes the subscriber.
         /// 200 -> OK
         /// </summary>
-        public async Task<Subscriber> DeleteWebhookSubscriberAsync(double customerId, string subscriberId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Subscriber> DeleteWebhookSubscriberAsync(double customerId, string subscriberId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/subscribers/{subscriberId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -106,7 +111,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Returns a list of subscribers for the given customer.
         /// 200 -> OK
         /// </summary>
-        public async Task<IReadOnlyList<Subscriber>> GetWebhookSubscribersAsync(double customerId, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<Subscriber>> GetWebhookSubscribersAsync(double customerId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/subscribers"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -125,7 +130,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Creates and activates a new subscriber. There is a maximum number of subscribers you can have, so the request may fail.
         /// 200 -> OK
         /// </summary>
-        public async Task<Subscriber> CreateWebhookSubscriberAsync(double customerId, Subscriber payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<Subscriber> CreateWebhookSubscriberAsync(double customerId, Subscriber payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/subscribers"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");

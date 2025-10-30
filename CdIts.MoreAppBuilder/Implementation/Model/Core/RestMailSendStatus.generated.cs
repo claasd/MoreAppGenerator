@@ -28,7 +28,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = Email == other.Email
-                && (Transitions?.SequenceEqual(other.Transitions) ?? other.Transitions is null);
+                && (other.Transitions is null ? Transitions is null : Transitions?.SequenceEqual(other.Transitions) ?? other.Transitions is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

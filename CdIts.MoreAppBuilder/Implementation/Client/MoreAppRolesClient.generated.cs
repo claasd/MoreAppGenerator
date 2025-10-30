@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppRolesClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -49,7 +54,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<IReadOnlyList<Role>> GetRolesAsync(double customerId, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<Role>> GetRolesAsync(double customerId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/roles"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -79,7 +84,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 201 -> Created
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<Role> CreateRoleAsync(double customerId, CreateRoleRequest payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<Role> CreateRoleAsync(double customerId, CreateRoleRequest payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/roles"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -101,7 +106,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Role> GetRoleAsync(double customerId, string roleId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Role> GetRoleAsync(double customerId, string roleId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/roles/{roleId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -122,7 +127,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public async Task<Role> RemoveRoleAsync(double customerId, string roleId, CancellationToken cancellationToken = default) {
+        public virtual async Task<Role> RemoveRoleAsync(double customerId, string roleId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/roles/{roleId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -142,7 +147,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public async Task<Role> PatchRoleAsync(double customerId, string roleId, Role payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<Role> PatchRoleAsync(double customerId, string roleId, Role payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v2/customers/{customerId}/roles/{roleId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Patch, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");

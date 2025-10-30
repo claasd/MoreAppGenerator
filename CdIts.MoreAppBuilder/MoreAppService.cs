@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Caffoa;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using MoreAppBuilder.Implementation;
 
@@ -12,7 +13,13 @@ public class MoreAppService(int customerId, string secret, IMoreAppCaching? cach
     public IMoreAppBuilder Builder() => new Implementation.MoreAppBuilder(_client, _caching);
     public async Task<IFormInfo?> ExistingFormById(string id) => await FormBuilder.ExistingFormById(_client, id);
     public async Task<IFormInfo?> ExistingFormByName(string name) => await FormBuilder.ExistingFormByName(_client, name);
-    public async Task<Stream> DownloadSubmissionFile(string fileId) => await Submissions.DownloadSubmissionFile(_client, fileId);
+    public async Task<Stream> DownloadSubmissionFile(string fileId)
+    {
+        var result = await DownloadSubmissionFileWithHeaders(fileId);
+        return result.Stream;
+    }
+
+    public async Task<CaffoaStreamResult> DownloadSubmissionFileWithHeaders(string fileId) => await Submissions.DownloadSubmissionFile(_client, fileId);
     public async Task<MoreAppReadInfo> ReverseAsync(string id, string versionId, bool useLangFile, string lang = "en") => await FormBuilder.ReadAsync(_client, id, versionId, useLangFile, lang);
 
     public Task<IDataSource> ExistingDataSource(string name, bool allowUseCache = true) => DataSource.LoadAsync(_client, name, _caching, allowUseCache);

@@ -79,12 +79,12 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && Description == other.Description
                 && FormIcon == other.FormIcon
                 && FormIconColor == other.FormIconColor
-                && (Users?.SequenceEqual(other.Users) ?? other.Users is null)
+                && (other.Users is null ? Users is null : Users?.SequenceEqual(other.Users) ?? other.Users is null)
                 && Message == other.Message
                 && (Dates?.Equals(other.Dates) ?? other.Dates is null)
-                && (Data?.SequenceEqual(other.Data) ?? other.Data is null)
+                && (other.Data is null ? Data is null : Data?.SequenceEqual(other.Data) ?? other.Data is null)
                 && Status == other.Status
-                && (Fulfilments?.SequenceEqual(other.Fulfilments) ?? other.Fulfilments is null);
+                && (other.Fulfilments is null ? Fulfilments is null : Fulfilments?.SequenceEqual(other.Fulfilments) ?? other.Fulfilments is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

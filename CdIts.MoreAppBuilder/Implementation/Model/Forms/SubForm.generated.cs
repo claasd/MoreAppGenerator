@@ -40,9 +40,9 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = Uid == other.Uid
-                && (Fields?.SequenceEqual(other.Fields) ?? other.Fields is null)
-                && (Rules?.SequenceEqual(other.Rules) ?? other.Rules is null)
-                && (Triggers?.SequenceEqual(other.Triggers) ?? other.Triggers is null)
+                && (other.Fields is null ? Fields is null : Fields?.SequenceEqual(other.Fields) ?? other.Fields is null)
+                && (other.Rules is null ? Rules is null : Rules?.SequenceEqual(other.Rules) ?? other.Rules is null)
+                && (other.Triggers is null ? Triggers is null : Triggers?.SequenceEqual(other.Triggers) ?? other.Triggers is null)
                 && (Settings?.Equals(other.Settings) ?? other.Settings is null);
             if(result) _PartialEquals(other, ref result);
             return result;

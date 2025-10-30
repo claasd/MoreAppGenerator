@@ -55,8 +55,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             var result = Id == other.Id
                 && CustomerId == other.CustomerId
                 && EmailAddress == other.EmailAddress
-                && (Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
-                && (Groups?.SequenceEqual(other.Groups) ?? other.Groups is null)
+                && (other.Grants is null ? Grants is null : Grants?.SequenceEqual(other.Grants) ?? other.Grants is null)
+                && (other.Groups is null ? Groups is null : Groups?.SequenceEqual(other.Groups) ?? other.Groups is null)
                 && (Settings?.Equals(other.Settings) ?? other.Settings is null)
                 && Status == other.Status
                 && ExpiresAt == other.ExpiresAt;

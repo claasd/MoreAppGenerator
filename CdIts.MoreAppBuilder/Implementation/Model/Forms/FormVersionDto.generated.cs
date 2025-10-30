@@ -65,12 +65,12 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(this, other)) return true;
             var result = Id == other.Id
                 && FormId == other.FormId
-                && (Fields?.SequenceEqual(other.Fields) ?? other.Fields is null)
-                && (Rules?.SequenceEqual(other.Rules) ?? other.Rules is null)
-                && (Triggers?.SequenceEqual(other.Triggers) ?? other.Triggers is null)
-                && (Integrations?.SequenceEqual(other.Integrations) ?? other.Integrations is null)
-                && (Dependencies?.SequenceEqual(other.Dependencies) ?? other.Dependencies is null)
-                && (FieldProperties?.SequenceEqual(other.FieldProperties) ?? other.FieldProperties is null)
+                && (other.Fields is null ? Fields is null : Fields?.SequenceEqual(other.Fields) ?? other.Fields is null)
+                && (other.Rules is null ? Rules is null : Rules?.SequenceEqual(other.Rules) ?? other.Rules is null)
+                && (other.Triggers is null ? Triggers is null : Triggers?.SequenceEqual(other.Triggers) ?? other.Triggers is null)
+                && (other.Integrations is null ? Integrations is null : Integrations?.SequenceEqual(other.Integrations) ?? other.Integrations is null)
+                && (other.Dependencies is null ? Dependencies is null : Dependencies?.SequenceEqual(other.Dependencies) ?? other.Dependencies is null)
+                && (other.FieldProperties is null ? FieldProperties is null : FieldProperties?.SequenceEqual(other.FieldProperties) ?? other.FieldProperties is null)
                 && (Meta?.Equals(other.Meta) ?? other.Meta is null)
                 && (Settings?.Equals(other.Settings) ?? other.Settings is null)
                 && (Theme?.Equals(other.Theme) ?? other.Theme is null);

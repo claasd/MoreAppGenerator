@@ -37,7 +37,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = Id == other.Id
-                && (Forms?.SequenceEqual(other.Forms) ?? other.Forms is null)
+                && (other.Forms is null ? Forms is null : Forms?.SequenceEqual(other.Forms) ?? other.Forms is null)
                 && (Meta?.Equals(other.Meta) ?? other.Meta is null)
                 && Status == other.Status;
             if(result) _PartialEquals(other, ref result);

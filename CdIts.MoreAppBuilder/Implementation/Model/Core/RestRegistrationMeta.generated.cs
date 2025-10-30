@@ -66,7 +66,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && CompatibilityLevel == other.CompatibilityLevel
                 && Version == other.Version
                 && SerialNumber == other.SerialNumber
-                && (HiddenFields?.SequenceEqual(other.HiddenFields) ?? other.HiddenFields is null)
+                && (other.HiddenFields is null ? HiddenFields is null : HiddenFields?.SequenceEqual(other.HiddenFields) ?? other.HiddenFields is null)
                 && (Location?.Equals(other.Location) ?? other.Location is null)
                 && (Device?.Equals(other.Device) ?? other.Device is null);
             if(result) _PartialEquals(other, ref result);

@@ -1,10 +1,11 @@
-﻿using MoreAppBuilder.Implementation.Client;
+﻿using Caffoa;
+using MoreAppBuilder.Implementation.Client;
 
 namespace MoreAppBuilder.Implementation;
 
 internal class Submissions
 {
-    internal static async Task<Stream> DownloadSubmissionFile(RestClient client, string fileId)
+    internal static async Task<CaffoaStreamResult> DownloadSubmissionFile(RestClient client, string fileId)
     {
         var submissionClient = new MoreAppSubmissionsClient(client.HttpClient);
         fileId = fileId.Split('/').Last();

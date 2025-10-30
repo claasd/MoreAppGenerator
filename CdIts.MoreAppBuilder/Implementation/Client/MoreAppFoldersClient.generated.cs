@@ -23,6 +23,11 @@ namespace MoreAppBuilder.Implementation.Client
     /// AUTO GENERATED CLASS
     public partial class MoreAppFoldersClient
     {
+        /// <summary>
+        /// all servers from the openapi definition  
+        /// </summary>
+        public static string[] Servers => new string[] { "https://api.moreapp.com/api/v1.0/forms" };
+        
         private string _baseUri = null!;
         internal string BaseUri {
             get => _baseUri;
@@ -47,7 +52,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> MoveFormAsync(double customerId, string folderId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> MoveFormAsync(double customerId, string folderId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Put, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -65,7 +70,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> AddFormAsync(double customerId, string folderId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> AddFormAsync(double customerId, string folderId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -84,7 +89,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// This doesn't delete the underlying form, just the reference from this folder
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> RemoveFormAsync(double customerId, string folderId, string formId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> RemoveFormAsync(double customerId, string folderId, string formId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}/forms/{formId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -102,7 +107,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> MovePositionFormAsync(double customerId, string folderId, string formId, int position, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> MovePositionFormAsync(double customerId, string folderId, string formId, int position, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}/forms/{formId}/move/{position}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Put, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -120,11 +125,11 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<IReadOnlyList<FolderDto>> GetFoldersByCustomerIdAsync(double customerId, ICollection<string>? filter = null, CancellationToken cancellationToken = default) {
+        public virtual async Task<IReadOnlyList<FolderDto>> GetFoldersByCustomerIdAsync(double customerId, ICollection<string>? filter = null, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders"));
             var queryBuilder = new QueryBuilder();
             if(filter != null)
-                queryBuilder.Add("filter", Invariant($"{filter}"));
+                queryBuilder.Add("filter", filter);
             uriBuilder.Query = queryBuilder.ToString() ?? string.Empty;
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -142,7 +147,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> CreateFolderAsync(double customerId, FolderDto payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> CreateFolderAsync(double customerId, FolderDto payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -161,7 +166,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> GetFolderAsync(double customerId, string folderId, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> GetFolderAsync(double customerId, string folderId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -180,7 +185,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// Deletion is only permitted when all forms are removed from this folder
         /// 200 -> OK
         /// </summary>
-        public async Task DeleteFolderAsync(double customerId, string folderId, CancellationToken cancellationToken = default) {
+        public virtual async Task DeleteFolderAsync(double customerId, string folderId, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
             PrepareRequest(httpRequest);
@@ -195,7 +200,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// <summary>
         /// 200 -> OK
         /// </summary>
-        public async Task<FolderDto> UpdateFolderAsync(double customerId, string folderId, JsonPatch payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<FolderDto> UpdateFolderAsync(double customerId, string folderId, JsonPatch payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}customer/{customerId}/folders/{folderId}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Patch, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json-patch+json");

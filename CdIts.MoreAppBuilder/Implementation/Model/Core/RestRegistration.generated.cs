@@ -40,10 +40,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = Id == other.Id
-                && (Data?.SequenceEqual(other.Data) ?? other.Data is null)
+                && (other.Data is null ? Data is null : Data?.SequenceEqual(other.Data) ?? other.Data is null)
                 && (Info?.Equals(other.Info) ?? other.Info is null)
                 && (Meta?.Equals(other.Meta) ?? other.Meta is null)
-                && (MailStatuses?.SequenceEqual(other.MailStatuses) ?? other.MailStatuses is null);
+                && (other.MailStatuses is null ? MailStatuses is null : MailStatuses?.SequenceEqual(other.MailStatuses) ?? other.MailStatuses is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }

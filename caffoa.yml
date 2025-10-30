@@ -19,6 +19,7 @@ services:
       namespace: MoreAppBuilder.Implementation.Client
       constructorVisibility: private
       fieldVisibility: internal
+      dataResult: StreamWithHeaders
 
   - apiPath: CdIts.MoreAppBuilder/api/forms.yml
     model:

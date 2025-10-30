@@ -77,10 +77,10 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(this, other)) return true;
             var result = Type == other.Type
                 && Name == other.Name
-                && (StaticRecipients?.SequenceEqual(other.StaticRecipients) ?? other.StaticRecipients is null)
-                && (DynamicRecipients?.SequenceEqual(other.DynamicRecipients) ?? other.DynamicRecipients is null)
-                && (CarbonCopyRecipients?.SequenceEqual(other.CarbonCopyRecipients) ?? other.CarbonCopyRecipients is null)
-                && (BlindCarbonCopyRecipients?.SequenceEqual(other.BlindCarbonCopyRecipients) ?? other.BlindCarbonCopyRecipients is null)
+                && (other.StaticRecipients is null ? StaticRecipients is null : StaticRecipients?.SequenceEqual(other.StaticRecipients) ?? other.StaticRecipients is null)
+                && (other.DynamicRecipients is null ? DynamicRecipients is null : DynamicRecipients?.SequenceEqual(other.DynamicRecipients) ?? other.DynamicRecipients is null)
+                && (other.CarbonCopyRecipients is null ? CarbonCopyRecipients is null : CarbonCopyRecipients?.SequenceEqual(other.CarbonCopyRecipients) ?? other.CarbonCopyRecipients is null)
+                && (other.BlindCarbonCopyRecipients is null ? BlindCarbonCopyRecipients is null : BlindCarbonCopyRecipients?.SequenceEqual(other.BlindCarbonCopyRecipients) ?? other.BlindCarbonCopyRecipients is null)
                 && Subject == other.Subject
                 && Content == other.Content
                 && PdfContent == other.PdfContent

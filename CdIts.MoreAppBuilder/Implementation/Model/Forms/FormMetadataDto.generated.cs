@@ -66,7 +66,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
                 && Description == other.Description
                 && Language == other.Language
                 && ViewId == other.ViewId
-                && (Tags?.SequenceEqual(other.Tags) ?? other.Tags is null)
+                && (other.Tags is null ? Tags is null : Tags?.SequenceEqual(other.Tags) ?? other.Tags is null)
                 && TemplateId == other.TemplateId
                 && ArchivedOn == other.ArchivedOn
                 && ArchivedBy == other.ArchivedBy;

@@ -28,7 +28,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             var result = Id == other.Id
-                && (Mapping?.SequenceEqual(other.Mapping) ?? other.Mapping is null);
+                && (other.Mapping is null ? Mapping is null : Mapping?.SequenceEqual(other.Mapping) ?? other.Mapping is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }
