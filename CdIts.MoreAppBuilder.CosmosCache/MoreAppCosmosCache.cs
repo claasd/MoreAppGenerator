@@ -11,10 +11,19 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
     public bool CacheLatestOnly { get; set; } = cacheLatestOnly;
     public TimeSpan? CacheDuration { get; set; } = TimeSpan.FromDays(14);
     public List<string> IgnoreFormPrefixes { get; } = [];
+
+    public List<CosmosFormCache.CacheType> DisabledCaches { get; set; } = [];
+    public void DisableAllCaches()
+    {
+        DisabledCaches = Enum.GetValues<CosmosFormCache.CacheType>().ToList();
+    }
+    
     public async ValueTask<string?> FindElementIdAsync(int customerId, string name, CosmosFormCache.CacheType type,
         string hash)
     {
         if(IgnoreFormPrefixes.Any(prefix => name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+            return null;
+        if (DisabledCaches.Contains(type))
             return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
             c.CustomerId == customerId && c.FormName == name && c.Type == type);
@@ -37,6 +46,8 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
     public async ValueTask<IDataSource?> FindDataSourceIntAsync(int customerId, string name, string? hash = null)
     {
         if(IgnoreFormPrefixes.Any(prefix => name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+            return null;
+        if (DisabledCaches.Contains(CosmosFormCache.CacheType.DataSource))
             return null;
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
             c.CustomerId == customerId && c.FormName == name && c.Type == CosmosFormCache.CacheType.DataSource);
