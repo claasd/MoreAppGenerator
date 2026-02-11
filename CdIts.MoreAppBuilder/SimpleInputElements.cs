@@ -51,6 +51,12 @@ public interface ICheckboxItem : IInputElement<ICheckboxItem>
     ICondition IsNotChecked();
     ICondition HasValue();
     ICondition HasNoValue();
+    ICheckboxItem SetCheckedWhen(params ICondition[] conditions);
+    ICheckboxItem SetCheckedAnyWhen(params ICondition[] conditions);
+    ICheckboxItem SetUncheckedWhen(params ICondition[] conditions);
+    ICheckboxItem SetUncheckedAnyWhen(params ICondition[] conditions);
+    
+    
 }
 
 public interface IPhotoElement : IValueField<IPhotoElement>

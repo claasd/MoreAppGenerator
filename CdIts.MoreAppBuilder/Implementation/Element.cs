@@ -66,19 +66,16 @@ internal class Element<T> : Element, IElement<T> where T : class
         return this as T;
     }
 
-    public T SetValueWhenAny(string value, params ICondition[] conditions)
+    protected T SetValue(JToken value, ICondition[] conditions, bool isAnyRule)
     {
         if (conditions.Any())
-            Rules.Add(new SetValueRule(conditions, value, true));
+            Rules.Add(new SetValueRule(conditions, value, isAnyRule));
         return this as T;
     }
 
-    public T SetValueWhen(string value, params ICondition[] conditions)
-    {
-        if (conditions.Any())
-            Rules.Add(new SetValueRule(conditions, value, false));
-        return this as T;
-    }
+    public T SetValueWhenAny(string value, params ICondition[] conditions) => SetValue(value, conditions, true);
+
+    public T SetValueWhen(string value, params ICondition[] conditions)=> SetValue(value, conditions, false);
 
 
     public ICondition GreaterThan(int value)

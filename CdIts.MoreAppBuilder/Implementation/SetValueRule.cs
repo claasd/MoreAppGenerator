@@ -1,14 +1,15 @@
 ﻿using MoreAppBuilder.Implementation.Model.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace MoreAppBuilder.Implementation;
 
 internal class SetValueRule : RuleBase
 {
     public ICondition[] Conditions { get; }
-    public string Value { get; }
+    public JToken Value { get; }
     public bool IsAny { get; }
 
-    public SetValueRule(ICondition[] conditions, string value, bool isAny)
+    public SetValueRule(ICondition[] conditions, JToken value, bool isAny)
     {
         Conditions = conditions;
         Value = value;
