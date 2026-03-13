@@ -7,13 +7,13 @@ internal class NumberElement : InputElementWithPlaceholder<INumberElement>, INum
         Field.Properties["text_placeholder"] = "You should enter a number";
     }
 
-    public INumberElement Minimum(int min)
+    public INumberElement Minimum(double min)
     {
         Field.Properties["numeric_min"] = min;
         return this;
     }
 
-    public INumberElement Maximum(int max)
+    public INumberElement Maximum(double max)
     {
         Field.Properties["numeric_max"] = max;
         return this;

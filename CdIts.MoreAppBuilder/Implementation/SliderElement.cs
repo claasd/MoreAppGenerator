@@ -11,25 +11,25 @@ internal class SliderElement : InputElement<ISliderElement>, ISliderElement
         Field.Properties["hide_value"] = false;
     }
 
-    public ISliderElement MinValue(int minValue)
+    public ISliderElement MinValue(double minValue)
     {
         Field.Properties["min"] = minValue;
         return this;
     }
 
-    public ISliderElement DefaultValue(int value)
+    public ISliderElement DefaultValue(double value)
     {
         Field.Properties["default_value"] = value;
         return this;
     }
 
-    public ISliderElement MaxValue(int maxValue)
+    public ISliderElement MaxValue(double maxValue)
     {
         Field.Properties["max"] = maxValue;
         return this;
     }
 
-    public ISliderElement Step(int step)
+    public ISliderElement Step(double step)
     {
         Field.Properties["step"] = step;
         return this;

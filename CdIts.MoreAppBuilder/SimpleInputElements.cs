@@ -9,8 +9,8 @@ public interface IDateTimeElement : IStringValueField<IDateTimeElement>, IWithNo
 
 public interface INumberElement : IValueFieldWithPlaceholder<INumberElement>, INumericValueField
 {
-    INumberElement Minimum(int min);
-    INumberElement Maximum(int max);
+    INumberElement Minimum(double min);
+    INumberElement Maximum(double max);
     INumberElement SetDefault(double defaultValue);
 }
 public interface ILookupElement : IStringValueField<ILookupElement>
@@ -81,10 +81,10 @@ public interface ITextAreaElement : IValueFieldWithPlaceholder<ITextAreaElement>
 
 public interface ISliderElement : INumericValueField, IStringValueField<ISliderElement> 
 {
-    ISliderElement MinValue(int minValue);
-    ISliderElement DefaultValue(int value);
-    ISliderElement MaxValue(int maxValue);
-    ISliderElement Step(int step);
+    ISliderElement MinValue(double minValue);
+    ISliderElement DefaultValue(double value);
+    ISliderElement MaxValue(double maxValue);
+    ISliderElement Step(double step);
     ISliderElement HideValue();
 }
 
