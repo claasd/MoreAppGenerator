@@ -18,4 +18,10 @@ internal class NumberElement : InputElementWithPlaceholder<INumberElement>, INum
         Field.Properties["numeric_max"] = max;
         return this;
     }
+
+    public INumberElement SetDefault(double defaultValue)
+    {
+        Field.Properties["text_default_value"] = defaultValue;
+        return this;
+    }
 }

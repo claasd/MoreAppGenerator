@@ -44,7 +44,7 @@ public interface IStringValueOperations<out T>
 
 public interface IValueFieldWithPlaceholder<out T> : IStringValueField<T>
 {
-    T SetPlaceholder(string placeholder);
+    T SetPlaceholder(string? placeholder);
 }
 
 public interface IWithDefault<out T>

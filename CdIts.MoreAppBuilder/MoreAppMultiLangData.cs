@@ -21,6 +21,7 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
 
     private string Title(string name, bool allowGlobal = true) => _languageFile.GetTitle(_formId, WithPrefix(name), allowGlobal);
     private string Desc(string name, bool allowGlobal = true) => _languageFile.GetDesc(_formId, WithPrefix(name), allowGlobal);
+    private string? Placeholder(string name, bool allowGlobal = true, string? globalConfigSection = null) => _languageFile.GetPlaceholder(_formId, WithPrefix(name), allowGlobal, globalConfigSection);
 
     public IHtmlElement AddHtmlById(string id) => Builder.AddHtml(Title(id));
 
@@ -55,11 +56,11 @@ internal class MoreAppMultiLangData : IMultiLangFormContainer
     public IDateElement AddDate(string id) => Builder.AddDate(id, Title(id));
     public ITimeElement AddTime(string id) => Builder.AddTime(id, Title(id));
     public IDateTimeElement AddDateTime(string id) => Builder.AddDateTime(id, Title(id));
-    public IEmailElement AddEmail(string id) => Builder.AddEmail(id, Title(id));
-    public INumberElement AddNumber(string id) => Builder.AddNumber(id, Title(id));
-    public IPhoneElement AddPhone(string id) => Builder.AddPhone(id, Title(id));
-    public ITextElement AddText(string id) => Builder.AddText(id, Title(id));
-    public ITextAreaElement AddTextArea(string id) => Builder.AddTextArea(id, Title(id));
+    public IEmailElement AddEmail(string id) => Builder.AddEmail(id, Title(id)).SetPlaceholder(Placeholder(id, globalConfigSection: "email"));
+    public INumberElement AddNumber(string id) => Builder.AddNumber(id, Title(id)).SetPlaceholder(Placeholder(id, globalConfigSection: "number"));
+    public IPhoneElement AddPhone(string id) => Builder.AddPhone(id, Title(id)).SetPlaceholder(Placeholder(id, globalConfigSection: "phone"));
+    public ITextElement AddText(string id) => Builder.AddText(id, Title(id)).SetPlaceholder(Placeholder(id, globalConfigSection: "text"));
+    public ITextAreaElement AddTextArea(string id) => Builder.AddTextArea(id, Title(id)).SetPlaceholder(Placeholder(id, globalConfigSection: "textarea"));
 
     public IMultiLangSubFormElement AddSubForm(string id, LangPrefixMode prefixMode) =>
         Builder.AddElement(new MultiLangSubFormElement(id, _languageFile, _formId, WithPrefix(id), prefixMode, Builder.DefaultPhotoQuality));

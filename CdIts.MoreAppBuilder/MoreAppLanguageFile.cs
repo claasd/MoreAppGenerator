@@ -21,14 +21,13 @@ public class MoreAppLanguageFile
     public MoreAppLanguageInstance Language(string lang) => new MoreAppLanguageInstance(this, lang);
 
 
-    public string Get(string section, string field, string language, string type, bool allowGlobal, string? globalConfigSection = null,
-        string? defaultValue = null)
+    public string? Get(string section, string field, string language, string type, bool allowGlobal, string? globalConfigSection = null, string? defaultValue = null, bool returnNullOnMissing = false)
     {
         if (_data.TryGetValue(Key(section, field, language, type), out var value))
             return value;
         if (allowGlobal && _data.TryGetValue(Key("__global", globalConfigSection ?? field, language, type), out value))
             return value;
-        if (defaultValue != null)
+        if (defaultValue != null || returnNullOnMissing)
             return defaultValue;
         if (_collectMissingKeys)
         {

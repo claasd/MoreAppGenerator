@@ -21,9 +21,10 @@ internal class InputElementWithPlaceholder<T> : InputElement<T>, IValueFieldWith
         Field.Properties["text_placeholder"] = "";
     }
 
-    public T SetPlaceholder(string placeholder)
+    public T SetPlaceholder(string? placeholder)
     {
-        Field.Properties["text_placeholder"] = placeholder;
+        if(placeholder != null)
+            Field.Properties["text_placeholder"] = placeholder;
         return this as T;
     }
 }

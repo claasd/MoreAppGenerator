@@ -11,6 +11,7 @@ public interface INumberElement : IValueFieldWithPlaceholder<INumberElement>, IN
 {
     INumberElement Minimum(int min);
     INumberElement Maximum(int max);
+    INumberElement SetDefault(double defaultValue);
 }
 public interface ILookupElement : IStringValueField<ILookupElement>
 {
