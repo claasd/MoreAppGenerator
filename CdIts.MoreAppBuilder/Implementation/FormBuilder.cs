@@ -27,6 +27,7 @@ internal class FormBuilder(
     private string _icon = "ios-paper-outline";
     private string? _inAppDesc = null;
     private int? _folderPosition;
+    private bool _removeGrantsNotIncluded = false;
 
 
     private FormDto FormUpdate(string hash, FormVersionDto? formVersion = null)
@@ -159,6 +160,8 @@ internal class FormBuilder(
             hashBaseElements.Add(folder.Uid);
         if(_groupIds.Count > 0)
             hashBaseElements.Add(Hash(_groupIds.OrderBy(i=>i).ToArray()));
+        if(_removeGrantsNotIncluded)
+            hashBaseElements.Add("removeGrants");
         return Hash(hashBaseElements.ToArray());
     }
 
@@ -171,7 +174,7 @@ internal class FormBuilder(
 
     private async ValueTask AddFormToGroups(string formId)
     {
-        if (_groupIds.Count == 0)
+        if (_groupIds.Count == 0 && !_removeGrantsNotIncluded)
             return;
         if (_formUserRoleId is null)
         {
@@ -194,6 +197,20 @@ internal class FormBuilder(
                 ResourceType = RestGrantChange.ResourceTypeValue.FORM,
                 RoleId = _formUserRoleId
             });
+        }
+
+        if (_removeGrantsNotIncluded)
+        {
+            foreach (var groupsNotIncluded in groups.Where(g => !_groupIds.Contains(g.Id) && g.Grants.Any(g => g.ResourceId == formId && g.RoleId == _formUserRoleId)))
+            {
+                await groupClient.PatchGrant2Async(client.CustomerId, groupsNotIncluded.Id, new RestGrantChange()
+                {
+                    Operation = RestGrantChange.OperationValue.REMOVE,
+                    ResourceId = formId,
+                    ResourceType = RestGrantChange.ResourceTypeValue.FORM,
+                    RoleId = _formUserRoleId
+                });
+            }
         }
     }
 
@@ -275,6 +292,18 @@ internal class FormBuilder(
     public IFormBuilder FolderPosition(int position)
     {
         _folderPosition = position;
+        return this;
+    }
+
+    public IFormBuilder RemoveGrantsNotIncluded()
+    {
+        _removeGrantsNotIncluded = true;
+        return this;
+    }
+
+    public IFormBuilder ClearGroups()
+    {
+        _groupIds.Clear();
         return this;
     }
 

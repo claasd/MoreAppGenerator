@@ -32,6 +32,17 @@ internal class MultiLangFormBuilder : FormBuilder, IMultiLangFormBuilder
         base.DefaultPhotoQualityFast();
         return this;
     }
+    public new IMultiLangFormBuilder RemoveGrantsNotIncluded()
+    {
+        base.RemoveGrantsNotIncluded();
+        return this;
+    }
+
+    public new IMultiLangFormBuilder ClearGroups()
+    {
+        base.ClearGroups();
+        return this;
+    }
 
     public IHtmlElement AddHtmlById(string id) => _languageData.AddHtmlById(id);
     public IHtmlElement AddHtmlSectionById(string id, HeaderElementSize size = HeaderElementSize.H3) => _languageData.AddHtmlSectionById(id, size);

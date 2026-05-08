@@ -98,6 +98,15 @@ public interface IFormBuilder : IFormContainer
     IFormBuilder DefaultPhotoQualityBest();
     IFormBuilder DefaultPhotoQualityHigh();
     IFormBuilder DefaultPhotoQualityFast();
+    /// <summary>
+    /// removes the FormUser right from all groups that where not included with AddGroup
+    /// </summary>
+    IFormBuilder RemoveGrantsNotIncluded();
+
+    /// <summary>
+    /// removes all previously added groups
+    /// </summary>
+    IFormBuilder ClearGroups();
 
 }
 
@@ -116,6 +125,16 @@ public interface IMultiLangFormBuilder : IFormContainer, IMultiLangFormContainer
     IMultiLangFormBuilder DefaultPhotoQualityHigh();
     IMultiLangFormBuilder DefaultPhotoQualityBest();
     IMultiLangFormBuilder DefaultPhotoQualityFast();
+    
+    /// <summary>
+    /// removes the FormUser right from all groups that where not included with AddGroup
+    /// </summary>
+    IMultiLangFormBuilder RemoveGrantsNotIncluded();
+
+    /// <summary>
+    /// removes all previously added groups
+    /// </summary>
+    IMultiLangFormBuilder ClearGroups();
 }
 
 
