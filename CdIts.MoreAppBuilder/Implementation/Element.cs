@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MoreAppBuilder.Implementation;
 
-internal class Element
+internal class Element : IMoreAppElement
 {
     internal static string Hash(params string?[] data) => Convert
         .ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(string.Join("|", data.Where(d => d is not null))))).Replace("-", "").ToLower();
@@ -30,6 +30,29 @@ internal class Element
     }
 
     internal virtual string HashValue() => Hash(Field.Widget, JsonConvert.SerializeObject(Field.Properties), JsonConvert.SerializeObject(Rules));
+    public void EnabledWhen(params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            Rules.Add(new VisibilityRule(conditions, true));
+    }
+
+    public void EnabledWhenAny(params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            Rules.Add(new VisibilityRule(conditions, true, isAny: true));
+    }
+
+    public void DisableWhen(params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            Rules.Add(new VisibilityRule(conditions, false));
+    }
+
+    public void DisableWhenAny(params ICondition[] conditions)
+    {
+        if (conditions.Any())
+            Rules.Add(new VisibilityRule(conditions, false, true));
+    }
 }
 
 internal class Element<T> : Element, IElement<T> where T : class
@@ -39,30 +62,26 @@ internal class Element<T> : Element, IElement<T> where T : class
     }
 
 
-    public T EnabledWhen(params ICondition[] conditions)
+    public new T EnabledWhen(params ICondition[] conditions)
     {
-        if (conditions.Any())
-            Rules.Add(new VisibilityRule(conditions, true));
+        base.EnabledWhen(conditions);
         return this as T;
     }
-    public T EnabledWhenAny(params ICondition[] conditions)
+    public new T EnabledWhenAny(params ICondition[] conditions)
     {
-        if (conditions.Any())
-            Rules.Add(new VisibilityRule(conditions, true, isAny: true));
-        return this as T;
-    }
-
-    public T DisableWhen(params ICondition[] conditions)
-    {
-        if (conditions.Any())
-            Rules.Add(new VisibilityRule(conditions, false));
+        base.EnabledWhenAny(conditions);
         return this as T;
     }
 
-    public T DisableWhenAny(params ICondition[] conditions)
+    public new T DisableWhen(params ICondition[] conditions)
     {
-        if (conditions.Any())
-            Rules.Add(new VisibilityRule(conditions, false, true));
+        base.DisableWhen(conditions);
+        return this as T;
+    }
+
+    public new T DisableWhenAny(params ICondition[] conditions)
+    {
+        base.DisableWhenAny(conditions);
         return this as T;
     }
 

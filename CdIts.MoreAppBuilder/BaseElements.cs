@@ -1,11 +1,19 @@
 ﻿namespace MoreAppBuilder;
 
-public interface IElement<out T>
+public interface IMoreAppElement
 {
-    T EnabledWhen(params ICondition[] conditions);
-    T EnabledWhenAny(params ICondition[] conditions);
-    T DisableWhen(params ICondition[] conditions);
-    T DisableWhenAny(params ICondition[] conditions);
+    void EnabledWhen(params ICondition[] conditions);
+    void EnabledWhenAny(params ICondition[] conditions);
+    void DisableWhen(params ICondition[] conditions);
+    void DisableWhenAny(params ICondition[] conditions);
+}
+
+public interface IElement<out T> : IMoreAppElement
+{
+    new T EnabledWhen(params ICondition[] conditions);
+    new T EnabledWhenAny(params ICondition[] conditions);
+    new T DisableWhen(params ICondition[] conditions);
+    new T DisableWhenAny(params ICondition[] conditions);
 }
 
 public interface IInputElement<out T> : IElement<T>
