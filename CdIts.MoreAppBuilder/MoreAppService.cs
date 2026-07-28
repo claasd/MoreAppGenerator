@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using MoreAppBuilder.Implementation;
+using MoreAppBuilder.Implementation.Client;
 
 namespace MoreAppBuilder;
 
@@ -13,6 +14,7 @@ public class MoreAppService(int customerId, string secret, IMoreAppCaching? cach
     public IMoreAppBuilder Builder() => new Implementation.MoreAppBuilder(_client, _caching);
     public async Task<IFormInfo?> ExistingFormById(string id) => await FormBuilder.ExistingFormById(_client, id);
     public async Task<IFormInfo?> ExistingFormByName(string name) => await FormBuilder.ExistingFormByName(_client, name);
+
     public async Task<Stream> DownloadSubmissionFile(string fileId)
     {
         var result = await DownloadSubmissionFileWithHeaders(fileId);
@@ -20,9 +22,22 @@ public class MoreAppService(int customerId, string secret, IMoreAppCaching? cach
     }
 
     public async Task<CaffoaStreamResult> DownloadSubmissionFileWithHeaders(string fileId) => await Submissions.DownloadSubmissionFile(_client, fileId);
-    public async Task<MoreAppReadInfo> ReverseAsync(string id, string versionId, bool useLangFile, string lang = "en") => await FormBuilder.ReadAsync(_client, id, versionId, useLangFile, lang);
 
-    public Task<IDataSource> ExistingDataSource(string name, bool allowUseCache = true) => DataSource.LoadAsync(_client, name, _caching, allowUseCache);
+    public async Task<MoreAppReadInfo> ReverseAsync(string id, string versionId, bool useLangFile, string lang = "en") =>
+        await FormBuilder.ReadAsync(_client, id, versionId, useLangFile, lang);
+
+    public Task<IDataSource> ExistingDataSourceAsync(string name, bool allowUseCache = true) => DataSource.LoadAsync(_client, name, _caching, allowUseCache);
+
+    public async Task<IList<IDataSource>> GetCurrentDataSourcesAsync()
+    {
+        var dsClient = new MoreAppDatasourcesClient(_client.HttpClient);
+        var result = await dsClient.GetAllAsync(_client.CustomerId);
+        IReadOnlyList<IDataSource> list = result.Select(item => 
+            new DataSource(item.Id, item.Name, item.ColumnMapping.Select(m => m.Id).ToList())
+        ).ToList();
+        return [..list];
+    }
+
     public Task<IGroup> ExistingGroup(string name, bool allowUseCache = true) => GroupBuilder.LoadAsync(_client, name, _caching, allowUseCache);
     public Task<IGroup> ExistingGroupById(string id, bool allowUseCache = true) => GroupBuilder.LoadByIdAsync(_client, id, _caching, allowUseCache);
 }

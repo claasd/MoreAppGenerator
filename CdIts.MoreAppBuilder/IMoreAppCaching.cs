@@ -1,6 +1,4 @@
-﻿using MoreAppBuilder.Implementation;
-
-namespace MoreAppBuilder;
+﻿namespace MoreAppBuilder;
 
 public interface IMoreAppCaching
 {

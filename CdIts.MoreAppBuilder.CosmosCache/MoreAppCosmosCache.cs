@@ -45,27 +45,40 @@ public class MoreAppCosmosCache(Container container, bool cacheLatestOnly = fals
 
     public async ValueTask<IDataSource?> FindDataSourceIntAsync(int customerId, string name, string? hash = null)
     {
-        if(IgnoreFormPrefixes.Any(prefix => name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
-            return null;
         if (DisabledCaches.Contains(CosmosFormCache.CacheType.DataSource))
             return null;
+
+        var dataSources = await  FindDataSourcesIntAsync(customerId, name, hash);
+        return dataSources.FirstOrDefault();
+    }
+    
+    public async ValueTask<IList<IDataSource>> FindDataSourcesIntAsync(int customerId, string? name = null, string? hash = null)
+    {
+        if (DisabledCaches.Contains(CosmosFormCache.CacheType.DataSource))
+            return [];
         var query = container.GetItemLinqQueryable<CosmosFormCache>().Where(c =>
-            c.CustomerId == customerId && c.FormName == name && c.Type == CosmosFormCache.CacheType.DataSource);
+            c.CustomerId == customerId && c.Type == CosmosFormCache.CacheType.DataSource);
+        if (name != null)
+        {
+            query = query.Where(c => c.FormName == name);
+        }
         if (hash != null && !ReturnCacheOnMismatch)
             query = query.Where(c => c.Hash == hash);
         if (CacheLatestOnly)
             query = query.Where(c => c.IsLatest);
-        var result = await query.OrderByDescending(c => c.Timestamp).Select(c => new
-            {
-                Id = c.ElementId,
-                Columns = c.Columns,
-            })
-            .FirstOrDefaultItemAsync();
-        return result == null ? null : new DataSource(result.Id, name, result.Columns);
+        IReadOnlyList<IDataSource> result = await query.OrderByDescending(c => c.Timestamp).Select(c => new
+                DataSource(c.ElementId,  c.FormName, c.Columns))
+            .ToItemListAsync();
+        
+        if(IgnoreFormPrefixes.Count > 0)
+            result = [.. result.Where(c => IgnoreFormPrefixes.Any(prefix => c.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))];
+        return [.. result];
     }
 
     public ValueTask<IDataSource?> FindLatestDataSourceAsync(int customerId, string name)
         => FindDataSourceIntAsync(customerId, name);
+
+    public ValueTask<IList<IDataSource>> FindLatestDataSourcesAsync(int customerId) => FindDataSourcesIntAsync(customerId);
 
     private async ValueTask StoreAsync(int customerId, string name, string hash, string id,
         CosmosFormCache.CacheType type, IReadOnlyList<string>? columns = null) =>
