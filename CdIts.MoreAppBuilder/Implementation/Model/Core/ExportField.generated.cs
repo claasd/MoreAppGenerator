@@ -23,7 +23,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public ExportFieldTypeValue? ExportFieldType { get; set; }
 
         [JsonProperty("fields")]
-        public ICollection<ExportField> Fields { get; set; }
+        public ICollection<ExportField> Fields { get; set; } = new List<ExportField>();
 
         public ExportField(){}
         public ExportField(ExportField other) {
@@ -49,7 +49,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             var hashCode = new HashCode();
             hashCode.Add(Name);
             hashCode.Add(DataName);
-            hashCode.Add((int) ExportFieldType);
+            hashCode.Add((int?) ExportFieldType);
             hashCode.Add(Fields);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();

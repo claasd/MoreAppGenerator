@@ -23,10 +23,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string EmailAddress { get; set; }
 
         [JsonProperty("grants")]
-        public ICollection<Grant> Grants { get; set; }
+        public ICollection<Grant> Grants { get; set; } = new List<Grant>();
 
         [JsonProperty("groups")]
-        public ICollection<string> Groups { get; set; }
+        public ICollection<string> Groups { get; set; } = new List<string>();
 
         [JsonProperty("settings")]
         public UserAccountInformation Settings { get; set; }
@@ -73,7 +73,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Grants);
             hashCode.Add(Groups);
             hashCode.Add(Settings);
-            hashCode.Add((int) Status);
+            hashCode.Add((int?) Status);
             hashCode.Add(ExpiresAt);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();

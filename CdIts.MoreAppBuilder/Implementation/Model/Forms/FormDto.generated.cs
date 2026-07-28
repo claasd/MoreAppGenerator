@@ -54,8 +54,8 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             hashCode.Add(Id);
             hashCode.Add(PublishedVersion);
             hashCode.Add(Meta);
-            hashCode.Add((int) Status);
-            hashCode.Add((int) Scope);
+            hashCode.Add((int?) Status);
+            hashCode.Add((int?) Scope);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

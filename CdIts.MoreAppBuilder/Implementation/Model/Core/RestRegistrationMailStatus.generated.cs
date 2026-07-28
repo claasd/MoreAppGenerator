@@ -13,16 +13,16 @@ namespace MoreAppBuilder.Implementation.Model.Core {
     public sealed  partial class RestRegistrationMailStatus : IEquatable<RestRegistrationMailStatus> {
         public const string RestRegistrationMailStatusObjectName = "RestRegistrationMailStatus";
         [JsonProperty("mailIds")]
-        public ICollection<string> MailIds { get; set; }
+        public ICollection<string> MailIds { get; set; } = new List<string>();
 
         [JsonProperty("pdfFileId")]
         public string PdfFileId { get; set; }
 
         [JsonProperty("emailAddresses")]
-        public ICollection<string> EmailAddresses { get; set; }
+        public ICollection<string> EmailAddresses { get; set; } = new List<string>();
 
         [JsonProperty("status")]
-        public Dictionary<string, RestMailSendStatus> Status { get; set; }
+        public Dictionary<string, RestMailSendStatus> Status { get; set; } = new Dictionary<string, RestMailSendStatus>();
 
         [JsonProperty("notificationId")]
         public string NotificationId { get; set; }

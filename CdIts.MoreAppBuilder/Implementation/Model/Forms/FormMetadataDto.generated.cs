@@ -32,7 +32,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string ViewId { get; set; }
 
         [JsonProperty("tags")]
-        public ICollection<string> Tags { get; set; }
+        public ICollection<string> Tags { get; set; } = new List<string>();
 
         [JsonProperty("templateId")]
         public string TemplateId { get; set; }
@@ -79,7 +79,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             var hashCode = new HashCode();
             hashCode.Add(Name);
             hashCode.Add(Icon);
-            hashCode.Add((int) IconColor);
+            hashCode.Add((int?) IconColor);
             hashCode.Add(Description);
             hashCode.Add(Language);
             hashCode.Add(ViewId);

@@ -64,7 +64,7 @@ namespace MoreAppBuilder.Implementation.Model.Webhooks {
             hashCode.Add(Url);
             hashCode.Add(Name);
             hashCode.Add(Type);
-            hashCode.Add((int) Status);
+            hashCode.Add((int?) Status);
             hashCode.Add(Secret);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();

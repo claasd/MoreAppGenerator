@@ -19,7 +19,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string Name { get; set; }
 
         [JsonProperty("grants")]
-        public ICollection<Grant> Grants { get; set; }
+        public ICollection<Grant> Grants { get; set; } = new List<Grant>();
 
         [JsonProperty("externallyManaged")]
         public bool? ExternallyManaged { get; set; } = false;

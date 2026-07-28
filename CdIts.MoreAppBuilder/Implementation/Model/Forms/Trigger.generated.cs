@@ -19,16 +19,16 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Name { get; set; }
 
         [JsonProperty("staticRecipients")]
-        public ICollection<string> StaticRecipients { get; set; }
+        public ICollection<string> StaticRecipients { get; set; } = new List<string>();
 
         [JsonProperty("dynamicRecipients")]
-        public ICollection<string> DynamicRecipients { get; set; }
+        public ICollection<string> DynamicRecipients { get; set; } = new List<string>();
 
         [JsonProperty("carbonCopyRecipients")]
-        public ICollection<string> CarbonCopyRecipients { get; set; }
+        public ICollection<string> CarbonCopyRecipients { get; set; } = new List<string>();
 
         [JsonProperty("blindCarbonCopyRecipients")]
-        public ICollection<string> BlindCarbonCopyRecipients { get; set; }
+        public ICollection<string> BlindCarbonCopyRecipients { get; set; } = new List<string>();
 
         [JsonProperty("subject")]
         public string Subject { get; set; }

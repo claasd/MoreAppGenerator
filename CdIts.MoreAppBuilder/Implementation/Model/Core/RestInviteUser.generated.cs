@@ -20,10 +20,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public LanguageValue? Language { get; set; }
 
         [JsonProperty("groups")]
-        public ICollection<string> Groups { get; set; }
+        public ICollection<string> Groups { get; set; } = new List<string>();
 
         [JsonProperty("grants")]
-        public ICollection<Grant> Grants { get; set; }
+        public ICollection<Grant> Grants { get; set; } = new List<Grant>();
 
         public RestInviteUser(){}
         public RestInviteUser(RestInviteUser other) {
@@ -48,7 +48,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public override int GetHashCode() {
             var hashCode = new HashCode();
             hashCode.Add(EmailAddress);
-            hashCode.Add((int) Language);
+            hashCode.Add((int?) Language);
             hashCode.Add(Groups);
             hashCode.Add(Grants);
             _PartialHashCode(ref hashCode);

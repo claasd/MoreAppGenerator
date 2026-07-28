@@ -16,13 +16,13 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Uid { get; set; }
 
         [JsonProperty("fields")]
-        public ICollection<Field> Fields { get; set; }
+        public ICollection<Field> Fields { get; set; } = new List<Field>();
 
         [JsonProperty("rules")]
-        public ICollection<Rule> Rules { get; set; }
+        public ICollection<Rule> Rules { get; set; } = new List<Rule>();
 
         [JsonProperty("triggers")]
-        public ICollection<Trigger> Triggers { get; set; }
+        public ICollection<Trigger> Triggers { get; set; } = new List<Trigger>();
 
         [JsonProperty("settings")]
         public Settings Settings { get; set; }

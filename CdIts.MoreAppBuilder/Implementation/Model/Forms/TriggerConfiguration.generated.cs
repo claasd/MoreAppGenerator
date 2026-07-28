@@ -13,7 +13,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
     public sealed  partial class TriggerConfiguration : IEquatable<TriggerConfiguration> {
         public const string TriggerConfigurationObjectName = "TriggerConfiguration";
         [JsonProperty("attachments")]
-        public ICollection<string> Attachments { get; set; }
+        public ICollection<string> Attachments { get; set; } = new List<string>();
 
         [JsonProperty("attachImages")]
         public bool? AttachImages { get; set; }

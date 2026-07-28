@@ -37,7 +37,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public override int GetHashCode() {
             var hashCode = new HashCode();
             hashCode.Add(SpreadsheetId);
-            hashCode.Add((int) UpdateInterval);
+            hashCode.Add((int?) UpdateInterval);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

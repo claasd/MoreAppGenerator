@@ -35,7 +35,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string FormIconColor { get; set; }
 
         [JsonProperty("users")]
-        public ICollection<string> Users { get; set; }
+        public ICollection<string> Users { get; set; } = new List<string>();
 
         [JsonProperty("message")]
         public string Message { get; set; }
@@ -44,13 +44,13 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public TaskDates Dates { get; set; }
 
         [JsonProperty("data")]
-        public Dictionary<string, object> Data { get; set; }
+        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
 
         [JsonProperty("status")]
         public StatusValue? Status { get; set; }
 
         [JsonProperty("fulfilments")]
-        public ICollection<TaskFulfilment> Fulfilments { get; set; }
+        public ICollection<TaskFulfilment> Fulfilments { get; set; } = new List<TaskFulfilment>();
 
         public RestTask(){}
         public RestTask(RestTask other) {
@@ -103,7 +103,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Message);
             hashCode.Add(Dates);
             hashCode.Add(Data);
-            hashCode.Add((int) Status);
+            hashCode.Add((int?) Status);
             hashCode.Add(Fulfilments);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();

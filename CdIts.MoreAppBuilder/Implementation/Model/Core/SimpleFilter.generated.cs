@@ -22,13 +22,13 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         /// Sort the results based on the given field
         /// </summary>
         [JsonProperty("sort")]
-        public ICollection<SortProperty> Sort { get; set; }
+        public ICollection<SortProperty> Sort { get; set; } = new List<SortProperty>();
 
         /// <summary>
         /// Filter results based on the given predicate(s)
         /// </summary>
         [JsonProperty("query")]
-        public ICollection<FilterQuery> Query { get; set; }
+        public ICollection<FilterQuery> Query { get; set; } = new List<FilterQuery>();
 
         public SimpleFilter(){}
         public SimpleFilter(SimpleFilter other) {

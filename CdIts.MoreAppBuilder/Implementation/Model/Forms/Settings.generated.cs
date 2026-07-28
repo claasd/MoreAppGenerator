@@ -51,8 +51,8 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public override bool Equals(object obj) => Equals(obj as Settings);
         public override int GetHashCode() {
             var hashCode = new HashCode();
-            hashCode.Add((int) Interaction);
-            hashCode.Add((int) SaveMode);
+            hashCode.Add((int?) Interaction);
+            hashCode.Add((int?) SaveMode);
             hashCode.Add(SearchSettings);
             hashCode.Add(Icon);
             hashCode.Add(ItemHtml);

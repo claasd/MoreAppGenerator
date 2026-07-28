@@ -63,7 +63,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             var hashCode = new HashCode();
             hashCode.Add(FirstName);
             hashCode.Add(LastName);
-            hashCode.Add((int) Language);
+            hashCode.Add((int?) Language);
             hashCode.Add(PhoneNumber);
             hashCode.Add(ReceiveNewsLetter);
             hashCode.Add(FinishedTour);

@@ -20,10 +20,10 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public TypeValue? Type { get; set; }
 
         [JsonProperty("conditions")]
-        public ICollection<Condition> Conditions { get; set; }
+        public ICollection<Condition> Conditions { get; set; } = new List<Condition>();
 
         [JsonProperty("actions")]
-        public ICollection<Action> Actions { get; set; }
+        public ICollection<Action> Actions { get; set; } = new List<Action>();
 
         public Rule(){}
         public Rule(Rule other) {
@@ -48,7 +48,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public override int GetHashCode() {
             var hashCode = new HashCode();
             hashCode.Add(Name);
-            hashCode.Add((int) Type);
+            hashCode.Add((int?) Type);
             hashCode.Add(Conditions);
             hashCode.Add(Actions);
             _PartialHashCode(ref hashCode);

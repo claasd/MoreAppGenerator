@@ -17,7 +17,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public ExporterTypeValue ExporterType { get; set; }
 
         [JsonProperty("submissionIds")]
-        public ICollection<string> SubmissionIds { get; set; }
+        public ICollection<string> SubmissionIds { get; set; } = new List<string>();
 
         [JsonProperty("exportFields", Required = Required.Always)]
         public ICollection<ExportField> ExportFields { get; set; } = new List<ExportField>();
@@ -29,7 +29,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public ExportOptions Options { get; set; } = new ExportOptions();
 
         [JsonProperty("filterQueries")]
-        public ICollection<FilterQuery> FilterQueries { get; set; }
+        public ICollection<FilterQuery> FilterQueries { get; set; } = new List<FilterQuery>();
 
         public ExportRequest(){}
         public ExportRequest(ExportRequest other) {
@@ -57,7 +57,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public override bool Equals(object obj) => Equals(obj as ExportRequest);
         public override int GetHashCode() {
             var hashCode = new HashCode();
-            hashCode.Add((int) ExporterType);
+            hashCode.Add((int?) ExporterType);
             hashCode.Add(SubmissionIds);
             hashCode.Add(ExportFields);
             hashCode.Add(MailOnFinish);

@@ -51,7 +51,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public override bool Equals(object obj) => Equals(obj as Condition);
         public override int GetHashCode() {
             var hashCode = new HashCode();
-            hashCode.Add((int) Type);
+            hashCode.Add((int?) Type);
             hashCode.Add(FieldUid);
             hashCode.Add(FieldObjectKey);
             hashCode.Add(Key);

@@ -28,7 +28,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public int? Version { get; set; }
 
         [JsonProperty("configuration")]
-        public Dictionary<string, object> Configuration { get; set; }
+        public Dictionary<string, object> Configuration { get; set; } = new Dictionary<string, object>();
 
         public IntegrationConfiguration(){}
         public IntegrationConfiguration(IntegrationConfiguration other) {

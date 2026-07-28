@@ -16,10 +16,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public long? TotalSize { get; set; }
 
         [JsonProperty("elements")]
-        public ICollection<RestRegistration> Elements { get; set; }
+        public ICollection<RestRegistration> Elements { get; set; } = new List<RestRegistration>();
 
         [JsonProperty("headers")]
-        public ICollection<WebRegistrationHeader> Headers { get; set; }
+        public ICollection<WebRegistrationHeader> Headers { get; set; } = new List<WebRegistrationHeader>();
 
         public RestPageableRegistrations(){}
         public RestPageableRegistrations(RestPageableRegistrations other) {

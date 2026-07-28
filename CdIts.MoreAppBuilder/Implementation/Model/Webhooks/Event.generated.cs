@@ -31,7 +31,7 @@ namespace MoreAppBuilder.Implementation.Model.Webhooks {
         public string IdempotencyKey { get; set; }
 
         [JsonProperty("data")]
-        public Dictionary<string, object> Data { get; set; }
+        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
 
         public Event(){}
         public Event(Event other) {

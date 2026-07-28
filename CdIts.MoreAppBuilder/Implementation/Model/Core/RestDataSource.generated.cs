@@ -41,10 +41,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public LastUpdateTypeValue? LastUpdateType { get; set; }
 
         [JsonProperty("lastUpdateWarningMessages")]
-        public ICollection<string> LastUpdateWarningMessages { get; set; }
+        public ICollection<string> LastUpdateWarningMessages { get; set; } = new List<string>();
 
         [JsonProperty("columnMapping")]
-        public ICollection<DataKey> ColumnMapping { get; set; }
+        public ICollection<DataKey> ColumnMapping { get; set; } = new List<DataKey>();
 
         [JsonProperty("enabled")]
         public bool? Enabled { get; set; }
@@ -102,10 +102,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Name);
             hashCode.Add(UrlConfiguration);
             hashCode.Add(GoogleConfiguration);
-            hashCode.Add((int) UpdateStatus);
+            hashCode.Add((int?) UpdateStatus);
             hashCode.Add(LastUpdated);
             hashCode.Add(LastSuccessfulUpdate);
-            hashCode.Add((int) LastUpdateType);
+            hashCode.Add((int?) LastUpdateType);
             hashCode.Add(LastUpdateWarningMessages);
             hashCode.Add(ColumnMapping);
             hashCode.Add(Enabled);

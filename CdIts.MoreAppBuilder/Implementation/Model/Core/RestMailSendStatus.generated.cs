@@ -16,7 +16,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string Email { get; set; }
 
         [JsonProperty("transitions")]
-        public ICollection<RestMailTransition> Transitions { get; set; }
+        public ICollection<RestMailTransition> Transitions { get; set; } = new List<RestMailTransition>();
 
         public RestMailSendStatus(){}
         public RestMailSendStatus(RestMailSendStatus other) {

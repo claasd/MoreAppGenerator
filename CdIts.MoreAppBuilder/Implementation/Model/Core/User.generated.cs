@@ -28,10 +28,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool? EmailValidated { get; set; }
 
         [JsonProperty("grants")]
-        public ICollection<Grant> Grants { get; set; }
+        public ICollection<Grant> Grants { get; set; } = new List<Grant>();
 
         [JsonProperty("groups")]
-        public ICollection<string> Groups { get; set; }
+        public ICollection<string> Groups { get; set; } = new List<string>();
 
         public User(){}
         public User(User other) {

@@ -46,8 +46,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public override bool Equals(object obj) => Equals(obj as RestCustomerSettings);
         public override int GetHashCode() {
             var hashCode = new HashCode();
-            hashCode.Add((int) DateFormat);
-            hashCode.Add((int) Segment);
+            hashCode.Add((int?) DateFormat);
+            hashCode.Add((int?) Segment);
             hashCode.Add(OtherSegment);
             hashCode.Add(Type);
             _PartialHashCode(ref hashCode);

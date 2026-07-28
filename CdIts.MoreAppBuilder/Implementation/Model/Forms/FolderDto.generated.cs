@@ -17,7 +17,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Id { get; set; }
 
         [JsonProperty("forms")]
-        public ICollection<FormDto> Forms { get; set; }
+        public ICollection<FormDto> Forms { get; set; } = new List<FormDto>();
 
         [JsonProperty("meta")]
         public FolderMetadataDto Meta { get; set; }
@@ -50,7 +50,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             hashCode.Add(Id);
             hashCode.Add(Forms);
             hashCode.Add(Meta);
-            hashCode.Add((int) Status);
+            hashCode.Add((int?) Status);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

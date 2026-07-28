@@ -19,7 +19,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Widget { get; set; }
 
         [JsonProperty("properties")]
-        public Dictionary<string, object> Properties { get; set; }
+        public Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
 
         public Field(){}
         public Field(Field other) {

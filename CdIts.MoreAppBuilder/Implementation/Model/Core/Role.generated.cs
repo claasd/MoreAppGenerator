@@ -16,7 +16,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string Name { get; set; }
 
         [JsonProperty("permissions")]
-        public ICollection<string> Permissions { get; set; }
+        public ICollection<string> Permissions { get; set; } = new List<string>();
 
         public Role(){}
         public Role(Role other) {

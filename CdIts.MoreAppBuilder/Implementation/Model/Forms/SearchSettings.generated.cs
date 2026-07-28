@@ -19,13 +19,13 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public bool? OnlyForCurrentUser { get; set; }
 
         [JsonProperty("fields")]
-        public Dictionary<string, bool> Fields { get; set; }
+        public Dictionary<string, bool> Fields { get; set; } = new Dictionary<string, bool>();
 
         [JsonProperty("filteringEnabled")]
         public bool? FilteringEnabled { get; set; }
 
         [JsonProperty("filteredFields")]
-        public ICollection<string> FilteredFields { get; set; }
+        public ICollection<string> FilteredFields { get; set; } = new List<string>();
 
         public SearchSettings(){}
         public SearchSettings(SearchSettings other) {

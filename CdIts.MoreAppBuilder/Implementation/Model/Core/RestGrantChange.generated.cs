@@ -46,10 +46,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public override bool Equals(object obj) => Equals(obj as RestGrantChange);
         public override int GetHashCode() {
             var hashCode = new HashCode();
-            hashCode.Add((int) Operation);
+            hashCode.Add((int?) Operation);
             hashCode.Add(RoleId);
             hashCode.Add(ResourceId);
-            hashCode.Add((int) ResourceType);
+            hashCode.Add((int?) ResourceType);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

@@ -20,10 +20,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public RestCredentials Credentials { get; set; }
 
         [JsonProperty("requestHeaders")]
-        public Dictionary<string, string> RequestHeaders { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         [JsonProperty("parameters")]
-        public Dictionary<string, string> Parameters { get; set; }
+        public Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
 
         [JsonProperty("updateInterval", Required = Required.Always)]
         public UpdateIntervalValue UpdateInterval { get; set; }
@@ -56,7 +56,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Credentials);
             hashCode.Add(RequestHeaders);
             hashCode.Add(Parameters);
-            hashCode.Add((int) UpdateInterval);
+            hashCode.Add((int?) UpdateInterval);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

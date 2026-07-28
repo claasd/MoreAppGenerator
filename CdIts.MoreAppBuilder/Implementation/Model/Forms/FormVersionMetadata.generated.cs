@@ -55,7 +55,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             hashCode.Add(CreatedBy);
             hashCode.Add(LastUpdated);
             hashCode.Add(LastUpdatedBy);
-            hashCode.Add((int) Status);
+            hashCode.Add((int?) Status);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

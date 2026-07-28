@@ -84,7 +84,7 @@ namespace MoreAppBuilder.Implementation.Model.Webhooks {
             hashCode.Add(EventId);
             hashCode.Add(Type);
             hashCode.Add(CustomerId);
-            hashCode.Add((int) Status);
+            hashCode.Add((int?) Status);
             hashCode.Add(Message);
             hashCode.Add(InvokedOn);
             hashCode.Add(RetryOn);

@@ -47,7 +47,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public override int GetHashCode() {
             var hashCode = new HashCode();
             hashCode.Add(CustomerId);
-            hashCode.Add((int) ResourceType);
+            hashCode.Add((int?) ResourceType);
             hashCode.Add(RoleId);
             hashCode.Add(ResourceId);
             _PartialHashCode(ref hashCode);

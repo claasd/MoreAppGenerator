@@ -16,7 +16,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public long? TotalSize { get; set; }
 
         [JsonProperty("elements")]
-        public ICollection<RestTask> Elements { get; set; }
+        public ICollection<RestTask> Elements { get; set; } = new List<RestTask>();
 
         public RestPageableTasks(){}
         public RestPageableTasks(RestPageableTasks other) {

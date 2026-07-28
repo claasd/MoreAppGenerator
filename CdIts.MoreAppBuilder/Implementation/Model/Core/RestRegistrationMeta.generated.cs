@@ -34,7 +34,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public int? SerialNumber { get; set; }
 
         [JsonProperty("hiddenFields")]
-        public ICollection<string> HiddenFields { get; set; }
+        public ICollection<string> HiddenFields { get; set; } = new List<string>();
 
         [JsonProperty("location")]
         public RestRegistrationMetaLocation Location { get; set; }

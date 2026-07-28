@@ -52,7 +52,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Timezone);
             hashCode.Add(IncludeFiles);
             hashCode.Add(ExcelSingleSheet);
-            hashCode.Add((int) LanguageCode);
+            hashCode.Add((int?) LanguageCode);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

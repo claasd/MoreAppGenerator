@@ -16,7 +16,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string Id { get; set; }
 
         [JsonProperty("data")]
-        public Dictionary<string, object> Data { get; set; }
+        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
 
         [JsonProperty("info")]
         public RestRegistrationInfo Info { get; set; }
@@ -25,7 +25,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public RestRegistrationMeta Meta { get; set; }
 
         [JsonProperty("mailStatuses")]
-        public ICollection<RestRegistrationMailStatus> MailStatuses { get; set; }
+        public ICollection<RestRegistrationMailStatus> MailStatuses { get; set; } = new List<RestRegistrationMailStatus>();
 
         public RestRegistration(){}
         public RestRegistration(RestRegistration other) {

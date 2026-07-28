@@ -16,7 +16,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Id { get; set; }
 
         [JsonProperty("mapping")]
-        public Dictionary<string, bool> Mapping { get; set; }
+        public Dictionary<string, bool> Mapping { get; set; } = new Dictionary<string, bool>();
 
         public SearchDataSource(){}
         public SearchDataSource(SearchDataSource other) {

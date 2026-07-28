@@ -53,7 +53,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             var hashCode = new HashCode();
             hashCode.Add(Status);
             hashCode.Add(Message);
-            hashCode.Add((int) Scope);
+            hashCode.Add((int?) Scope);
             hashCode.Add(TraceId);
             hashCode.Add(Details);
             _PartialHashCode(ref hashCode);

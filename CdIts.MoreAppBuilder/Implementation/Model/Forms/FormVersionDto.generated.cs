@@ -19,22 +19,22 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string FormId { get; set; }
 
         [JsonProperty("fields")]
-        public ICollection<Field> Fields { get; set; }
+        public ICollection<Field> Fields { get; set; } = new List<Field>();
 
         [JsonProperty("rules")]
-        public ICollection<Rule> Rules { get; set; }
+        public ICollection<Rule> Rules { get; set; } = new List<Rule>();
 
         [JsonProperty("triggers")]
-        public ICollection<Trigger> Triggers { get; set; }
+        public ICollection<Trigger> Triggers { get; set; } = new List<Trigger>();
 
         [JsonProperty("integrations")]
-        public ICollection<IntegrationConfiguration> Integrations { get; set; }
+        public ICollection<IntegrationConfiguration> Integrations { get; set; } = new List<IntegrationConfiguration>();
 
         [JsonProperty("dependencies")]
-        public ICollection<Dependency> Dependencies { get; set; }
+        public ICollection<Dependency> Dependencies { get; set; } = new List<Dependency>();
 
         [JsonProperty("fieldProperties")]
-        public Dictionary<string, object> FieldProperties { get; set; }
+        public Dictionary<string, object> FieldProperties { get; set; } = new Dictionary<string, object>();
 
         [JsonProperty("meta")]
         public FormVersionMetadata Meta { get; set; }
