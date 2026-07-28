@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CdIts.CosmosExtensions" Version="1.5.0" />
+      <PackageReference Include="CdIts.CosmosExtensions" Version="1.6.1" />
     </ItemGroup>
 
 </Project>

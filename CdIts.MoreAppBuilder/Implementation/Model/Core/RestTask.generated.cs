@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.Immutable;
+using MoreAppBuilder.DefaultFormObjects;
 
 namespace MoreAppBuilder.Implementation.Model.Core {
 /// AUTOGENERED BY caffoa ///
@@ -34,23 +35,26 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         [JsonProperty("formIconColor")]
         public string FormIconColor { get; set; }
 
-        [JsonProperty("users")]
+        [JsonProperty("users", Required = Required.Always)]
         public ICollection<string> Users { get; set; } = new List<string>();
 
-        [JsonProperty("message")]
+        [JsonProperty("message", Required = Required.Always)]
         public string Message { get; set; }
 
-        [JsonProperty("dates")]
-        public TaskDates Dates { get; set; }
+        [JsonProperty("dates", Required = Required.Always)]
+        public TaskDates Dates { get; set; } = new TaskDates();
 
-        [JsonProperty("data")]
-        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
+        [JsonProperty("data", Required = Required.Always)]
+        public object Data { get; set; }
 
         [JsonProperty("status")]
         public StatusValue? Status { get; set; }
 
         [JsonProperty("fulfilments")]
         public ICollection<TaskFulfilment> Fulfilments { get; set; } = new List<TaskFulfilment>();
+
+        [JsonProperty("location")]
+        public MoreAppLocation Location { get; set; }
 
         public RestTask(){}
         public RestTask(RestTask other) {
@@ -64,9 +68,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             Users = other.Users?.ToList();
             Message = other.Message;
             Dates = other.Dates?.ToTaskDates();
-            Data = other.Data?.ToDictionary(entry => entry.Key, entry => entry.Value);
+            Data = other.Data;
             Status = other.Status == null ? null : (RestTask.StatusValue)other.Status;
             Fulfilments = other.Fulfilments?.Select(value=>value?.ToTaskFulfilment())?.ToList();
+            Location = other.Location?.ToMoreAppLocation();
         }
         public RestTask ToRestTask() => new RestTask(this);
         public bool Equals(RestTask other) {
@@ -82,9 +87,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
                 && (other.Users is null ? Users is null : Users?.SequenceEqual(other.Users) ?? other.Users is null)
                 && Message == other.Message
                 && (Dates?.Equals(other.Dates) ?? other.Dates is null)
-                && (other.Data is null ? Data is null : Data?.SequenceEqual(other.Data) ?? other.Data is null)
+                && (Data?.Equals(other.Data) ?? other.Data is null)
                 && Status == other.Status
-                && (other.Fulfilments is null ? Fulfilments is null : Fulfilments?.SequenceEqual(other.Fulfilments) ?? other.Fulfilments is null);
+                && (other.Fulfilments is null ? Fulfilments is null : Fulfilments?.SequenceEqual(other.Fulfilments) ?? other.Fulfilments is null)
+                && (Location?.Equals(other.Location) ?? other.Location is null);
             if(result) _PartialEquals(other, ref result);
             return result;
         }
@@ -105,6 +111,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Data);
             hashCode.Add((int?) Status);
             hashCode.Add(Fulfilments);
+            hashCode.Add(Location);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();
         }

@@ -31,7 +31,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public bool FinishedTour { get; set; }
 
         [JsonProperty("timeZone")]
-        public JToken? TimeZone { get; set; }
+        public object? TimeZone { get; set; }
 
         public RestUserSettings(){}
         public RestUserSettings(RestUserSettings other) {
@@ -41,7 +41,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             PhoneNumber = other.PhoneNumber;
             ReceiveNewsLetter = other.ReceiveNewsLetter;
             FinishedTour = other.FinishedTour;
-            TimeZone = other.TimeZone?.DeepClone();
+            TimeZone = other.TimeZone;
         }
         public RestUserSettings ToRestUserSettings() => new RestUserSettings(this);
         public bool Equals(RestUserSettings other) {

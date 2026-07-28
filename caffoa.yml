@@ -2,6 +2,7 @@ config:
   splitByTag: true
   nullableIsDefault: true
   generateEqualsMethods: true
+  genericType: object
   jsonContentTypes:
     - '*/*'
     - 'application/json-patch+json'
@@ -13,6 +14,9 @@ services:
       excludes:
         - JsonErrorDetails
         - RestCustomerMeta
+      objectImports:
+        RestTask:
+          - MoreAppBuilder.DefaultFormObjects
     client:
       name: MoreApp{Tag}Client
       targetFolder: CdIts.MoreAppBuilder/Implementation/Client

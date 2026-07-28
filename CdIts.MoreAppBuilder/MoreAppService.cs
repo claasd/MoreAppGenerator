@@ -26,4 +26,5 @@ public class MoreAppService(int customerId, string secret, IMoreAppCaching? cach
     public Task<List<IActiveDataSource>> ExistingDataSources() => ActiveDataSource.LoadAllAsync(_client);
     public Task<IGroup> ExistingGroup(string name, bool allowUseCache = true) => GroupBuilder.LoadAsync(_client, name, _caching, allowUseCache);
     public Task<IGroup> ExistingGroupById(string id, bool allowUseCache = true) => GroupBuilder.LoadByIdAsync(_client, id, _caching, allowUseCache);
+    public IMoreAppTaskService TaskService(IFormInfo form) => new MoreAppTaskService(_client, form);
 }

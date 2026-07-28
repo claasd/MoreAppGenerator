@@ -1540,16 +1540,16 @@ paths:
       servers:
         - url: https://api.moreapp.com
   /api/v1.0/customers/{customerId}/{formId}/tasks/{taskId}:
+    parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/formId'
+      - $ref: '#/components/parameters/taskId'
     get:
       tags:
         - Tasks
       summary: Retrieve a task
       description: Retrieves the task with the given ID.
       operationId: getTask
-      parameters:
-        - $ref: '#/components/parameters/customerId'
-        - $ref: '#/components/parameters/formId'
-        - $ref: '#/components/parameters/taskId'
       responses:
         '200':
           description: OK
@@ -1565,10 +1565,23 @@ paths:
                 $ref: '#/components/schemas/JsonError'
         '404':
           description: Not Found
-      security:
-        - api-key: []
-      servers:
-        - url: https://api.moreapp.com
+    delete:
+      tags:
+        - Tasks
+      summary: Delete a task
+      description: Deletes the task with the given ID.
+      operationId: deleteTask
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JsonError'
+        '404':
+          description: Not Found
   /api/v1.0/customers/{customerId}:
     get:
       tags:
@@ -1832,7 +1845,7 @@ components:
       description: The page number when requesting paginated items.
       required: true
       schema:
-        type: number
+        type: integer
         minimum: 0
     userId:
       name: userId
@@ -2401,8 +2414,6 @@ components:
           $ref: '#/components/schemas/TaskDates'
         data:
           type: object
-          additionalProperties:
-            type: object
         status:
           type: string
           enum:
@@ -2414,6 +2425,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TaskFulfilment'
+        location:
+          $ref: './shared.yml#/components/schemas/moreAppLocation'
+      required: 
+        - data
+        - users
+        - message
+        - dates
     TaskDates:
       type: object
       properties:
@@ -2449,13 +2467,9 @@ components:
           type: string
         data:
           type: object
-          additionalProperties:
-            type: object
         informationDate:
           type: string
           format: date-time
-        publishDate:
-          $ref: '#/components/schemas/TaskPublishInfo'
         publishInfo:
           $ref: '#/components/schemas/TaskPublishInfo'
       required:

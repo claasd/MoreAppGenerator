@@ -18,7 +18,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             item.Language = (RestUserAccountInformation.LanguageValue)other.Language;
             item.Country = other.Country;
             item.ReceiveNewsLetter = other.ReceiveNewsLetter;
-            item.TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone;
+            item.TimeZone = other.TimeZone;
         }
         
         /// <summary>
@@ -31,7 +31,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             Language = (RestUserAccountInformation.LanguageValue)other.Language,
             Country = other.Country,
             ReceiveNewsLetter = other.ReceiveNewsLetter,
-            TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone
+            TimeZone = other.TimeZone
         };
         
         /// <summary>
@@ -408,7 +408,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             item.Language = other.Language == null ? null : (UserAccountInformation.LanguageValue)other.Language;
             item.Country = other.Country;
             item.ReceiveNewsLetter = other.ReceiveNewsLetter;
-            item.TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone;
+            item.TimeZone = other.TimeZone;
         }
         
         /// <summary>
@@ -421,7 +421,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             Language = other.Language == null ? null : (UserAccountInformation.LanguageValue)other.Language,
             Country = other.Country,
             ReceiveNewsLetter = other.ReceiveNewsLetter,
-            TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone
+            TimeZone = other.TimeZone
         };
         
         /// <summary>
@@ -578,7 +578,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         /// </summary>
         public static void UpdateWithFilterQuery(this FilterQuery item, FilterQuery other, bool deepClone = true) {
             item.Path = other.Path;
-            item.Value = deepClone ? other.Value?.DeepClone() : other.Value;
+            item.Value = other.Value;
             item.Type = other.Type;
         }
         
@@ -588,7 +588,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         /// </summary>
         public static FilterQuery ToFilterQuery(this FilterQuery other, bool deepClone = true) => new FilterQuery() { 
             Path = other.Path,
-            Value = deepClone ? other.Value?.DeepClone() : other.Value,
+            Value = other.Value,
             Type = other.Type
         };
         
@@ -640,9 +640,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             item.Users = deepClone ? other.Users?.ToList() : other.Users;
             item.Message = other.Message;
             item.Dates = deepClone ? other.Dates?.ToTaskDates() : other.Dates;
-            item.Data = deepClone ? other.Data?.ToDictionary(entry => entry.Key, entry => entry.Value) : other.Data;
+            item.Data = other.Data;
             item.Status = other.Status == null ? null : (RestTask.StatusValue)other.Status;
             item.Fulfilments = deepClone ? other.Fulfilments?.Select(value=>value?.ToTaskFulfilment())?.ToList() : other.Fulfilments;
+            item.Location = deepClone ? other.Location?.ToMoreAppLocation() : other.Location;
         }
         
         /// <summary>
@@ -660,9 +661,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             Users = deepClone ? other.Users?.ToList() : other.Users,
             Message = other.Message,
             Dates = deepClone ? other.Dates?.ToTaskDates() : other.Dates,
-            Data = deepClone ? other.Data?.ToDictionary(entry => entry.Key, entry => entry.Value) : other.Data,
+            Data = other.Data,
             Status = other.Status == null ? null : (RestTask.StatusValue)other.Status,
-            Fulfilments = deepClone ? other.Fulfilments?.Select(value=>value?.ToTaskFulfilment())?.ToList() : other.Fulfilments
+            Fulfilments = deepClone ? other.Fulfilments?.Select(value=>value?.ToTaskFulfilment())?.ToList() : other.Fulfilments,
+            Location = deepClone ? other.Location?.ToMoreAppLocation() : other.Location
         };
         
         /// <summary>
@@ -681,7 +683,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             Dates = other.Dates,
             Data = other.Data,
             Status = other.Status == null ? null : (RestTask.StatusValue)other.Status,
-            Fulfilments = other.Fulfilments
+            Fulfilments = other.Fulfilments,
+            Location = other.Location
         });
 
         /// <summary>
@@ -749,9 +752,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static void UpdateWithTaskCreateRequest(this TaskCreateRequest item, TaskCreateRequest other, bool deepClone = true) {
             item.Recipients = deepClone ? other.Recipients?.ToList() : other.Recipients;
             item.Message = other.Message;
-            item.Data = deepClone ? other.Data?.ToDictionary(entry => entry.Key, entry => entry.Value) : other.Data;
+            item.Data = other.Data;
             item.InformationDate = other.InformationDate;
-            item.PublishDate = deepClone ? other.PublishDate?.ToTaskPublishInfo() : other.PublishDate;
             item.PublishInfo = deepClone ? other.PublishInfo?.ToTaskPublishInfo() : other.PublishInfo;
         }
         
@@ -762,9 +764,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public static TaskCreateRequest ToTaskCreateRequest(this TaskCreateRequest other, bool deepClone = true) => new TaskCreateRequest() { 
             Recipients = deepClone ? other.Recipients?.ToList() : other.Recipients,
             Message = other.Message,
-            Data = deepClone ? other.Data?.ToDictionary(entry => entry.Key, entry => entry.Value) : other.Data,
+            Data = other.Data,
             InformationDate = other.InformationDate,
-            PublishDate = deepClone ? other.PublishDate?.ToTaskPublishInfo() : other.PublishDate,
             PublishInfo = deepClone ? other.PublishInfo?.ToTaskPublishInfo() : other.PublishInfo
         };
         
@@ -776,7 +777,6 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             Message = other.Message,
             Data = other.Data,
             InformationDate = other.InformationDate,
-            PublishDate = other.PublishDate,
             PublishInfo = other.PublishInfo
         });
 
@@ -1461,7 +1461,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             item.PhoneNumber = other.PhoneNumber;
             item.ReceiveNewsLetter = other.ReceiveNewsLetter;
             item.FinishedTour = other.FinishedTour;
-            item.TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone;
+            item.TimeZone = other.TimeZone;
         }
         
         /// <summary>
@@ -1475,7 +1475,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             PhoneNumber = other.PhoneNumber,
             ReceiveNewsLetter = other.ReceiveNewsLetter,
             FinishedTour = other.FinishedTour,
-            TimeZone = deepClone ? other.TimeZone?.DeepClone() : other.TimeZone
+            TimeZone = other.TimeZone
         };
         
         /// <summary>

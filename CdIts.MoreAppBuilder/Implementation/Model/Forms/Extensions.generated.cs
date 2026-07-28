@@ -129,7 +129,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public static void UpdateWithAction(this Action item, Action other, bool deepClone = true) {
             item.FieldUid = other.FieldUid;
             item.Key = other.Key;
-            item.Value = deepClone ? other.Value?.DeepClone() : other.Value;
+            item.Value = other.Value;
         }
         
         /// <summary>
@@ -139,7 +139,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public static Action ToAction(this Action other, bool deepClone = true) => new Action() { 
             FieldUid = other.FieldUid,
             Key = other.Key,
-            Value = deepClone ? other.Value?.DeepClone() : other.Value
+            Value = other.Value
         };
         
         /// <summary>
@@ -159,7 +159,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             item.FieldUid = other.FieldUid;
             item.FieldObjectKey = other.FieldObjectKey;
             item.Key = other.Key;
-            item.Value = deepClone ? other.Value?.DeepClone() : other.Value;
+            item.Value = other.Value;
         }
         
         /// <summary>
@@ -171,7 +171,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             FieldUid = other.FieldUid,
             FieldObjectKey = other.FieldObjectKey,
             Key = other.Key,
-            Value = deepClone ? other.Value?.DeepClone() : other.Value
+            Value = other.Value
         };
         
         /// <summary>

@@ -16,6 +16,7 @@ public class MoreAppLocation
     [JsonProperty("formattedValue")]
     [JsonPropertyName("formattedValue")]
     public string? FormattedValue { get; set; }
+    public MoreAppLocation ToMoreAppLocation() => this;
 }
 
 public class MoreAppLocationInfo

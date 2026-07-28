@@ -83,7 +83,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 400 -> Bad Request
         /// 404 -> Not Found
         /// </summary>
-        public virtual async Task<RestPageableRegistrations> FilterSubmissionsWithSimpleFilterAsync(double customerId, string formId, double page, SimpleFilter payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestPageableRegistrations> FilterSubmissionsWithSimpleFilterAsync(double customerId, string formId, int page, SimpleFilter payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/forms/{formId}/submissions/filter/{page}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");

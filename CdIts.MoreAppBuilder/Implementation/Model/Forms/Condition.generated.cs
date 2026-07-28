@@ -25,7 +25,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Key { get; set; }
 
         [JsonProperty("value")]
-        public JToken? Value { get; set; }
+        public object? Value { get; set; }
 
         public Condition(){}
         public Condition(Condition other) {
@@ -33,7 +33,7 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
             FieldUid = other.FieldUid;
             FieldObjectKey = other.FieldObjectKey;
             Key = other.Key;
-            Value = other.Value?.DeepClone();
+            Value = other.Value;
         }
         public Condition ToCondition() => new Condition(this);
         public bool Equals(Condition other) {

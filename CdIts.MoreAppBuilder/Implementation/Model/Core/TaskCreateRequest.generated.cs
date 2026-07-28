@@ -19,13 +19,10 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string Message { get; set; }
 
         [JsonProperty("data", Required = Required.Always)]
-        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
+        public object Data { get; set; }
 
         [JsonProperty("informationDate")]
         public DateTimeOffset? InformationDate { get; set; }
-
-        [JsonProperty("publishDate")]
-        public TaskPublishInfo PublishDate { get; set; }
 
         [JsonProperty("publishInfo", Required = Required.Always)]
         public TaskPublishInfo PublishInfo { get; set; } = new TaskPublishInfo();
@@ -34,9 +31,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public TaskCreateRequest(TaskCreateRequest other) {
             Recipients = other.Recipients?.ToList();
             Message = other.Message;
-            Data = other.Data?.ToDictionary(entry => entry.Key, entry => entry.Value);
+            Data = other.Data;
             InformationDate = other.InformationDate;
-            PublishDate = other.PublishDate?.ToTaskPublishInfo();
             PublishInfo = other.PublishInfo?.ToTaskPublishInfo();
         }
         public TaskCreateRequest ToTaskCreateRequest() => new TaskCreateRequest(this);
@@ -45,9 +41,8 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             if (ReferenceEquals(this, other)) return true;
             var result = (other.Recipients is null ? Recipients is null : Recipients?.SequenceEqual(other.Recipients) ?? other.Recipients is null)
                 && Message == other.Message
-                && (other.Data is null ? Data is null : Data?.SequenceEqual(other.Data) ?? other.Data is null)
+                && (Data?.Equals(other.Data) ?? other.Data is null)
                 && InformationDate == other.InformationDate
-                && (PublishDate?.Equals(other.PublishDate) ?? other.PublishDate is null)
                 && (PublishInfo?.Equals(other.PublishInfo) ?? other.PublishInfo is null);
             if(result) _PartialEquals(other, ref result);
             return result;
@@ -60,7 +55,6 @@ namespace MoreAppBuilder.Implementation.Model.Core {
             hashCode.Add(Message);
             hashCode.Add(Data);
             hashCode.Add(InformationDate);
-            hashCode.Add(PublishDate);
             hashCode.Add(PublishInfo);
             _PartialHashCode(ref hashCode);
             return hashCode.ToHashCode();

@@ -14,7 +14,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public string Path { get; set; }
 
         [JsonProperty("value", Required = Required.Always)]
-        public JToken Value { get; set; }
+        public object Value { get; set; }
 
         [JsonProperty("type", Required = Required.Always)]
         public string Type { get; set; }
@@ -22,7 +22,7 @@ namespace MoreAppBuilder.Implementation.Model.Core {
         public FilterQuery(){}
         public FilterQuery(FilterQuery other) {
             Path = other.Path;
-            Value = other.Value?.DeepClone();
+            Value = other.Value;
             Type = other.Type;
         }
         public FilterQuery ToFilterQuery() => new FilterQuery(this);

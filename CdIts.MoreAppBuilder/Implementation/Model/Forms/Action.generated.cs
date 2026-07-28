@@ -17,13 +17,13 @@ namespace MoreAppBuilder.Implementation.Model.Forms {
         public string Key { get; set; }
 
         [JsonProperty("value")]
-        public JToken? Value { get; set; }
+        public object? Value { get; set; }
 
         public Action(){}
         public Action(Action other) {
             FieldUid = other.FieldUid;
             Key = other.Key;
-            Value = other.Value?.DeepClone();
+            Value = other.Value;
         }
         public Action ToAction() => new Action(this);
         public bool Equals(Action other) {

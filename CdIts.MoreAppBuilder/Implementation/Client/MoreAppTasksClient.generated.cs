@@ -110,7 +110,7 @@ namespace MoreAppBuilder.Implementation.Client
         /// 200 -> OK
         /// 400 -> Bad Request
         /// </summary>
-        public virtual async Task<RestPageableTasks> FilterTasksAsync(double customerId, string formId, double page, SimpleFilter payload, CancellationToken cancellationToken = default) {
+        public virtual async Task<RestPageableTasks> FilterTasksAsync(double customerId, string formId, int page, SimpleFilter payload, CancellationToken cancellationToken = default) {
             var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks/filter/{page}"));
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.ToString());
             httpRequest.Content = new StringContent(JsonSerializer.JsonString(payload), Encoding.UTF8, "application/json");
@@ -197,6 +197,34 @@ namespace MoreAppBuilder.Implementation.Client
             await using var resultStream = await httpResult.Content.ReadAsStreamAsync(cancellationToken);
             var resultObject = await JsonParser.Parse<RestTask>(resultStream);
             return resultObject;
+        }
+
+        /// <summary>
+        /// Deletes the task with the given ID.
+        /// 200 -> OK
+        /// 400 -> Bad Request
+        /// 404 -> Not Found
+        /// </summary>
+        public virtual async Task DeleteTaskAsync(double customerId, string formId, string taskId, CancellationToken cancellationToken = default) {
+            var uriBuilder = new UriBuilder(Invariant($"{BaseUri}api/v1.0/customers/{customerId}/{formId}/tasks/{taskId}"));
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, uriBuilder.ToString());
+            PrepareRequest(httpRequest);
+            using var httpResult = await Client.SendAsync(httpRequest, cancellationToken);
+            ProcessResponse(httpResult);
+            if(!httpResult.IsSuccessStatusCode) {
+                var errorData = await httpResult.Content.ReadAsStringAsync(cancellationToken);
+                try
+                {
+                    if((int)httpResult.StatusCode == 400)
+                        throw new CaffoaWebClientException<JsonError>(400, JsonParser.Parse<JsonError>(errorData), errorData);
+                }
+                catch (Exception e) when(e is not CaffoaWebClientException)
+                {
+                    throw new CaffoaWebClientException((int)httpResult.StatusCode, errorData);
+                }
+
+                throw new CaffoaWebClientException((int)httpResult.StatusCode, errorData);
+            }
         }
     }
 }
