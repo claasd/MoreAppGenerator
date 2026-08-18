@@ -24,6 +24,8 @@ public class MoreAppService(int customerId, string secret, IMoreAppCaching? cach
 
     public Task<IDataSource> ExistingDataSource(string name, bool allowUseCache = true) => DataSource.LoadAsync(_client, name, _caching, allowUseCache);
     public Task<List<IActiveDataSource>> ExistingDataSources() => ActiveDataSource.LoadAllAsync(_client);
+    public Task DeleteDataSource(string name) => ActiveDataSource.DeleteAsync(_client, name);
+    public Task DeleteDataSource(IDataSource dataSource) => ActiveDataSource.DeleteAsync(_client, dataSource.Name);
     public Task<IGroup> ExistingGroup(string name, bool allowUseCache = true) => GroupBuilder.LoadAsync(_client, name, _caching, allowUseCache);
     public Task<IGroup> ExistingGroupById(string id, bool allowUseCache = true) => GroupBuilder.LoadByIdAsync(_client, id, _caching, allowUseCache);
     public IMoreAppTaskService TaskService(IFormInfo form) => new MoreAppTaskService(_client, form);

@@ -26,4 +26,10 @@ public class ActiveDataSource(string id, string name, List<string> columns)
         var list = await dsClient.GetAllAsync(client.CustomerId);
         return list.Select(AsActiveDataSource).ToList();
     }
+
+    public static async Task DeleteAsync(RestClient client, string name)
+    {
+        var dsClient = new MoreAppDatasourcesClient(client.HttpClient);
+        await dsClient.DeleteAsync(client.CustomerId, name);
+    }
 }
