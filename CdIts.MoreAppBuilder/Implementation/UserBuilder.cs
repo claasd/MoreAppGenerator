@@ -45,10 +45,13 @@ internal class UserBuilder : IUserBuilder
         if (user is null)
             return await BuildInvite();
         var groupClient = new MoreAppGroupsClient(_client.HttpClient);
-        foreach (var newGroup in _groups.Except(user.Groups))
+        // MoreApp rejects any membership change of externally managed (e.g. SSO synced) groups
+        var externalGroups = (await groupClient.GetGroupsAsync(_client.CustomerId))
+            .Where(g => g.ExternallyManaged is true).Select(g => g.Id).ToHashSet();
+        foreach (var newGroup in _groups.Except(user.Groups).Except(externalGroups))
             await groupClient.AddUserAsync(_client.CustomerId, newGroup, user.Id);
 
-        foreach (var obsoleteGroup in user.Groups.Except(_groups))
+        foreach (var obsoleteGroup in user.Groups.Except(_groups).Except(externalGroups))
             await groupClient.RemoveUserAsync(_client.CustomerId, obsoleteGroup, user.Id);
         return new AppUser(_email, user.Id, user.EmailValidated ?? false);
     }
