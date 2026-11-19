@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/SolutionItems/">
+    <File Path=".gitignore" />
+    <File Path="caffoa.yml" />
+    <File Path="LICENSE" />
+  </Folder>
+  <Folder Name="/SolutionItems/github/">
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/publish.yml" />
+  </Folder>
+  <Project Path="CdIts.MoreAppBuilder.CosmosCache/CdIts.MoreAppBuilder.CosmosCache.csproj" />
+  <Project Path="CdIts.MoreAppBuilder/CdIts.MoreAppBuilder.csproj" />
+  <Project Path="Example/Example.csproj" />
+</Solution>
